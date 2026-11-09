@@ -139,14 +139,27 @@ export function DocsSection({ lang }: Props) {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="p-5 rounded-xl bg-godot-950/60 border border-godot-border space-y-3">
                   <div className="flex items-center space-x-2 text-godot-400 font-semibold text-sm">
                     <Sparkles className="w-4 h-4" />
-                    <span>godot-lsp MCP Server</span>
+                    <span>godot-engine-bridge</span>
                   </div>
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Connects your AI agent to Godot's native GDScript Language Server running on port 6005. The agent gets real-time compilation errors, method signatures, and auto-completions as it writes code.
+                    Live editor control bridge: runs game instances, monitors runtime console errors, hot-reloads scripts, and inspects nodes dynamically.
+                  </p>
+                  <code className="block p-2.5 rounded-lg bg-godot-card border border-godot-border font-mono text-xs text-slate-300">
+                    devdock mcp add godot-engine-bridge
+                  </code>
+                </div>
+
+                <div className="p-5 rounded-xl bg-godot-950/60 border border-godot-border space-y-3">
+                  <div className="flex items-center space-x-2 text-godot-400 font-semibold text-sm">
+                    <Sparkles className="w-4 h-4" />
+                    <span>godot-lsp</span>
+                  </div>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Connects AI agents to Godot's GDScript LSP on port 6005 for real-time syntax checking, typed parameter suggestions, and signature help.
                   </p>
                   <code className="block p-2.5 rounded-lg bg-godot-card border border-godot-border font-mono text-xs text-slate-300">
                     devdock mcp add godot-lsp
@@ -156,13 +169,52 @@ export function DocsSection({ lang }: Props) {
                 <div className="p-5 rounded-xl bg-godot-950/60 border border-godot-border space-y-3">
                   <div className="flex items-center space-x-2 text-godot-400 font-semibold text-sm">
                     <BookOpen className="w-4 h-4" />
-                    <span>godot-docs MCP Server</span>
+                    <span>godot-docs</span>
                   </div>
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Provides instantaneous offline access to the complete Godot 4 class library documentation, including node inheritance trees, methods, signals, and properties.
+                    Zero-latency offline documentation access for all Godot 4 classes, methods, signals, constants, and properties.
                   </p>
                   <code className="block p-2.5 rounded-lg bg-godot-card border border-godot-border font-mono text-xs text-slate-300">
                     devdock mcp add godot-docs
+                  </code>
+                </div>
+
+                <div className="p-5 rounded-xl bg-godot-950/60 border border-godot-border space-y-3">
+                  <div className="flex items-center space-x-2 text-godot-400 font-semibold text-sm">
+                    <Layers className="w-4 h-4" />
+                    <span>godot-scene-inspector</span>
+                  </div>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Parses .tscn scene hierarchies and .tres resource definitions so agents can navigate node trees without corrupting UID links.
+                  </p>
+                  <code className="block p-2.5 rounded-lg bg-godot-card border border-godot-border font-mono text-xs text-slate-300">
+                    devdock mcp add godot-scene-inspector
+                  </code>
+                </div>
+
+                <div className="p-5 rounded-xl bg-godot-950/60 border border-godot-border space-y-3">
+                  <div className="flex items-center space-x-2 text-godot-400 font-semibold text-sm">
+                    <Cpu className="w-4 h-4" />
+                    <span>godot-gut-runner</span>
+                  </div>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Automates unit test execution using the GUT framework and streams test pass/fail reports directly to your AI assistant.
+                  </p>
+                  <code className="block p-2.5 rounded-lg bg-godot-card border border-godot-border font-mono text-xs text-slate-300">
+                    devdock mcp add godot-gut-runner
+                  </code>
+                </div>
+
+                <div className="p-5 rounded-xl bg-godot-950/60 border border-godot-border space-y-3 border-emerald-500/30 bg-emerald-950/10">
+                  <div className="flex items-center space-x-2 text-emerald-400 font-semibold text-sm">
+                    <Sparkles className="w-4 h-4" />
+                    <span>ctx7 (Context7 by Upstash)</span>
+                  </div>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Injects live, version-locked API docs straight from Context7 into the prompt context to completely eliminate AI hallucinations.
+                  </p>
+                  <code className="block p-2.5 rounded-lg bg-godot-card border border-godot-border font-mono text-xs text-emerald-300">
+                    devdock mcp add ctx7
                   </code>
                 </div>
               </div>
@@ -177,6 +229,10 @@ export function DocsSection({ lang }: Props) {
                         JSON.stringify(
                           {
                             mcpServers: {
+                              'godot-engine-bridge': {
+                                command: 'npx',
+                                args: ['-y', '@devdock/mcp-godot-bridge']
+                              },
                               'godot-lsp': {
                                 command: 'npx',
                                 args: ['-y', '@devdock/mcp-godot-lsp'],
@@ -185,6 +241,18 @@ export function DocsSection({ lang }: Props) {
                               'godot-docs': {
                                 command: 'npx',
                                 args: ['-y', '@devdock/mcp-godot-docs']
+                              },
+                              'godot-scene-inspector': {
+                                command: 'npx',
+                                args: ['-y', '@devdock/mcp-godot-project']
+                              },
+                              'godot-gut-runner': {
+                                command: 'npx',
+                                args: ['-y', '@devdock/mcp-godot-gut']
+                              },
+                              'ctx7': {
+                                command: 'npx',
+                                args: ['-y', 'ctx7', 'mcp']
                               }
                             }
                           },
@@ -211,16 +279,30 @@ export function DocsSection({ lang }: Props) {
                 <pre className="p-4 rounded-xl bg-godot-950 font-mono text-xs text-slate-300 border border-godot-border overflow-x-auto">
 {`{
   "mcpServers": {
+    "godot-engine-bridge": {
+      "command": "npx",
+      "args": ["-y", "@devdock/mcp-godot-bridge"]
+    },
     "godot-lsp": {
       "command": "npx",
       "args": ["-y", "@devdock/mcp-godot-lsp"],
-      "env": {
-        "GODOT_LSP_PORT": "6005"
-      }
+      "env": { "GODOT_LSP_PORT": "6005" }
     },
     "godot-docs": {
       "command": "npx",
       "args": ["-y", "@devdock/mcp-godot-docs"]
+    },
+    "godot-scene-inspector": {
+      "command": "npx",
+      "args": ["-y", "@devdock/mcp-godot-project"]
+    },
+    "godot-gut-runner": {
+      "command": "npx",
+      "args": ["-y", "@devdock/mcp-godot-gut"]
+    },
+    "ctx7": {
+      "command": "npx",
+      "args": ["-y", "ctx7", "mcp"]
     }
   }
 }`}
@@ -242,19 +324,44 @@ export function DocsSection({ lang }: Props) {
               <div className="space-y-4">
                 {[
                   {
-                    id: 'gdscript-architect',
-                    name: 'GDScript 4 Architect Skill (v1.2.0)',
-                    desc: 'Enforces strict static typing, custom typed signals, @export and @onready conventions, and node composition over deep inheritance.'
+                    id: 'godot4-syntax-guardian',
+                    name: 'Godot 4 Syntax Guardian (v1.3.0)',
+                    desc: 'Anti-hallucination skill enforcing strict Godot 4.3+ rules: TileMapLayer, FileAccess/DirAccess, Callables signals, CharacterBody move_and_slide.'
                   },
                   {
-                    id: 'godot-shader-expert',
-                    name: 'Godot Shading Language Expert (v1.1.0)',
-                    desc: 'Optimized GLSL guidelines for 2D canvas_item and 3D spatial shaders, UV mathematics, and post-processing.'
+                    id: 'gdscript-fsm-master',
+                    name: 'GDScript Finite State Machine (v1.2.0)',
+                    desc: 'Decoupled, modular state machine pattern using dedicated Node/State classes for combat, movement, and enemy AI.'
                   },
                   {
-                    id: 'godot-ui-master',
-                    name: 'Responsive UI Master (v1.0.0)',
-                    desc: 'Prevents manual pixel coordinate positioning; guides layout design using Margin, VBox, HBox, Grid containers and theme overrides.'
+                    id: 'godot-multiplayer-enet',
+                    name: 'Godot 4 Multiplayer & Networking (v1.2.0)',
+                    desc: 'Authoritative multiplayer architecture using ENetMultiplayerPeer, RPC annotations (@rpc("any_peer", "call_local")), and SceneReplicationConfig.'
+                  },
+                  {
+                    id: 'godot-shader-vfx',
+                    name: 'Godot Shading Language (GDShader) VFX (v1.2.0)',
+                    desc: 'GLSL shader pipeline for 2D canvas_item and 3D spatial shaders, UV distortion, dissolve effects, and hint_screen_texture filters.'
+                  },
+                  {
+                    id: 'godot-procedural-generation',
+                    name: 'Procedural Generation & Pathfinding (v1.1.0)',
+                    desc: 'Deterministic generation with FastNoiseLite, dungeon room placement, TileMapLayer autotiling, and AStar2D/AStar3D navigation.'
+                  },
+                  {
+                    id: 'godot-responsive-ui',
+                    name: 'Responsive UI & Layouts (v1.1.0)',
+                    desc: 'Prevents hardcoded pixel coordinates; enforces BoxContainers, MarginContainers, GridContainers, Anchors, and Theme overrides.'
+                  },
+                  {
+                    id: 'godot-save-system',
+                    name: 'Cryptographic Save System (v1.0.0)',
+                    desc: 'Anti-corruption and anti-tamper save/load pipelines using JSON/binary serialization and SHA-256 HMAC integrity verification.'
+                  },
+                  {
+                    id: 'ctx7-docs-fetcher',
+                    name: 'Context7 (ctx7) Live Docs Fetcher (v1.0.0)',
+                    desc: 'Instructs AI coding assistants to fetch fresh, version-specific library docs and syntax examples via Upstash Context7.'
                   }
                 ].map((s) => (
                   <div key={s.id} className="p-5 rounded-xl bg-godot-950/60 border border-godot-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

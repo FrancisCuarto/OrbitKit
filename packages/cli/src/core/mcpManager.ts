@@ -12,6 +12,13 @@ export interface McpServerDefinition {
 
 export const OFFICIAL_GODOT_MCP_SERVERS: McpServerDefinition[] = [
   {
+    id: 'godot-engine-bridge',
+    name: 'Godot Engine Live Control & Diagnostics Bridge',
+    description: 'Deep Godot 4 editor control: run game, capture live console/error output, hot-reload scripts, and manipulate nodes.',
+    command: 'npx',
+    args: ['-y', '@devdock/mcp-godot-bridge']
+  },
+  {
     id: 'godot-lsp',
     name: 'Godot GDScript Language Server MCP',
     description: 'Bridges AI coding assistants to Godot editor LSP (localhost:6005) for live GDScript diagnostics and completions.',
@@ -29,11 +36,25 @@ export const OFFICIAL_GODOT_MCP_SERVERS: McpServerDefinition[] = [
     args: ['-y', '@devdock/mcp-godot-docs']
   },
   {
-    id: 'godot-project-inspector',
+    id: 'godot-scene-inspector',
     name: 'Godot Scene & Node Tree Inspector MCP',
     description: 'Allows AI coding agents to parse .tscn and .tres files and inspect node hierarchies safely.',
     command: 'npx',
     args: ['-y', '@devdock/mcp-godot-project']
+  },
+  {
+    id: 'godot-gut-runner',
+    name: 'GUT (Godot Unit Testing) Test Runner MCP',
+    description: 'Runs automated unit tests with GUT framework and streams pass/fail test results to your AI agent.',
+    command: 'npx',
+    args: ['-y', '@devdock/mcp-godot-gut']
+  },
+  {
+    id: 'ctx7',
+    name: 'Context7 (ctx7) Live Documentation MCP',
+    description: 'Fetches real-time, version-specific documentation and code examples straight from Upstash Context7 to avoid AI hallucinations.',
+    command: 'npx',
+    args: ['-y', 'ctx7', 'mcp']
   }
 ];
 

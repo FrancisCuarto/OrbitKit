@@ -66,7 +66,8 @@ describe('DevDock CLI Core Engine', () => {
     expect(updates.length).toBe(1);
     expect(updates[0].skillId).toBe('gdscript-architect');
     expect(updates[0].currentVersion).toBe('1.0.0');
-    expect(updates[0].latestVersion).toBe(CURATED_SKILLS[0].version);
+    const matched = CURATED_SKILLS.find((s) => s.id === 'gdscript-architect');
+    expect(updates[0].latestVersion).toBe(matched?.version);
   });
 
   it('configures Godot MCP servers in .mcp.json', async () => {
