@@ -7,14 +7,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        devdock: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          900: '#0c4a6e',
-          950: '#082f49'
+        godot: {
+          50: '#f0f7fc',
+          100: '#e1eef8',
+          200: '#c2def0',
+          300: '#91c4e5',
+          400: '#69a7d0',
+          500: '#478cbf', // Official Godot Blue
+          600: '#3571a0',
+          700: '#2b5a81',
+          800: '#274b6b',
+          900: '#244059',
+          950: '#0d141b', // Godot Dark Canvas
+          card: '#15202b',
+          cardHover: '#1c2b3a',
+          border: '#233547'
         }
       }
     },
