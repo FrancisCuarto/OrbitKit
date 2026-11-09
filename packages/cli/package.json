@@ -3,15 +3,15 @@
   "version": "0.1.0",
   "description": "OrbitKit CLI - Keep your Godot projects updated with the latest AI Skills, Addons and MCPs",
   "bin": {
-    "orbitkit": "./bin/devdock.js",
-    "devdock": "./bin/devdock.js"
+    "orbitkit": "bin/devdock.js",
+    "devdock": "bin/devdock.js"
   },
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/FrancisCuarto/OrbitKit.git",
+    "url": "git+https://github.com/FrancisCuarto/OrbitKit.git",
     "directory": "packages/cli"
   },
   "keywords": [

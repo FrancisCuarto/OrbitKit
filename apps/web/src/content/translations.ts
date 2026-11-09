@@ -62,7 +62,7 @@ export const TRANSLATIONS = {
         desc: 'Cada recurso se valida con hash SHA-256 antes de tocar tu disco. Sin código arbitrario ni fugas de rutas.'
       },
       card6: {
-        title: 'Médico del Sistema ("devdock doctor")',
+        title: 'Médico del Sistema ("orbitkit doctor")',
         desc: 'Diagnostica tu binario de Godot, versión del motor, conectividad del puerto LSP 6005 y estado del entorno.'
       }
     },
@@ -70,16 +70,16 @@ export const TRANSLATIONS = {
       eyebrow: 'Paso a Paso',
       headline: 'Tres pasos para potenciar tu desarrollo con IA.',
       step1Title: '1. Instala el CLI globalmente',
-      step1Desc: 'Un simple comando con npm o npx. Funciona en Linux, Windows y macOS sin dependencias raras.',
+      step1Desc: 'Un simple comando con npm o npx: "npm i -g @francisiv/orbitkit". Funciona en Linux, Windows y macOS.',
       step2Title: '2. Inicializa o escanea tu espacio',
-      step2Desc: 'Ejecuta "devdock init" en tu juego o "devdock scan" para descubrir todos tus proyectos existentes.',
+      step2Desc: 'Ejecuta "orbitkit init" en tu juego o "orbitkit scan" para descubrir todos tus proyectos existentes.',
       step3Title: '3. Tu agente de IA ahora domina Godot',
-      step3Desc: 'Tus asistentes de código leen los skills de arquitectura y el servidor MCP de Godot en tiempo real.'
+      step3Desc: 'Tus asistentes de código leen los skills de arquitectura, ctx7 y el servidor MCP de Godot en tiempo real.'
     },
     docs: {
       eyebrow: 'Guía Completa',
       title: 'Documentación Oficial',
-      sub: 'Aprende a instalar, configurar y sacarle el máximo provecho a DevDock.',
+      sub: 'Aprende a instalar, configurar y sacarle el máximo provecho a OrbitKit y DevDock.',
       tabCli: 'Comandos CLI',
       tabMcp: 'Configurar MCP',
       tabSkills: 'Catálogo de Skills',
@@ -147,7 +147,7 @@ export const TRANSLATIONS = {
         desc: 'All packages and skills are verified with cryptographic hashes prior to extraction. No arbitrary path escapes.'
       },
       card6: {
-        title: 'System Health Doctor ("devdock doctor")',
+        title: 'System Health Doctor ("orbitkit doctor")',
         desc: 'Diagnoses Godot binary presence, engine version, LSP port 6005 accessibility, and project context.'
       }
     },
@@ -155,16 +155,16 @@ export const TRANSLATIONS = {
       eyebrow: 'Step by Step',
       headline: 'Three steps to empower your Godot AI workflow.',
       step1Title: '1. Install CLI globally',
-      step1Desc: 'One simple command with npm or npx. Runs on Linux, Windows, and macOS with zero external runtimes.',
+      step1Desc: 'One simple command: "npm i -g @francisiv/orbitkit". Runs on Linux, Windows, and macOS.',
       step2Title: '2. Initialize or scan your workspace',
-      step2Desc: 'Run "devdock init" in your game or "devdock scan" to detect all existing Godot projects on your computer.',
+      step2Desc: 'Run "orbitkit init" in your game or "orbitkit scan" to detect all existing Godot projects on your computer.',
       step3Title: '3. Your AI agent now masters Godot',
-      step3Desc: 'AI coding assistants read architecture guidelines and the live Godot LSP server in real time.'
+      step3Desc: 'AI coding assistants read architecture guidelines, ctx7 docs, and the live Godot LSP server in real time.'
     },
     docs: {
       eyebrow: 'Complete Guide',
       title: 'Official Documentation',
-      sub: 'Learn how to install, configure, and leverage the full power of DevDock.',
+      sub: 'Learn how to install, configure, and leverage the full power of OrbitKit and DevDock.',
       tabCli: 'CLI Commands',
       tabMcp: 'Configure MCP',
       tabSkills: 'Skills Catalog',

@@ -66,40 +66,78 @@ export function DocsSection({ lang }: Props) {
           {activeTab === 'cli' && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-white">DevDock CLI Reference</h3>
+                <h3 className="text-xl font-bold text-white">OrbitKit / DevDock CLI Reference</h3>
                 <p className="text-slate-400 text-xs sm:text-sm mt-1">
-                  The primary tool for managing Godot projects, AI agent skills, and environment health.
+                  The primary command-line tool for managing Godot 4 projects, AI agent skills, and environment health. Both <code className="text-godot-300 font-mono text-xs">orbitkit</code> and <code className="text-godot-300 font-mono text-xs">devdock</code> binary aliases are supported.
                 </p>
+              </div>
+
+              {/* Quick Install Box */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-godot-950 via-godot-900 to-godot-950 border border-godot-500/30 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Terminal className="w-4 h-4 text-godot-400" />
+                    <span className="font-semibold text-white text-sm">Official NPM Installation</span>
+                    <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-mono">v0.1.0 on NPM</span>
+                  </div>
+                  <button
+                    onClick={() => handleCopy('npm install -g @francisiv/orbitkit', 'quick_npm')}
+                    className="flex items-center px-2.5 py-1 rounded-lg bg-godot-card border border-godot-border text-xs text-slate-300 hover:text-white transition"
+                  >
+                    {copiedId === 'quick_npm' ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 mr-1 text-emerald-400" /> Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5 mr-1" /> Copy
+                      </>
+                    )}
+                  </button>
+                </div>
+                <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-godot-300 border border-godot-border/60">
+                  npm install -g @francisiv/orbitkit
+                </code>
+                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400 pt-1">
+                  <span>💡 Or run on-demand with zero install:</span>
+                  <code className="text-slate-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
+                    npx @francisiv/orbitkit doctor
+                  </code>
+                </div>
               </div>
 
               <div className="space-y-4">
                 {[
                   {
-                    cmd: 'devdock scan [directory]',
+                    cmd: 'orbitkit scan [directory]',
                     desc: 'Recursively locates all Godot projects (containing project.godot) on your system. Reports installed addons, AI skills, and MCP configuration status.'
                   },
                   {
-                    cmd: 'devdock update [--all]',
+                    cmd: 'orbitkit update [--all]',
                     desc: 'Checks installed skills and addons against latest catalog versions. Run with "--all" to batch update every Godot project on your PC.'
                   },
                   {
-                    cmd: 'devdock init',
-                    desc: 'Initializes DevDock inside a new or existing Godot project. Creates .devdock/, installs gdscript-architect skill, and configures godot-lsp MCP.'
+                    cmd: 'orbitkit init',
+                    desc: 'Initializes DevDock inside a new or existing Godot project. Creates .devdock/, installs godot4-syntax-guardian skill, and configures godot-lsp MCP.'
                   },
                   {
-                    cmd: 'devdock skill list',
+                    cmd: 'orbitkit skill list',
                     desc: 'Displays the catalog of verified AI Skills tailored specifically for Godot 4.'
                   },
                   {
-                    cmd: 'devdock skill install <skill-id>',
+                    cmd: 'orbitkit skill install <skill-id>',
                     desc: 'Installs or updates an AI Skill directly into .agents/skills/ and .claude/skills/ in your project.'
                   },
                   {
-                    cmd: 'devdock mcp add <server-id>',
-                    desc: 'Configures a Model Context Protocol server (e.g. godot-lsp or godot-docs) in the project (.mcp.json).'
+                    cmd: 'orbitkit mcp list',
+                    desc: 'Lists available Model Context Protocol servers (godot-engine-bridge, godot-lsp, godot-docs, godot-scene-inspector, godot-gut-runner, ctx7).'
                   },
                   {
-                    cmd: 'devdock doctor',
+                    cmd: 'orbitkit mcp add <server-id>',
+                    desc: 'Configures a Model Context Protocol server (e.g. ctx7 or godot-lsp) in the project (.mcp.json).'
+                  },
+                  {
+                    cmd: 'orbitkit doctor',
                     desc: 'Runs full diagnostic self-checks: verifies Godot 4 binary in PATH, tests GDScript LSP port 6005, and validates current project context.'
                   }
                 ].map((item, idx) => (
