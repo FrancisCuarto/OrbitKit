@@ -15,8 +15,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@devdock/manifest-schema": "workspace:*",
-    "@devdock/shared-types": "workspace:*",
     "adm-zip": "^0.5.16",
     "commander": "^13.1.0",
     "ora": "^8.2.0",
