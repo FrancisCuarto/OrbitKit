@@ -306,7 +306,7 @@ export function App() {
               step: '01',
               title: t.how.step1Title,
               desc: t.how.step1Desc,
-              tag: 'npm i -g @devdock/cli'
+              tag: 'npm i -g @francisiv/orbitkit'
             },
             {
               step: '02',

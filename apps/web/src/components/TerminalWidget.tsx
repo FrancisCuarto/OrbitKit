@@ -22,11 +22,11 @@ export function TerminalWidget({ lang }: Props) {
     {
       id: 'install',
       labelKey: 'tabInstall',
-      command: 'npm install -g @devdock/cli',
+      command: 'npm install -g @francisiv/orbitkit',
       output: [
-        '+ @devdock/cli@0.1.0',
+        '+ @francisiv/orbitkit@0.1.0',
         'added 6 packages in 1.4s',
-        '✓ devdock command registered globally in PATH'
+        '✓ orbitkit and devdock commands registered globally in PATH'
       ]
     },
     {
