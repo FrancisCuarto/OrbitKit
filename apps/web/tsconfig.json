@@ -16,8 +16,8 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@devdock/shared-types": ["../../packages/shared-types/src/index.ts"]
+      "@devdock/shared-types": ["./src/types/index.ts"]
     }
   },
-  "include": ["src", "../../packages/shared-types/src"]
+  "include": ["src"]
 }
