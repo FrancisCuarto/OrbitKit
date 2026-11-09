@@ -10,17 +10,50 @@ DevDock is an open-source tool and ecosystem designed to centralize discovery, i
 
 ```text
 devdock/
+├── packages/
+│   ├── cli/               # Global DevDock CLI (scanner, skills updater, MCP manager)
+│   ├── manifest-schema/   # Zod manifest schema & cryptographic verification
+│   └── shared-types/      # Shared TypeScript types & API contracts
 ├── apps/
 │   ├── web/               # Web catalog (React + Vite + TypeScript + Tailwind)
 │   └── api/               # Central REST API (Express + MongoDB + Argon2id)
 ├── godot-plugin/
 │   └── addons/devdock/    # Godot 4.x Editor Plugin (GDScript)
-├── packages/
-│   ├── manifest-schema/   # Zod manifest schema & cryptographic verification
-│   └── shared-types/      # Shared TypeScript types & API contracts
 ├── docs/                  # Architecture, security, API and contribution guides
 ├── .env.example           # Environment template
 └── package.json           # Root pnpm workspaces configuration
+```
+
+---
+
+## DevDock CLI Usage
+
+The DevDock CLI automatically manages your Godot projects, keeps AI agent skills updated, and connects MCP servers.
+
+### Global Commands:
+```bash
+# 1. Scan your PC or folder for all Godot projects and inspect installed assets
+devdock scan .
+
+# 2. Update AI skills, MCPs, and Addons to the latest versions
+devdock update              # Current project
+devdock update --all        # Batch update all projects found in directory tree
+
+# 3. Explore & Install Curated AI Skills (for Antigravity, Claude Code, Cursor)
+devdock skill list
+devdock skill install gdscript-architect
+devdock skill install godot-shader-expert
+
+# 4. Manage Model Context Protocol (MCP) Servers
+devdock mcp list
+devdock mcp add godot-lsp
+devdock mcp add godot-docs
+
+# 5. Environment & Godot Engine Health Diagnostics
+devdock doctor
+
+# 6. Initialize DevDock in a Godot project
+devdock init
 ```
 
 ---
