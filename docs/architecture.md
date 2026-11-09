@@ -1,46 +1,55 @@
-# DevDock Architecture & System Overview
+# OrbitKit System Architecture
 
-## 1. High-Level Architecture
-
-DevDock is organized as a modular monorepo containing:
-- **`apps/web`**: Public discovery catalog, documentation, and web portal built with React, Vite, TypeScript, and Tailwind CSS.
-- **`apps/api`**: Centralized metadata REST API built with Node.js, Express, TypeScript, and MongoDB.
-- **`godot-plugin/addons/devdock`**: Native Godot 4.x Editor Plugin in GDScript.
-- **`packages/manifest-schema`**: Strict Zod-based manifest validation and cryptographic verification engine.
-- **`packages/shared-types`**: Single source of truth for TypeScript interfaces, enums, and API contracts.
+OrbitKit is an end-to-end tooling and catalog ecosystem tailored for Godot 4 game developers and AI coding agents.
 
 ```
-                    DEVDOCK ECOSYSTEM
-                    
-                 ┌───────────────────────┐
-                 │      DEVDOCK WEB      │
-                 │   (React + Vite + TS) │
-                 └───────────┬───────────┘
-                             │
-                             ▼
-                 ┌───────────────────────┐
-                 │      REST API         │
-                 │  (Express + Security) │
-                 └───────────┬───────────┘
-                             │
-            ┌────────────────┴────────────────┐
-            ▼                                 ▼
-   ┌─────────────────┐               ┌─────────────────┐
-   │ MongoDB Storage │               │    Artifacts    │
-   │  (Metadata DB)  │               │ (Release Hosts) │
-   └─────────────────┘               └─────────────────┘
-                                              ▲
-                                              │
-                                     ┌────────┴────────┐
-                                     │                 │
-                             ┌───────┴──────┐   ┌──────┴──────┐
-                             │ Godot Plugin │   │ Other Tools │
-                             │   (Editor)   │   │  (Blender)  │
-                             └──────────────┘   └─────────────┘
+       ┌────────────────────────────────────────────────────────┐
+       │                NPM / Public Registry                   │
+       │              @francisiv/orbitkit (CLI)                 │
+       └──────────────────────────┬─────────────────────────────┘
+                                  │
+                  ┌───────────────┴───────────────┐
+                  ▼                               ▼
+       ┌───────────────────────┐       ┌───────────────────────┐
+       │   Developer Machine   │       │   Web Documentation   │
+       │   `orbitkit / devdock`│       │   (Vite + React)      │
+       └──────────┬────────────┘       └───────────────────────┘
+                  │
+        ┌─────────┴─────────┐
+        ▼                   ▼
+┌───────────────┐   ┌────────────────────────────────┐
+│ Godot Editor  │   │ AI Coding Assistant            │
+│  LSP (6005)   │◄──┤ (Antigravity, Claude, Cursor)  │
+│  Plugin UI    │   │  - Curated AI Skills           │
+│  Scene Trees  │   │  - Godot MCP Servers           │
+└───────────────┘   │  - Context7 (ctx7) Live Docs   │
+                    └────────────────────────────────┘
 ```
 
-## 2. Core Separation of Responsibilities
+---
 
-1. **Central API**: Manages manifests, version indexes, metadata, and compatibility matrices. Does **never** store user projects or private development code.
-2. **Local Processing**: Installation, ZIP extraction, file placements, and diagnostic health checks run purely on the user's local workstation under their supervision.
-3. **No Silent Operations**: Every download and installation requires explicit confirmation, displays checksum verification, and logs records locally into `res://.devdock/installed.json`.
+## Workspace Layout
+
+| Path | Name | Description |
+|---|---|---|
+| `packages/cli` | `@francisiv/orbitkit` | Standalone CLI tool. Scans Godot projects, manages AI skills and MCP servers. |
+| `packages/manifest-schema` | `@devdock/manifest-schema` | Zod schema validator, SHA-256 checksum verifier, Zip Slip attack defender. |
+| `packages/shared-types` | `@devdock/shared-types` | TypeScript interfaces for resources, manifests, versions, and API contracts. |
+| `apps/web` | `@devdock/web` | Documentation portal, Engram-inspired aesthetics with Godot palette. |
+| `apps/api` | `@devdock/api` | Central registry REST API with Argon2id auth and rate limiting. |
+| `godot-plugin/addons/devdock` | `devdock` Godot Addon | Native Godot 4 editor plugin for package management inside the engine. |
+
+---
+
+## Git Branching Strategy
+
+To maintain high release stability and prevent accidental deployments to production:
+
+```
+feature/*  ───►  develop  ───►  stage  ───►  main (Production)
+```
+
+1. **`main`**: Production-ready branch. Deploys to live Vercel web portal and mirrors the active NPM releases.
+2. **`stage`**: Pre-production staging environment for integration verification and release candidates.
+3. **`develop`**: Primary integration branch for active development.
+4. **`feature/<name>`**: Feature branches branched off from `develop`. PRs merge back into `develop`.
