@@ -367,6 +367,11 @@ export function DocsSection({ lang }: Props) {
                     desc: 'Anti-hallucination skill enforcing strict Godot 4.3+ rules: TileMapLayer, FileAccess/DirAccess, Callables signals, CharacterBody move_and_slide.'
                   },
                   {
+                    id: 'godot-blender-pipeline',
+                    name: 'Blender 3D to Godot 4 Asset Pipeline (v1.1.0)',
+                    desc: 'Automates .blend and glTF 2.0 import suffixes (-col, -convcol, -loop), Skeleton3D BoneMap retargeting, and PBR materials.'
+                  },
+                  {
                     id: 'gdscript-fsm-master',
                     name: 'GDScript Finite State Machine (v1.2.0)',
                     desc: 'Decoupled, modular state machine pattern using dedicated Node/State classes for combat, movement, and enemy AI.'
