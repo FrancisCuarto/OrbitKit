@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsx watch src/server.ts",
+    "seed": "tsx src/seeds/seed.ts",
     "start": "node dist/server.js",
     "test": "vitest run"
   },

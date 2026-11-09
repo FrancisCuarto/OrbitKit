@@ -32,7 +32,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_colors/font_color = Color(0.4, 0.8, 0.4, 1)
-text = "API Offline"
+text = "API Connecting..."
 
 [node name="TabContainer" type="TabContainer" parent="VBox"]
 layout_mode = 2
@@ -69,21 +69,31 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Installed" type="VBoxContainer" parent="VBox/TabContainer/Explore"]
+[node name="Installed" type="VBoxContainer" parent="VBox/TabContainer"]
 visible = false
 layout_mode = 2
 
-[node name="InstalledList" type="VBoxContainer" parent="VBox/TabContainer/Explore/Installed"]
+[node name="InstalledScroll" type="ScrollContainer" parent="VBox/TabContainer/Installed"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="InstalledList" type="VBoxContainer" parent="VBox/TabContainer/Installed/InstalledScroll"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Updates" type="VBoxContainer" parent="VBox/TabContainer"]
 visible = false
 layout_mode = 2
 
-[node name="UpdatesLabel" type="Label" parent="VBox/TabContainer/Updates"]
+[node name="UpdatesList" type="VBoxContainer" parent="VBox/TabContainer/Updates"]
+unique_name_in_owner = true
 layout_mode = 2
-text = "All resources are up to date."
+
+[node name="UpdatesLabel" type="Label" parent="VBox/TabContainer/Updates/UpdatesList"]
+layout_mode = 2
+text = "All installed resources are up to date."
 
 [node name="Diagnostics" type="VBoxContainer" parent="VBox/TabContainer"]
 visible = false
@@ -91,7 +101,7 @@ layout_mode = 2
 
 [node name="DiagLabel" type="Label" parent="VBox/TabContainer/Diagnostics"]
 layout_mode = 2
-text = "DevDock Health & Diagnostic Manager"
+text = "DevDock Health & Diagnostic Manager (Self-check active)"
 
 [node name="Settings" type="VBoxContainer" parent="VBox/TabContainer"]
 visible = false
@@ -105,5 +115,27 @@ text = "DevDock Central API Endpoint:"
 layout_mode = 2
 text = "http://localhost:4000"
 
+[node name="FooterBar" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="VBox/FooterBar"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StatusBarLabel" type="Label" parent="VBox/FooterBar"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+text = "Ready."
+
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 unique_name_in_owner = true
+
+[node name="DownloadHTTP" type="HTTPRequest" parent="."]
+unique_name_in_owner = true
+
+[node name="ConfirmDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "Confirm Installation"
