@@ -1,0 +1,21 @@
+{
+  "name": "@devdock/manifest-schema",
+  "version": "0.1.0",
+  "description": "Validation schema and parser for DevDock resource manifests",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@devdock/shared-types": "workspace:*",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
+  }
+}

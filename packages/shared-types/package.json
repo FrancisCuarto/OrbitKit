@@ -1,0 +1,14 @@
+{
+  "name": "@devdock/shared-types",
+  "version": "0.1.0",
+  "description": "Shared TypeScript definitions and interfaces for DevDock",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

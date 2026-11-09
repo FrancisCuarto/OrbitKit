@@ -1,0 +1,109 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5q0m7vy40x2x"]
+
+[ext_resource type="Script" path="res://addons/devdock/ui/main_panel.gd" id="1_4w852"]
+
+[node name="DevDockPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4w852")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HeaderBar" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="VBox/HeaderBar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "DevDock"
+
+[node name="ApiStatusLabel" type="Label" parent="VBox/HeaderBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_colors/font_color = Color(0.4, 0.8, 0.4, 1)
+text = "API Offline"
+
+[node name="TabContainer" type="TabContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="Explore" type="VBoxContainer" parent="VBox/TabContainer"]
+layout_mode = 2
+
+[node name="FilterBar" type="HBoxContainer" parent="VBox/TabContainer/Explore"]
+layout_mode = 2
+
+[node name="SearchInput" type="LineEdit" parent="VBox/TabContainer/Explore/FilterBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search addons, skills, shaders..."
+
+[node name="FilterOption" type="OptionButton" parent="VBox/TabContainer/Explore/FilterBar"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SearchButton" type="Button" parent="VBox/TabContainer/Explore/FilterBar"]
+layout_mode = 2
+text = "Search"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBox/TabContainer/Explore"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ResourceList" type="VBoxContainer" parent="VBox/TabContainer/Explore/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Installed" type="VBoxContainer" parent="VBox/TabContainer/Explore"]
+visible = false
+layout_mode = 2
+
+[node name="InstalledList" type="VBoxContainer" parent="VBox/TabContainer/Explore/Installed"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Updates" type="VBoxContainer" parent="VBox/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="UpdatesLabel" type="Label" parent="VBox/TabContainer/Updates"]
+layout_mode = 2
+text = "All resources are up to date."
+
+[node name="Diagnostics" type="VBoxContainer" parent="VBox/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="DiagLabel" type="Label" parent="VBox/TabContainer/Diagnostics"]
+layout_mode = 2
+text = "DevDock Health & Diagnostic Manager"
+
+[node name="Settings" type="VBoxContainer" parent="VBox/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="ApiUrlLabel" type="Label" parent="VBox/TabContainer/Settings"]
+layout_mode = 2
+text = "DevDock Central API Endpoint:"
+
+[node name="ApiUrlInput" type="LineEdit" parent="VBox/TabContainer/Settings"]
+layout_mode = 2
+text = "http://localhost:4000"
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+unique_name_in_owner = true
