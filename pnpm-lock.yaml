@@ -248,9 +248,6 @@ importers:
 
   apps/web:
     dependencies:
-      '@devdock/shared-types':
-        specifier: workspace:*
-        version: link:../../packages/shared-types
       lucide-react:
         specifier: ^0.475.0
         version: 0.475.0(react@19.3.1)

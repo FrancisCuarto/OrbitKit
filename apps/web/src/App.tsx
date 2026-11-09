@@ -14,7 +14,7 @@ import {
   WifiOff,
   RefreshCw
 } from 'lucide-react';
-import { ResourceSummary, ResourceDetail, CategorySummary } from '@devdock/shared-types';
+import { ResourceSummary, ResourceDetail, CategorySummary } from './types';
 import { fetchResources, fetchResourceDetail, fetchCategories } from './services/api';
 import { getLocalFavorites } from './services/favorites';
 import { ResourceCard } from './components/ResourceCard';

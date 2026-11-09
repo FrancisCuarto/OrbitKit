@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Download, Heart, Eye, Cpu, Bot, Sparkles, Code } from 'lucide-react';
-import { ResourceSummary } from '@devdock/shared-types';
+import { ResourceSummary } from '../types';
 import { isLocalFavorite, toggleLocalFavorite } from '../services/favorites';
 
 interface Props {

@@ -1,4 +1,4 @@
-import { CategorySummary } from '@devdock/shared-types';
+import { CategorySummary } from '../types';
 import { Cpu, Bot, Sparkles, Code, ArrowRight } from 'lucide-react';
 
 interface Props {

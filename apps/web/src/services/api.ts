@@ -4,7 +4,7 @@ import {
   CategorySummary,
   PaginatedResponse,
   ApiResponse
-} from '@devdock/shared-types';
+} from '../types';
 
 const API_BASE_URL = '/api';
 

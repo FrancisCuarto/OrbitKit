@@ -13,7 +13,7 @@ import {
   Layers,
   Heart
 } from 'lucide-react';
-import { ResourceDetail } from '@devdock/shared-types';
+import { ResourceDetail } from '../types';
 import { isLocalFavorite, toggleLocalFavorite } from '../services/favorites';
 
 interface Props {
