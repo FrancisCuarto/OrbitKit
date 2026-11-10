@@ -32,7 +32,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "vitest run"
+    "test": "vitest run",
+    "postinstall": "node bin/postinstall.js"
   },
   "dependencies": {
     "adm-zip": "^0.5.16",

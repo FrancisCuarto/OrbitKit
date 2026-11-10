@@ -53,6 +53,7 @@ orbitkit update --all
 
 | Command | Description |
 |---|---|
+| `orbitkit ui` *(alias `gui`)* | Launches the interactive OrbitKit GUI web dashboard in your browser. |
 | `orbitkit doctor` | Diagnoses Godot 4 binary, LSP port 6005, and project context. |
 | `orbitkit scan [dir]` | Recursively scans for Godot projects and inspects installed addons and skills. |
 | `orbitkit init` | Initializes OrbitKit in current game project and installs default skills/MCPs. |
