@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0d141b"/>
+      <stop offset="50%" stop-color="#15202b"/>
+      <stop offset="100%" stop-color="#0d141b"/>
+    </linearGradient>
+    <linearGradient id="titleGrad" x1="0" y1="0" x2="800" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#91c4e5"/>
+      <stop offset="50%" stop-color="#478cbf"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="980" cy="315" r="230" stroke="#478cbf" stroke-opacity="0.25" stroke-width="2" stroke-dasharray="8 8"/>
+  <circle cx="980" cy="315" r="160" stroke="#38bdf8" stroke-opacity="0.35" stroke-width="2"/>
+  <circle cx="980" cy="315" r="90" fill="#478cbf" fill-opacity="0.2" stroke="#478cbf" stroke-width="3"/>
+  <text x="90" y="140" fill="#69a7d0" font-family="monospace" font-size="22" font-weight="bold">GODOT 4.x • BLENDER 3D • CONTEXT7 (ctx7) • MCP &amp; AI SKILLS</text>
+  <text x="90" y="250" fill="#ffffff" font-family="sans-serif" font-size="82" font-weight="900">OrbitKit (DevDock)</text>
+  <text x="90" y="330" fill="url(#titleGrad)" font-family="sans-serif" font-size="44" font-weight="800">AI Skills, MCP Servers &amp; CLI for Godot 4</text>
+  <text x="90" y="405" fill="#94a3b8" font-family="sans-serif" font-size="26">Keep all your Godot projects synchronized with GDScript LSP, Context7,</text>
+  <text x="90" y="445" fill="#94a3b8" font-family="sans-serif" font-size="26">Blender 3D pipelines, GDShader VFX, and anti-hallucination AI skills.</text>
+  <rect x="90" y="495" width="640" height="72" rx="16" fill="#090f14" stroke="#233547" stroke-width="2"/>
+  <text x="120" y="540" fill="#38bdf8" font-family="monospace" font-size="28" font-weight="bold">$ npm install -g @francisiv/orbitkit</text>
+</svg>

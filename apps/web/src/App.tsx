@@ -19,13 +19,22 @@ import { Orbit3DScene } from './components/Orbit3DScene';
 import { AnimatedBackground } from './components/AnimatedBackground';
 import { EcosystemCarousel } from './components/EcosystemCarousel';
 import { Tilt3DCard } from './components/Tilt3DCard';
+import { SeoHead } from './components/SeoHead';
 
 export function App() {
-  const [lang, setLang] = useState<Language>('es');
+  const [lang, setLang] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('lang') === 'en') return 'en';
+    }
+    return 'es';
+  });
   const t = TRANSLATIONS[lang];
 
   return (
     <div className="relative min-h-screen flex flex-col bg-godot-950 text-slate-100 font-sans selection:bg-godot-500 selection:text-white isolate">
+      {/* Dynamic SEO & OpenGraph Synchronizer */}
+      <SeoHead lang={lang} />
       {/* Full-Page Animated Interactive Background */}
       <AnimatedBackground />
       {/* 1. Header / Navbar */}
@@ -48,7 +57,7 @@ export function App() {
                   OrbitKit
                 </span>
                 <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-godot-500/20 text-godot-300 border border-godot-500/30">
-                  CLI v0.1.0
+                  CLI v0.2.0
                 </span>
               </div>
             </div>

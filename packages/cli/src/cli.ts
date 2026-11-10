@@ -16,7 +16,7 @@ export function createCli(): Command {
   program
     .name('orbitkit')
     .description('OrbitKit CLI — Automated AI Skills, MCP Servers and Addon Manager for Godot Projects')
-    .version('0.1.0')
+    .version('0.2.0')
     .action(async () => {
       if (process.stdout.isTTY) {
         await startInteractiveTui();

@@ -166,7 +166,7 @@ export async function startInteractiveTui(): Promise<void> {
     }
 
     lines.push(`  ${C.border}│${' '.repeat(innerWidth)}│${RESET}`);
-    const tagline = `  ${C.subtitle}> orbitkit 0.1.0 – Godot 4 AI Skills & MCP Ecosystem${RESET}`;
+    const tagline = `  ${C.subtitle}> orbitkit 0.2.0 – Godot 4 AI Skills & MCP Ecosystem${RESET}`;
     lines.push(`  ${C.border}│${RESET}${padVisible(tagline, innerWidth)}${C.border}│${RESET}`);
     lines.push(`  ${C.border}└${'─'.repeat(innerWidth)}┘${RESET}`);
 
