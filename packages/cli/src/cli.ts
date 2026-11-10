@@ -54,17 +54,18 @@ export function createCli(): Command {
         }`
       );
 
-      if (options.check) {
+      if (options.check || !check.updateAvailable) {
         if (check.updateAvailable) {
           console.log(pc.yellow(`\nRun ${pc.bold('orbitkit upgrade')} to install v${check.latestVersion}.\n`));
         } else {
-          console.log(pc.green('\nYou are already using the latest version.\n'));
+          await performCliSelfUpdate({ force: false });
+          console.log(pc.green(`\n✓ Ya tienes la última versión instalada (v${check.currentVersion}).\n`));
         }
         return;
       }
 
-      const updateSpinner = ora(`Installing @francisiv/orbitkit@${check.latestVersion} globally...`).start();
-      const res = await performCliSelfUpdate(check.latestVersion);
+      const updateSpinner = ora(`Actualizando OrbitKit CLI (v${check.currentVersion} → v${check.latestVersion})...`).start();
+      const res = await performCliSelfUpdate({ force: true });
       if (res.success) {
         updateSpinner.succeed(pc.green(res.message));
         console.log(pc.gray('  ✓ Global binary verified in PATH.\n'));
@@ -153,7 +154,7 @@ export function createCli(): Command {
             ? `New OrbitKit CLI found (v${verCheck.currentVersion} → v${verCheck.latestVersion}). Updating CLI...`
             : `Verifying OrbitKit CLI v${verCheck.currentVersion}...`
         ).start();
-        const selfRes = await performCliSelfUpdate(verCheck.latestVersion);
+        const selfRes = await performCliSelfUpdate({ force: verCheck.updateAvailable });
         if (selfRes.success) {
           cliSpin.succeed(pc.green(selfRes.message));
         } else {

@@ -44,6 +44,8 @@ export async function startInteractiveTui(): Promise<void> {
   let versionStatus: VersionCheckResult = {
     currentVersion,
     latestVersion: currentVersion,
+    npmVersion: null,
+    githubVersion: null,
     latestSource: 'local',
     updateAvailable: false
   };
@@ -78,31 +80,30 @@ export async function startInteractiveTui(): Promise<void> {
   }
 
   async function runSelfUpgrade() {
-    setNotice('Checking latest OrbitKit version on NPM & GitHub...', 'info');
+    setNotice('Comprobando última versión de OrbitKit en NPM y GitHub...', 'info');
     render();
     const check = await checkCliVersion();
     versionStatus = check;
 
     if (!check.updateAvailable) {
-      setNotice(
-        `Already on the latest version (v${check.currentVersion}). Re-verifying global binary...`,
-        'ok'
-      );
+      await performCliSelfUpdate({ force: false });
+      setNotice(`✓ Ya tienes la última versión instalada (v${check.currentVersion}).`, 'ok');
       render();
-    } else {
-      setNotice(`Updating CLI: v${check.currentVersion} → v${check.latestVersion}...`, 'warn');
-      render();
+      return;
     }
 
-    const res = await performCliSelfUpdate(check.latestVersion);
+    setNotice(`Actualizando CLI: v${check.currentVersion} → v${check.latestVersion}...`, 'warn');
+    render();
+
+    const res = await performCliSelfUpdate({ force: true });
     if (res.success) {
       versionStatus = {
+        ...versionStatus,
         currentVersion: res.installedVersion,
         latestVersion: res.installedVersion,
-        latestSource: 'npm',
         updateAvailable: false
       };
-      setNotice(`✓ ${res.message} (restart orbitkit to use new binary)`, 'ok');
+      setNotice(`✓ ${res.message}`, 'ok');
     } else {
       setNotice(`✗ ${res.message}`, 'err');
     }

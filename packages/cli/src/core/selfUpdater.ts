@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -9,6 +10,8 @@ const execAsync = promisify(exec);
 export interface VersionCheckResult {
   currentVersion: string;
   latestVersion: string;
+  npmVersion: string | null;
+  githubVersion: string | null;
   latestSource: 'npm' | 'github' | 'local';
   updateAvailable: boolean;
 }
@@ -35,7 +38,7 @@ export function compareSemver(a: string, b: string): number {
   return 0;
 }
 
-async function fetchJsonWithTimeout(url: string, timeoutMs = 2500): Promise<any | null> {
+async function fetchJsonWithTimeout(url: string, timeoutMs = 3000): Promise<any | null> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -58,7 +61,6 @@ async function fetchJsonWithTimeout(url: string, timeoutMs = 2500): Promise<any 
 export async function checkCliVersion(): Promise<VersionCheckResult> {
   const currentVersion = await getCurrentCliVersion();
 
-  // Check both NPM registry and GitHub main branch in parallel
   const [npmData, githubData] = await Promise.all([
     fetchJsonWithTimeout(`https://registry.npmjs.org/@francisiv/orbitkit/latest?t=${Date.now()}`),
     fetchJsonWithTimeout(
@@ -76,8 +78,8 @@ export async function checkCliVersion(): Promise<VersionCheckResult> {
     latestVersion = npmVersion;
     latestSource = 'npm';
   }
+
   if (githubVersion && compareSemver(githubVersion, latestVersion) > 0) {
-    // Prefer npm if npm already has this version, otherwise note github
     if (npmVersion && compareSemver(npmVersion, githubVersion) >= 0) {
       latestVersion = npmVersion;
       latestSource = 'npm';
@@ -92,77 +94,124 @@ export async function checkCliVersion(): Promise<VersionCheckResult> {
   return {
     currentVersion,
     latestVersion,
+    npmVersion,
+    githubVersion,
     latestSource,
     updateAvailable: compareSemver(latestVersion, currentVersion) > 0
   };
 }
 
-export async function performCliSelfUpdate(targetVersion?: string): Promise<{
+async function syncLocalBinSymlinks(): Promise<void> {
+  try {
+    const { stdout: npmBinOut } = await execAsync('npm prefix -g');
+    const globalPrefix = npmBinOut.trim();
+    const globalTarget = path.join(
+      globalPrefix,
+      'lib',
+      'node_modules',
+      '@francisiv',
+      'orbitkit',
+      'bin',
+      'devdock.js'
+    );
+    await fs.access(globalTarget);
+
+    for (const binName of ['orbitkit', 'devdock']) {
+      const localBin = path.join(process.env.HOME || '', '.local', 'bin', binName);
+      try {
+        const stat = await fs.lstat(localBin);
+        if (stat.isSymbolicLink()) {
+          await fs.unlink(localBin);
+          await fs.symlink(globalTarget, localBin);
+        }
+      } catch {
+        // Ignore if ~/.local/bin/<binName> doesn't exist
+      }
+    }
+  } catch {
+    // Non-POSIX or standard PATH setup
+  }
+}
+
+async function installFromGithubMain(): Promise<void> {
+  const tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'orbitkit-upgrade-'));
+  try {
+    await execAsync(
+      `git clone --depth 1 --branch main https://github.com/FrancisCuarto/OrbitKit.git "${tmpRoot}/repo"`
+    );
+    const cliDir = path.join(tmpRoot, 'repo', 'packages', 'cli');
+    await execAsync('npm install --include=dev && npm run build && npm install -g .', {
+      cwd: cliDir
+    });
+    await syncLocalBinSymlinks();
+  } finally {
+    await fs.rm(tmpRoot, { recursive: true, force: true }).catch(() => {});
+  }
+}
+
+export async function performCliSelfUpdate(options?: {
+  force?: boolean;
+}): Promise<{
   success: boolean;
+  alreadyUpToDate: boolean;
   previousVersion: string;
   installedVersion: string;
   message: string;
 }> {
   const check = await checkCliVersion();
   const previousVersion = check.currentVersion;
-  const versionToInstall = targetVersion || check.latestVersion || 'latest';
+
+  // If already on the latest version and not forced, do NOT invoke npm install
+  if (!check.updateAvailable && !options?.force) {
+    await syncLocalBinSymlinks();
+    return {
+      success: true,
+      alreadyUpToDate: true,
+      previousVersion,
+      installedVersion: previousVersion,
+      message: `Ya tienes la última versión instalada (v${previousVersion}).`
+    };
+  }
+
+  const targetVersion = check.latestVersion;
+  const availableOnNpm =
+    check.npmVersion !== null && compareSemver(check.npmVersion, targetVersion) >= 0;
 
   try {
-    // Force install exact version from NPM registry bypassing stale local cache
-    await execAsync(`npm install -g @francisiv/orbitkit@${versionToInstall} --force`);
-
-    // Verify if ~/.local/bin/orbitkit symlink exists and points to an old location
-    try {
-      const { stdout: npmBinOut } = await execAsync('npm prefix -g');
-      const globalPrefix = npmBinOut.trim();
-      const globalTarget = path.join(
-        globalPrefix,
-        'lib',
-        'node_modules',
-        '@francisiv',
-        'orbitkit',
-        'bin',
-        'devdock.js'
-      );
-      const localBinOrbitkit = path.join(process.env.HOME || '', '.local', 'bin', 'orbitkit');
-      const localBinDevdock = path.join(process.env.HOME || '', '.local', 'bin', 'devdock');
-
-      // If ~/.local/bin/orbitkit exists and globalTarget exists, point symlink to globalTarget
-      await fs.access(globalTarget);
-      try {
-        const stat = await fs.lstat(localBinOrbitkit);
-        if (stat.isSymbolicLink()) {
-          await fs.unlink(localBinOrbitkit);
-          await fs.symlink(globalTarget, localBinOrbitkit);
-        }
-      } catch {
-        // Ignore if ~/.local/bin/orbitkit does not exist
-      }
-      try {
-        const stat = await fs.lstat(localBinDevdock);
-        if (stat.isSymbolicLink()) {
-          await fs.unlink(localBinDevdock);
-          await fs.symlink(globalTarget, localBinDevdock);
-        }
-      } catch {
-        // Ignore if ~/.local/bin/devdock does not exist
-      }
-    } catch {
-      // Non-POSIX or Windows environment, npm global bin handles PATH directly
+    if (availableOnNpm) {
+      await execAsync(`npm install -g @francisiv/orbitkit@${targetVersion} --prefer-online`);
+      await syncLocalBinSymlinks();
+    } else {
+      // Latest version is on GitHub main (not yet propagated to NPM registry)
+      await installFromGithubMain();
     }
 
     return {
       success: true,
+      alreadyUpToDate: false,
       previousVersion,
-      installedVersion: versionToInstall,
-      message: `Updated @francisiv/orbitkit from v${previousVersion} to v${versionToInstall}`
+      installedVersion: targetVersion,
+      message: `OrbitKit actualizado correctamente: v${previousVersion} → v${targetVersion}`
     };
   } catch (err: any) {
-    return {
-      success: false,
-      previousVersion,
-      installedVersion: previousVersion,
-      message: `Failed to self-update via npm: ${err.message || String(err)}`
-    };
+    // If NPM failed with ETARGET or cache issue, fallback to GitHub main
+    try {
+      await installFromGithubMain();
+      return {
+        success: true,
+        alreadyUpToDate: false,
+        previousVersion,
+        installedVersion: targetVersion,
+        message: `OrbitKit actualizado desde GitHub (main): v${previousVersion} → v${targetVersion}`
+      };
+    } catch (fallbackErr: any) {
+      return {
+        success: false,
+        alreadyUpToDate: false,
+        previousVersion,
+        installedVersion: previousVersion,
+        message: `No se pudo actualizar: ${fallbackErr.message || err.message}`
+      };
+    }
   }
 }
