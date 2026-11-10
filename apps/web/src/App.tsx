@@ -409,7 +409,7 @@ export function App() {
                   </p>
                   <p className="text-purple-300 flex items-center">
                     <Bot className="w-3.5 h-3.5 mr-2 shrink-0" />
-                    Agent Context: 10 curated skills loaded in .agents/skills
+                    Agent Context: 20 curated skills loaded in .agents/skills
                   </p>
                   <p className="text-slate-400 pt-2 border-t border-godot-border/60">
                     $ orbitkit doctor: System ready, 0 blockers detected

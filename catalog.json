@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-10T15:36:19Z",
+  "generatedAt": "2026-11-10T23:29:01Z",
   "cli": {
     "latest": "0.6.4",
     "minSupported": "0.5.0",
@@ -18,6 +18,96 @@
         "docs",
         "context7",
         "mcp"
+      ],
+      "channel": "stable"
+    },
+    {
+      "id": "game-ai-behavior-trees",
+      "name": "Universal AI Behavior Tree Architecture",
+      "version": "1.0.0",
+      "description": "Design decoupled AI Behavior Trees: Composite nodes (Selector, Sequence, Parallel), Decorators, Leaf tasks, and Blackboard pattern.",
+      "checksum": "sha256:41b4751d0817ecbb5672714f5a55784d6f63daec07b4f7ead2a5718a670efde8",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/game-ai-behavior-trees.zip",
+      "tags": [
+        "ai",
+        "behavior-trees",
+        "architecture",
+        "universal"
+      ],
+      "channel": "stable"
+    },
+    {
+      "id": "game-ai-utility-goap",
+      "name": "GOAP & Utility AI Architecture",
+      "version": "1.0.0",
+      "description": "Goal-Oriented Action Planning (GOAP) and Utility Curves for emergent, organic non-player character decision-making.",
+      "checksum": "sha256:a8987aaf2d8b4079489f37153226d2802f3e57c847453a4fe985ce0f083a6285",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/game-ai-utility-goap.zip",
+      "tags": [
+        "ai",
+        "goap",
+        "utility",
+        "universal"
+      ],
+      "channel": "stable"
+    },
+    {
+      "id": "game-economy-loot-tables",
+      "name": "Loot Tables, Inventory Grids & Game Economy",
+      "version": "1.0.0",
+      "description": "Weighted random drop systems, cumulative probability tables, 2D grid inventory packing (Diablo/Resident Evil style), and XP curves.",
+      "checksum": "sha256:1c12b2576d8d5a8ecaf6ddbb0e762589bd42eb6db51c63fcece33e58e82e7c78",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/game-economy-loot-tables.zip",
+      "tags": [
+        "economy",
+        "loot",
+        "inventory",
+        "universal"
+      ],
+      "channel": "stable"
+    },
+    {
+      "id": "game-feel-kinesthetics",
+      "name": "Game Feel, Juice & Kinesthetics Master",
+      "version": "1.0.0",
+      "description": "Universal kinesthetics rules for game feel: coyote time, input buffering, trauma-decay screen shake, hit stop, squash & stretch.",
+      "checksum": "sha256:1f02b6459c0737457b41004e9f72eb8402e1c01438db64b50107e49e6916af7b",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/game-feel-kinesthetics.zip",
+      "tags": [
+        "gamefeel",
+        "kinesthetics",
+        "gameplay",
+        "universal"
+      ],
+      "channel": "stable"
+    },
+    {
+      "id": "game-programming-patterns",
+      "name": "Game Programming Patterns & Decoupled Architecture",
+      "version": "1.0.0",
+      "description": "Production patterns: Command Pattern (Undo/Replay/Rollback), Object Pooling, Type-Safe Event Bus, and Entity Component System (ECS) principles.",
+      "checksum": "sha256:43caf651ed4bc7ae0aacf8f25204128f2447c724f589f8f7e46284fb0b8932a3",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/game-programming-patterns.zip",
+      "tags": [
+        "architecture",
+        "patterns",
+        "optimization",
+        "universal"
+      ],
+      "channel": "stable"
+    },
+    {
+      "id": "gamedev-math-recipes",
+      "name": "Universal GameDev Math & Vector Recipes",
+      "version": "1.0.0",
+      "description": "Essential 2D/3D game math: Quaternions vs Euler, SLERP, ballistic trajectories, dot-product vision cones, and frame-rate independent dampening.",
+      "checksum": "sha256:60a7b57a716c256196d17c55cf9848e33273732a610a43dea38dd4f5b88797a0",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/gamedev-math-recipes.zip",
+      "tags": [
+        "math",
+        "vectors",
+        "physics",
+        "universal"
       ],
       "channel": "stable"
     },
@@ -153,6 +243,66 @@
         "core"
       ],
       "minGodot": "4.3",
+      "channel": "stable"
+    },
+    {
+      "id": "narrative-dialogue-fsm",
+      "name": "Narrative Dialogue Trees & Quest State Machines",
+      "version": "1.0.0",
+      "description": "Branching dialogue graph schemas, condition/flag evaluators, quest progression state machines, and internationalization (i18n) key systems.",
+      "checksum": "sha256:94e1aba6823f421b032c0ad2d7b45a8749cebeb528e59a32f90c12d8fd11282f",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/narrative-dialogue-fsm.zip",
+      "tags": [
+        "narrative",
+        "dialogue",
+        "quests",
+        "universal"
+      ],
+      "channel": "stable"
+    },
+    {
+      "id": "procgen-dungeon-architect",
+      "name": "Procedural Dungeon & Level Generation Architect",
+      "version": "1.0.0",
+      "description": "Algorithms for procedural map generation: Binary Space Partitioning (BSP), Cellular Automata, Delaunay Triangulation + MST, and Drunkard Walk.",
+      "checksum": "sha256:7e20bc8f1d85e96db433f825d0b7416431eb65367611ca3ff07980e3c3a69628",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/procgen-dungeon-architect.zip",
+      "tags": [
+        "procgen",
+        "dungeon",
+        "algorithms",
+        "universal"
+      ],
+      "channel": "stable"
+    },
+    {
+      "id": "procgen-wfc-solver",
+      "name": "Wave Function Collapse (WFC) Solver",
+      "version": "1.0.0",
+      "description": "Constraint-satisfaction tile and 3D block generation using Wave Function Collapse (tiled model and overlapping model).",
+      "checksum": "sha256:63ef831682c4241781fb3203d7dc1c154a24c94919a2c19533dd5b483bb0ed7e",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/procgen-wfc-solver.zip",
+      "tags": [
+        "procgen",
+        "wfc",
+        "constraint-solving",
+        "universal"
+      ],
+      "channel": "stable"
+    },
+    {
+      "id": "shader-math-artistry",
+      "name": "Universal Shader Math & Procedural VFX",
+      "version": "1.0.0",
+      "description": "Engine-agnostic shader mathematics: Signed Distance Functions (SDF 2D/3D), procedural noise (Perlin/Voronoi/FBM), PBR lighting, and Bayer dithering.",
+      "checksum": "sha256:4adcd0cd0bbb8e1f4646b3729e734d5d4400dec420c2cc3fa315949d96b92f48",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/shader-math-artistry.zip",
+      "tags": [
+        "shaders",
+        "vfx",
+        "math",
+        "universal"
+      ],
       "channel": "stable"
     }
   ]

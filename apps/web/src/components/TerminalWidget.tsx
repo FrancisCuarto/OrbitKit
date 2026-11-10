@@ -42,7 +42,7 @@ export function TerminalWidget({ lang }: Props) {
         '✓ OrbitKit GUI Dashboard is live!',
         '  ➜ Local:   http://localhost:4567',
         '  ➜ Target:  /home/francis/game',
-        '✓ Connected: Godot Plugin active, 10 AI skills ready'
+        '✓ Connected: Godot Plugin active, 20 AI skills ready'
       ]
     },
     {

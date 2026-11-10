@@ -1,0 +1,9 @@
+{
+  "id": "game-economy-loot-tables",
+  "name": "Loot Tables, Inventory Grids & Game Economy",
+  "version": "1.0.0",
+  "description": "Weighted random drop systems, cumulative probability tables, 2D grid inventory packing (Diablo/Resident Evil style), and XP curves.",
+  "tags": ["economy", "loot", "inventory", "universal"],
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

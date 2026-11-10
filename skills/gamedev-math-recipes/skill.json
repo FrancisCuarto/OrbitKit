@@ -1,0 +1,9 @@
+{
+  "id": "gamedev-math-recipes",
+  "name": "Universal GameDev Math & Vector Recipes",
+  "version": "1.0.0",
+  "description": "Essential 2D/3D game math: Quaternions vs Euler, SLERP, ballistic trajectories, dot-product vision cones, and frame-rate independent dampening.",
+  "tags": ["math", "vectors", "physics", "universal"],
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

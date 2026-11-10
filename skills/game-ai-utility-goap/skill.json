@@ -1,0 +1,9 @@
+{
+  "id": "game-ai-utility-goap",
+  "name": "GOAP & Utility AI Architecture",
+  "version": "1.0.0",
+  "description": "Goal-Oriented Action Planning (GOAP) and Utility Curves for emergent, organic non-player character decision-making.",
+  "tags": ["ai", "goap", "utility", "universal"],
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

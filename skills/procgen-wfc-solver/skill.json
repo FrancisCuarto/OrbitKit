@@ -1,0 +1,9 @@
+{
+  "id": "procgen-wfc-solver",
+  "name": "Wave Function Collapse (WFC) Solver",
+  "version": "1.0.0",
+  "description": "Constraint-satisfaction tile and 3D block generation using Wave Function Collapse (tiled model and overlapping model).",
+  "tags": ["procgen", "wfc", "constraint-solving", "universal"],
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

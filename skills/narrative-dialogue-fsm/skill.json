@@ -1,0 +1,9 @@
+{
+  "id": "narrative-dialogue-fsm",
+  "name": "Narrative Dialogue Trees & Quest State Machines",
+  "version": "1.0.0",
+  "description": "Branching dialogue graph schemas, condition/flag evaluators, quest progression state machines, and internationalization (i18n) key systems.",
+  "tags": ["narrative", "dialogue", "quests", "universal"],
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

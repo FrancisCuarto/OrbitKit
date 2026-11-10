@@ -1,0 +1,9 @@
+{
+  "id": "game-ai-behavior-trees",
+  "name": "Universal AI Behavior Tree Architecture",
+  "version": "1.0.0",
+  "description": "Design decoupled AI Behavior Trees: Composite nodes (Selector, Sequence, Parallel), Decorators, Leaf tasks, and Blackboard pattern.",
+  "tags": ["ai", "behavior-trees", "architecture", "universal"],
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

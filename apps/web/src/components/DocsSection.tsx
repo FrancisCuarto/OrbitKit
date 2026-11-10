@@ -403,66 +403,220 @@ export function DocsSection({ lang }: Props) {
         {activeTab === 'skills' && (
           <div className="space-y-8">
             <div className="space-y-1">
-              <h3 className="text-2xl font-bold text-white">Curated AI Skills for Godot 4</h3>
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-900/60">
+                  {lang === 'es' ? '20 Skills Disponibles' : '20 Skills Available'}
+                </span>
+                <span className="text-xs text-slate-400">
+                  {lang === 'es' ? '• Godot 4 + Universales para cualquier motor' : '• Godot 4 + Universal Engine-Agnostic'}
+                </span>
+              </div>
+              <h3 className="text-2xl font-bold text-white">
+                {lang === 'es' ? 'Catálogo de AI Skills Oficiales' : 'Official Curated AI Skills Catalog'}
+              </h3>
               <p className="text-slate-300 text-sm leading-relaxed [text-wrap:pretty]">
-                Skills guide coding agents like Antigravity, Claude Code, and Codex to write idiomatic GDScript 4 code.
+                {lang === 'es'
+                  ? 'Instrucciones y protocolos de arquitectura listos para Antigravity, Claude Code, Cursor y Codex. Se instalan automáticamente en .agents/skills/ y .claude/skills/.'
+                  : 'Architecture protocols and instructions ready for Antigravity, Claude Code, Cursor, and Codex. Auto-installed in .agents/skills/ and .claude/skills/.'}
               </p>
             </div>
 
             <div className="rounded-xl bg-godot-card border border-godot-border overflow-hidden divide-y divide-godot-border/60">
               {[
+                // 1. Universal Skills (Engine-Agnostic)
+                {
+                  id: 'game-feel-kinesthetics',
+                  name: 'Game Feel, Juice & Kinesthetics Master (v1.0.0)',
+                  badge: lang === 'es' ? 'Universal' : 'Universal',
+                  badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-900/60',
+                  desc: lang === 'es'
+                    ? 'Reglas cinemáticas universales: coyote time (80-120ms), input buffering FIFO, sacudida de cámara por trauma al cuadrado, hit stop e interpolación exponencial.'
+                    : 'Universal kinesthetics rules: coyote time (80-120ms), FIFO input buffering, trauma-squared screen shake, freeze frame hit-stop, and exponential dampening.'
+                },
+                {
+                  id: 'gamedev-math-recipes',
+                  name: 'Universal GameDev Math & Vector Recipes (v1.0.0)',
+                  badge: lang === 'es' ? 'Universal' : 'Universal',
+                  badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-900/60',
+                  desc: lang === 'es'
+                    ? 'Matemáticas espaciales 2D/3D: SLERP y cuaterniones sin Gimbal Lock, conos de visión por producto punto, trayectorias balísticas y vectores de reflexión.'
+                    : 'Essential 2D/3D game math: Quaternion SLERP without Gimbal Lock, dot-product vision cones, ballistic trajectory launch velocity, and reflection vectors.'
+                },
+                {
+                  id: 'game-ai-behavior-trees',
+                  name: 'Universal AI Behavior Tree Architecture (v1.0.0)',
+                  badge: lang === 'es' ? 'Universal' : 'Universal',
+                  badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-900/60',
+                  desc: lang === 'es'
+                    ? 'Diseño desacoplado de árboles de comportamiento: nodos Composite (Selector, Sequence, Parallel), Decorators (Inverter, Cooldown) y memoria compartida Blackboard.'
+                    : 'Decoupled Behavior Tree design: Composite nodes (Selector, Sequence, Parallel), Decorators (Inverter, Cooldown), Leaves, and Blackboard memory pattern.'
+                },
+                {
+                  id: 'game-ai-utility-goap',
+                  name: 'GOAP & Utility AI Architecture (v1.0.0)',
+                  badge: lang === 'es' ? 'Universal' : 'Universal',
+                  badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-900/60',
+                  desc: lang === 'es'
+                    ? 'Planificación orientada a objetivos (GOAP con búsqueda hacia atrás A*) y curvas de utilidad matemáticas combinadas por media geométrica para toma de decisiones orgánicas.'
+                    : 'Goal-Oriented Action Planning (GOAP backward A* search) and mathematical utility response curves combined via geometric mean for organic NPC decisions.'
+                },
+                {
+                  id: 'procgen-dungeon-architect',
+                  name: 'Procedural Dungeon & Level Generation (v1.0.0)',
+                  badge: lang === 'es' ? 'Universal' : 'Universal',
+                  badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-900/60',
+                  desc: lang === 'es'
+                    ? 'Algoritmos generativos de mazmorras: Binary Space Partitioning (BSP), autómatas celulares para cuevas, Triangulación de Delaunay + MST con bucles y Drunkard Walk.'
+                    : 'Procedural map generation: Binary Space Partitioning (BSP), Cellular Automata caves, Delaunay Triangulation + MST with hallway loops, and Drunkard Walk.'
+                },
+                {
+                  id: 'procgen-wfc-solver',
+                  name: 'Wave Function Collapse (WFC) Solver (v1.0.0)',
+                  badge: lang === 'es' ? 'Universal' : 'Universal',
+                  badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-900/60',
+                  desc: lang === 'es'
+                    ? 'Generación por resolución de restricciones (WFC): colapso por entropía de Shannon, selección ponderada y propagación de compatibilidad de sockets por cola AC-3.'
+                    : 'Constraint-satisfaction WFC solver: Shannon Entropy selection, weighted prototype collapse, and AC-3 directional socket constraint propagation.'
+                },
+                {
+                  id: 'game-programming-patterns',
+                  name: 'Game Programming Patterns & Decoupled Architecture (v1.0.0)',
+                  badge: lang === 'es' ? 'Universal' : 'Universal',
+                  badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-900/60',
+                  desc: lang === 'es'
+                    ? 'Patrones de producción: Command Pattern (rollback, undo/redo, replays), Object Pooling sin sobrecarga de GC, Event Bus desacoplado y principios DOD / ECS.'
+                    : 'Production patterns: Command Pattern (rollback, undo/redo, replays), zero-GC Object Pooling, type-safe Event Bus, and Data-Oriented Design / ECS principles.'
+                },
+                {
+                  id: 'game-economy-loot-tables',
+                  name: 'Loot Tables, Inventory Grids & Game Economy (v1.0.0)',
+                  badge: lang === 'es' ? 'Universal' : 'Universal',
+                  badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-900/60',
+                  desc: lang === 'es'
+                    ? 'Sistemas de drop con peso probabilístico acumulativo, mecánicas de pity, empaquetamiento espacial en inventarios de grilla 2D y curvas exponenciales de XP.'
+                    : 'Cumulative weighted drop tables, pity counters, 2D spatial grid inventory packing (Diablo-style), and exponential level scaling curves.'
+                },
+                {
+                  id: 'narrative-dialogue-fsm',
+                  name: 'Narrative Dialogue Trees & Quest State Machines (v1.0.0)',
+                  badge: lang === 'es' ? 'Universal' : 'Universal',
+                  badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-900/60',
+                  desc: lang === 'es'
+                    ? 'Grafos dirigidos de conversación en JSON, evaluadores de flags de mundo, máquinas de estado de misiones (etapas e hitos) y claves de localización i18n.'
+                    : 'Branching JSON conversation graphs, world flag condition evaluators, immutable quest lifecycle state machines, and tokenized i18n localization.'
+                },
+                {
+                  id: 'shader-math-artistry',
+                  name: 'Universal Shader Math & Procedural VFX (v1.0.0)',
+                  badge: lang === 'es' ? 'Universal' : 'Universal',
+                  badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-900/60',
+                  desc: lang === 'es'
+                    ? 'Matemáticas de shaders independientes de motor: Signed Distance Functions (SDF 2D/3D), ruido procedural FBM, tramado ordenado con matriz Bayer y fórmulas PBR GGX.'
+                    : 'Cross-engine shader math: 2D/3D Signed Distance Functions (SDF), procedural FBM noise, Bayer matrix ordered dithering, and Cook-Torrance GGX PBR formulas.'
+                },
+                // 2. Godot & Blender Specific Skills
                 {
                   id: 'godot4-syntax-guardian',
                   name: 'Godot 4 Syntax Guardian (v1.3.0)',
-                  desc: 'Anti-hallucination skill enforcing strict Godot 4.3+ rules: TileMapLayer, FileAccess/DirAccess, Callables signals, CharacterBody move_and_slide.'
+                  badge: 'Godot 4.3+',
+                  badgeColor: 'text-godot-300 bg-godot-950 border-godot-border',
+                  desc: lang === 'es'
+                    ? 'Protocolo anti-alucinación que prohíbe sintaxis obsoleta de Godot 3: impone TileMapLayer, FileAccess/DirAccess, Callables para señales y CharacterBody move_and_slide.'
+                    : 'Anti-hallucination skill enforcing strict Godot 4.3+ rules: TileMapLayer, FileAccess/DirAccess, Callables signals, CharacterBody move_and_slide.'
                 },
                 {
                   id: 'godot-blender-pipeline',
                   name: 'Blender 3D to Godot 4 Asset Pipeline (v1.1.0)',
-                  desc: 'Automates .blend and glTF 2.0 import suffixes (-col, -convcol, -loop), Skeleton3D BoneMap retargeting, and PBR materials.'
+                  badge: 'Blender + Godot',
+                  badgeColor: 'text-amber-400 bg-amber-950/60 border-amber-900/60',
+                  desc: lang === 'es'
+                    ? 'Automatiza sufijos de importación .blend y glTF 2.0 (-col, -convcol, -loop), retargeting con Skeleton3D BoneMap y materiales PBR sin pasos manuales.'
+                    : 'Automates .blend and glTF 2.0 import suffixes (-col, -convcol, -loop), Skeleton3D BoneMap retargeting, and PBR materials.'
                 },
                 {
                   id: 'gdscript-fsm-master',
                   name: 'GDScript Finite State Machine (v1.2.0)',
-                  desc: 'Decoupled, modular state machine pattern using dedicated Node/State classes for combat, movement, and enemy AI.'
+                  badge: 'Godot 4',
+                  badgeColor: 'text-godot-300 bg-godot-950 border-godot-border',
+                  desc: lang === 'es'
+                    ? 'Patrón de máquina de estados modular y desacoplado usando nodos y clases State para combate, movimiento y comportamiento en GDScript.'
+                    : 'Decoupled, modular state machine pattern using dedicated Node/State classes for combat, movement, and enemy AI in GDScript.'
                 },
                 {
                   id: 'godot-multiplayer-enet',
                   name: 'Godot 4 Multiplayer & Networking (v1.2.0)',
-                  desc: 'Authoritative multiplayer architecture using ENetMultiplayerPeer, RPC annotations (@rpc("any_peer", "call_local")), and SceneReplicationConfig.'
+                  badge: 'Godot 4',
+                  badgeColor: 'text-godot-300 bg-godot-950 border-godot-border',
+                  desc: lang === 'es'
+                    ? 'Arquitectura multijugador autoritativa con ENetMultiplayerPeer, anotaciones @rpc explícitas, MultiplayerSynchronizer y replicación de estado.'
+                    : 'Authoritative multiplayer architecture using ENetMultiplayerPeer, RPC annotations (@rpc("any_peer", "call_local")), and SceneReplicationConfig.'
                 },
                 {
                   id: 'godot-shader-vfx',
                   name: 'Godot Shading Language (GDShader) VFX (v1.2.0)',
-                  desc: 'GLSL shader pipeline for 2D canvas_item and 3D spatial shaders, UV distortion, dissolve effects, and hint_screen_texture filters.'
+                  badge: 'Godot 4',
+                  badgeColor: 'text-godot-300 bg-godot-950 border-godot-border',
+                  desc: lang === 'es'
+                    ? 'Pipeline de shaders para canvas_item 2D y spatial 3D, distorsión UV, disolución procedural y filtros con hint_screen_texture.'
+                    : 'GLSL shader pipeline for 2D canvas_item and 3D spatial shaders, UV distortion, dissolve effects, and hint_screen_texture filters.'
                 },
                 {
                   id: 'godot-procedural-generation',
                   name: 'Procedural Generation & Pathfinding (v1.1.0)',
-                  desc: 'Deterministic generation with FastNoiseLite, dungeon room placement, TileMapLayer autotiling, and AStar2D/AStar3D navigation.'
+                  badge: 'Godot 4.3+',
+                  badgeColor: 'text-godot-300 bg-godot-950 border-godot-border',
+                  desc: lang === 'es'
+                    ? 'Generación determinista con FastNoiseLite, colocación de salas, autotiling con TileMapLayer y navegación con AStar2D/AStar3D.'
+                    : 'Deterministic generation with FastNoiseLite, dungeon room placement, TileMapLayer autotiling, and AStar2D/AStar3D navigation.'
                 },
                 {
                   id: 'godot-responsive-ui',
                   name: 'Responsive UI & Layouts (v1.1.0)',
-                  desc: 'Prevents hardcoded pixel coordinates; enforces BoxContainers, MarginContainers, GridContainers, Anchors, and Theme overrides.'
+                  badge: 'Godot 4',
+                  badgeColor: 'text-godot-300 bg-godot-950 border-godot-border',
+                  desc: lang === 'es'
+                    ? 'Evita coordenadas fijas; implementa BoxContainers, MarginContainers, GridContainers, Anchors y tematización adaptativa.'
+                    : 'Prevents hardcoded pixel coordinates; enforces BoxContainers, MarginContainers, GridContainers, Anchors, and Theme overrides.'
                 },
                 {
                   id: 'godot-save-system',
                   name: 'Cryptographic Save System (v1.0.0)',
-                  desc: 'Anti-corruption and anti-tamper save/load pipelines using JSON/binary serialization and SHA-256 HMAC integrity verification.'
+                  badge: 'Godot 4',
+                  badgeColor: 'text-godot-300 bg-godot-950 border-godot-border',
+                  desc: lang === 'es'
+                    ? 'Pipelines seguros de guardado/carga con serialización JSON/binaria y verificación de integridad criptográfica HMAC/SHA-256.'
+                    : 'Anti-corruption and anti-tamper save/load pipelines using JSON/binary serialization and SHA-256 HMAC integrity verification.'
                 },
                 {
                   id: 'ctx7-docs-fetcher',
                   name: 'Context7 (ctx7) Live Docs Fetcher (v1.0.0)',
-                  desc: 'Instructs AI coding assistants to fetch fresh, version-specific library docs and syntax examples via Upstash Context7.'
+                  badge: 'MCP + Context7',
+                  badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-900/60',
+                  desc: lang === 'es'
+                    ? 'Instruye a los asistentes de IA a consultar documentación oficial y ejemplos de código verificados en Upstash Context7.'
+                    : 'Instructs AI coding assistants to fetch fresh, version-specific library docs and syntax examples via Upstash Context7.'
+                },
+                {
+                  id: 'gdscript-architect',
+                  name: 'GDScript 4 Architect (v1.2.0)',
+                  badge: 'Godot 4',
+                  badgeColor: 'text-godot-300 bg-godot-950 border-godot-border',
+                  desc: lang === 'es'
+                    ? 'Alias histórico con pautas de tipado estricto, desacoplamiento por señales y composición de nodos sobre herencia profunda.'
+                    : 'Legacy alias enforcing strict typing, signal decoupling, and node composition over deep inheritance in Godot 4.'
                 }
               ].map((s) => (
                 <div key={s.id} className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                  <div className="space-y-1 flex-1">
-                    <h4 className="text-base font-bold text-white flex items-center">
-                      <Bot className="w-4 h-4 mr-2 text-purple-400" />
-                      {s.name}
-                    </h4>
+                  <div className="space-y-1.5 flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h4 className="text-base font-bold text-white flex items-center">
+                        <Bot className="w-4 h-4 mr-2 text-purple-400 shrink-0" />
+                        {s.name}
+                      </h4>
+                      <span className={`text-xs font-mono font-semibold px-2 py-0.5 rounded border ${s.badgeColor}`}>
+                        {s.badge}
+                      </span>
+                    </div>
                     <p className="text-xs sm:text-sm text-slate-300 leading-relaxed [text-wrap:pretty]">{s.desc}</p>
                   </div>
 

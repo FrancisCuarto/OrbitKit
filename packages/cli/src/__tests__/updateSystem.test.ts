@@ -394,7 +394,7 @@ describe('OrbitKit Update System — Fase 0 & Fase 1', () => {
     const catalogRaw = await fs.readFile(path.join(repoRoot, 'catalog.json'), 'utf8');
     const catalog = JSON.parse(catalogRaw) as Catalog;
     expect(catalog.schema).toBe(1);
-    expect(catalog.skills.length).toBe(10);
+    expect(catalog.skills.length).toBe(20);
 
     const guardian = catalog.skills.find((s) => s.id === 'godot4-syntax-guardian')!;
     expect(guardian).toBeDefined();

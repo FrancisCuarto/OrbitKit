@@ -186,6 +186,96 @@ You are an expert in bridging Blender 3D assets (.blend and .glb / glTF 2.0) int
     systemPrompt: `# GDScript 4 Architect Skill
 Follow strict static typing, signal-based decoupling, and node composition over deep inheritance in Godot 4.
 `
+  },
+  {
+    id: 'game-feel-kinesthetics',
+    name: 'Game Feel, Juice & Kinesthetics Master',
+    version: '1.0.0',
+    description: 'Universal kinesthetics rules for game feel: coyote time, input buffering, trauma-decay screen shake, hit stop, squash & stretch.',
+    systemPrompt: `# Game Feel, Juice & Kinesthetics Skill
+Apply input buffering (100-150ms FIFO), coyote time (80-120ms ledge grace), trauma-squared screen shake, freeze frame / hit stop (30-80ms), volume-preserving squash & stretch, and frame-rate independent dampening (exp(-decay * dt)).
+`
+  },
+  {
+    id: 'gamedev-math-recipes',
+    name: 'Universal GameDev Math & Vector Recipes',
+    version: '1.0.0',
+    description: 'Essential 2D/3D game math: Quaternions vs Euler, SLERP, ballistic trajectories, dot-product vision cones, and frame-rate independent dampening.',
+    systemPrompt: `# Universal GameDev Math & Vector Recipes
+Specialized in 2D/3D vector mathematics: unit dot-product vision cones, surface reflection vectors, ballistic trajectory velocity formulas, quaternion SLERP interpolation without gimbal lock, and universal range remapping.
+`
+  },
+  {
+    id: 'game-ai-behavior-trees',
+    name: 'Universal AI Behavior Tree Architecture',
+    version: '1.0.0',
+    description: 'Design decoupled AI Behavior Trees: Composite nodes (Selector, Sequence, Parallel), Decorators, Leaf tasks, and Blackboard pattern.',
+    systemPrompt: `# Universal AI Behavior Tree Skill
+Construct decoupled Behavior Trees with Selector (fallback), Sequence, and Parallel composites; Inverter and Cooldown decorators; Condition and Action leaf nodes; and shared Blackboard memory.
+`
+  },
+  {
+    id: 'game-ai-utility-goap',
+    name: 'GOAP & Utility AI Architecture',
+    version: '1.0.0',
+    description: 'Goal-Oriented Action Planning (GOAP) and Utility Curves for emergent, organic non-player character decision-making.',
+    systemPrompt: `# Goal-Oriented Action Planning (GOAP) & Utility AI Skill
+Formulate dynamic multi-step plans using backward A* state-space search with Preconditions and Effects, and evaluate emergent motivations using polynomial and logistic utility curves combined via geometric mean.
+`
+  },
+  {
+    id: 'procgen-dungeon-architect',
+    name: 'Procedural Dungeon & Level Generation Architect',
+    version: '1.0.0',
+    description: 'Algorithms for procedural map generation: Binary Space Partitioning (BSP), Cellular Automata, Delaunay Triangulation + MST, and Drunkard Walk.',
+    systemPrompt: `# Procedural Dungeon & Level Generation Skill
+Generate game maps using Binary Space Partitioning (BSP) for rectangular rooms, Cellular Automata for natural caverns, Delaunay Triangulation + Minimum Spanning Tree with loop reintroduction for dungeons, and Drunkard Walk for mining tunnels.
+`
+  },
+  {
+    id: 'procgen-wfc-solver',
+    name: 'Wave Function Collapse (WFC) Solver',
+    version: '1.0.0',
+    description: 'Constraint-satisfaction tile and 3D block generation using Wave Function Collapse (tiled model and overlapping model).',
+    systemPrompt: `# Wave Function Collapse (WFC) Solver Skill
+Implement Wave Function Collapse: maintain superposition wave states, select minimum Shannon Entropy cells with noise, collapse via weighted probabilities, and propagate socket constraints along directional faces using AC-3 queues.
+`
+  },
+  {
+    id: 'game-programming-patterns',
+    name: 'Game Programming Patterns & Decoupled Architecture',
+    version: '1.0.0',
+    description: 'Production patterns: Command Pattern (Undo/Replay/Rollback), Object Pooling, Type-Safe Event Bus, and Entity Component System (ECS) principles.',
+    systemPrompt: `# Game Programming Patterns Skill
+Apply production patterns: Command Pattern for serializable replay/rollback and undo/redo, high-performance Object Pooling to eliminate Garbage Collection hitches, Type-Safe Event Bus for decoupling, and Data-Oriented Design / ECS for cache locality.
+`
+  },
+  {
+    id: 'game-economy-loot-tables',
+    name: 'Loot Tables, Inventory Grids & Game Economy',
+    version: '1.0.0',
+    description: 'Weighted random drop systems, cumulative probability tables, 2D grid inventory packing (Diablo/Resident Evil style), and XP curves.',
+    systemPrompt: `# Loot Tables, Inventory Grids & Game Economy Skill
+Design robust game economies: weighted random drop tables with pity counters, 2D spatial grid inventory packing with multi-cell items and rotation, and exponential RPG level progression curves.
+`
+  },
+  {
+    id: 'narrative-dialogue-fsm',
+    name: 'Narrative Dialogue Trees & Quest State Machines',
+    version: '1.0.0',
+    description: 'Branching dialogue graph schemas, condition/flag evaluators, quest progression state machines, and internationalization (i18n) key systems.',
+    systemPrompt: `# Narrative Dialogue Trees & Quest State Machines Skill
+Model branching dialogue as JSON directed graphs with conditional choices, structure quest lifecycles (Locked, Available, Active, Completed, Failed) separated from static definitions, and apply i18n token substitution.
+`
+  },
+  {
+    id: 'shader-math-artistry',
+    name: 'Universal Shader Math & Procedural VFX',
+    version: '1.0.0',
+    description: 'Engine-agnostic shader mathematics: Signed Distance Functions (SDF 2D/3D), procedural noise (Perlin/Voronoi/FBM), PBR lighting, and Bayer dithering.',
+    systemPrompt: `# Universal Shader Math & Procedural VFX Skill
+Author cross-engine shader math: 2D and 3D Signed Distance Functions (SDF), procedural Fractal Brownian Motion (FBM) noise, Bayer matrix ordered dithering, and Cook-Torrance GGX Physically Based Rendering (PBR) equations.
+`
   }
 ];
 

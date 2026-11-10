@@ -1,0 +1,9 @@
+{
+  "id": "procgen-dungeon-architect",
+  "name": "Procedural Dungeon & Level Generation Architect",
+  "version": "1.0.0",
+  "description": "Algorithms for procedural map generation: Binary Space Partitioning (BSP), Cellular Automata, Delaunay Triangulation + MST, and Drunkard Walk.",
+  "tags": ["procgen", "dungeon", "algorithms", "universal"],
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}
