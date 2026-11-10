@@ -19,6 +19,24 @@
 
 ---
 
+<div align="center">
+
+## 🎬 Overview & Workflow Demo
+
+https://github.com/FrancisCuarto/OrbitKit/raw/main/docs/assets/orbitkit-preview.mp4
+
+<p align="center">
+  <video src="https://github.com/FrancisCuarto/OrbitKit/raw/main/docs/assets/orbitkit-preview.mp4" controls="controls" muted="muted" playsinline="playsinline" poster="docs/assets/orbitkit-preview-poster.png" width="100%" style="border-radius: 12px; border: 1px solid #30363d; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    <a href="https://github.com/FrancisCuarto/OrbitKit/raw/main/docs/assets/orbitkit-preview.mp4">
+      <img src="docs/assets/orbitkit-preview-poster.png" alt="OrbitKit Overview Video" width="100%" style="border-radius: 12px;" />
+    </a>
+  </video>
+</p>
+
+</div>
+
+---
+
 ## ✨ Why OrbitKit for Godot 4 & Blender?
 
 Most AI coding assistants hallucinate legacy **Godot 3.x GDScript** (`KinematicBody2D`, `yield()`, old `TileMap`, invalid `.tscn` UIDs) because their training cutoffs mix Godot 3 and Godot 4 APIs.
