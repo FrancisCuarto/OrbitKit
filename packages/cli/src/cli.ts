@@ -150,34 +150,6 @@ export function createCli(): Command {
       }
     });
 
-  // Command: ui (alias: gui)
-  program
-    .command('ui')
-    .alias('gui')
-    .description('Launch the interactive OrbitKit GUI web dashboard in your browser')
-    .option('-p, --port <port>', 'Port to run the dashboard server on', '4567')
-    .option('-d, --dir <dir>', 'Directory to inspect or manage', '.')
-    .option('--no-open', 'Do not open the browser automatically')
-    .action(async (options) => {
-      const port = parseInt(options.port, 10) || 4567;
-      const targetDir = path.resolve(options.dir || '.');
-      const spinner = ora('Starting OrbitKit GUI Dashboard...').start();
-      try {
-        const { url, port: actualPort } = await startGuiServer({
-          port,
-          dir: targetDir,
-          openBrowser: options.open !== false
-        });
-        spinner.succeed(pc.green('OrbitKit GUI Dashboard is live!'));
-        console.log(pc.bold(pc.cyan(`\n  🚀 Local:   ${pc.underline(url)}`)));
-        console.log(pc.gray(`  📁 Target:  ${targetDir}`));
-        console.log(pc.gray(`  🔌 Port:    ${actualPort}`));
-        console.log(pc.yellow(`\nPress Ctrl+C to stop the GUI server.\n`));
-      } catch (err: any) {
-        spinner.fail(pc.red(`Failed to start GUI server: ${err.message}`));
-      }
-    });
-
   // Command: init
   program
     .command('init')
