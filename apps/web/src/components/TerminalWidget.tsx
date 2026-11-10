@@ -25,20 +25,20 @@ export function TerminalWidget({ lang }: Props) {
       labelKey: 'tabInstall',
       command: 'npm install -g @francisiv/orbitkit',
       output: [
-        '+ @francisiv/orbitkit@0.3.0',
+        '+ @francisiv/orbitkit@0.4.0',
         'added 6 packages in 1.2s',
         '✓ orbitkit and devdock commands registered globally in PATH',
-        '✓ Run "orbitkit" in your terminal to launch the Orbital Command Deck TUI'
+        '✓ Run "orbitkit" in your terminal to open the minimalist TUI'
       ]
     },
     {
       id: 'upgrade-cli',
       labelKey: 'tabUpgradeCli',
-      command: 'npm install -g @francisiv/orbitkit@latest',
+      command: 'orbitkit upgrade',
       output: [
-        '🔄 Upgrading global @francisiv/orbitkit package from NPM...',
-        '+ @francisiv/orbitkit@0.3.0 (Orbital Command Deck TUI)',
-        '✓ Split-pane Godot 4 Inspector TUI ("orbitkit") & Blender 3D Skill ready!'
+        '🔍 Checking OrbitKit CLI version against NPM & GitHub...',
+        '  Installed version: v0.3.0  →  Latest version: v0.4.0',
+        '✓ Updated @francisiv/orbitkit from v0.3.0 to v0.4.0'
       ]
     },
     {
@@ -94,7 +94,7 @@ export function TerminalWidget({ lang }: Props) {
           <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
           <span className="ml-2 text-xs text-slate-400 font-sans font-medium flex items-center">
             <Terminal className="w-3.5 h-3.5 mr-1.5 text-godot-400" />
-            terminal — orbitkit v0.3.0
+            terminal — orbitkit v0.4.0
           </span>
         </div>
 

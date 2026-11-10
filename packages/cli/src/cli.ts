@@ -9,6 +9,7 @@ import { OFFICIAL_GODOT_MCP_SERVERS, installMcpServer, listConfiguredMcpServers 
 import { updateProject, updateAllProjects } from './core/updater.js';
 import { runSystemDiagnostics } from './core/doctor.js';
 import { startInteractiveTui } from './tui/interactiveTui.js';
+import { checkCliVersion, performCliSelfUpdate } from './core/selfUpdater.js';
 
 export function createCli(): Command {
   const program = new Command();
@@ -16,7 +17,7 @@ export function createCli(): Command {
   program
     .name('orbitkit')
     .description('OrbitKit CLI — Automated AI Skills, MCP Servers and Addon Manager for Godot Projects')
-    .version('0.3.0')
+    .version('0.4.0')
     .action(async () => {
       if (process.stdout.isTTY) {
         await startInteractiveTui();
@@ -29,9 +30,47 @@ export function createCli(): Command {
   program
     .command('ui')
     .alias('tui')
-    .description('Launch interactive retro Terminal User Interface (TUI)')
+    .description('Launch minimalist interactive Terminal User Interface (TUI)')
     .action(async () => {
       await startInteractiveTui();
+    });
+
+  // Command: upgrade / self-update
+  program
+    .command('upgrade')
+    .alias('self-update')
+    .description('Check for the latest OrbitKit CLI version and upgrade globally')
+    .option('-c, --check', 'Only check if a newer version is available without installing')
+    .action(async (options) => {
+      const spinner = ora('Checking OrbitKit CLI version against NPM & GitHub...').start();
+      const check = await checkCliVersion();
+      spinner.stop();
+
+      console.log(pc.bold(pc.cyan('\nOrbitKit Version Check:')));
+      console.log(`  Installed version: ${pc.white('v' + check.currentVersion)}`);
+      console.log(
+        `  Latest version:    ${
+          check.updateAvailable ? pc.yellow('v' + check.latestVersion + ' (Update available!)') : pc.green('v' + check.latestVersion + ' (Up to date)')
+        }`
+      );
+
+      if (options.check) {
+        if (check.updateAvailable) {
+          console.log(pc.yellow(`\nRun ${pc.bold('orbitkit upgrade')} to install v${check.latestVersion}.\n`));
+        } else {
+          console.log(pc.green('\nYou are already using the latest version.\n'));
+        }
+        return;
+      }
+
+      const updateSpinner = ora(`Installing @francisiv/orbitkit@${check.latestVersion} globally...`).start();
+      const res = await performCliSelfUpdate(check.latestVersion);
+      if (res.success) {
+        updateSpinner.succeed(pc.green(res.message));
+        console.log(pc.gray('  ✓ Global binary verified in PATH.\n'));
+      } else {
+        updateSpinner.fail(pc.red(res.message));
+      }
     });
 
   // Command: init
@@ -102,9 +141,28 @@ export function createCli(): Command {
   // Command: update
   program
     .command('update [target]')
-    .description('Update AI Skills, MCPs, and Addons to the latest versions')
+    .description('Check & update OrbitKit CLI, AI Skills, MCPs, and Addons to the latest versions')
     .option('-a, --all', 'Update all detected Godot projects in the directory tree')
+    .option('-c, --cli', 'Only check and update the global OrbitKit CLI binary')
     .action(async (target = '.', options) => {
+      // 1. Always check if the CLI itself has a newer release
+      const verCheck = await checkCliVersion();
+      if (verCheck.updateAvailable || options.cli) {
+        const cliSpin = ora(
+          verCheck.updateAvailable
+            ? `New OrbitKit CLI found (v${verCheck.currentVersion} → v${verCheck.latestVersion}). Updating CLI...`
+            : `Verifying OrbitKit CLI v${verCheck.currentVersion}...`
+        ).start();
+        const selfRes = await performCliSelfUpdate(verCheck.latestVersion);
+        if (selfRes.success) {
+          cliSpin.succeed(pc.green(selfRes.message));
+        } else {
+          cliSpin.warn(pc.yellow(selfRes.message));
+        }
+        if (options.cli) return;
+      } else {
+        console.log(pc.gray(`✓ OrbitKit CLI v${verCheck.currentVersion} is up to date.`));
+      }
       if (options.all) {
         const spinner = ora('Scanning and updating all Godot projects...').start();
         const results = await updateAllProjects(target);

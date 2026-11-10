@@ -6,6 +6,7 @@ import { scanForGodotProjects, inspectProject } from '../core/scanner.js';
 import { installSkill, checkSkillUpdates, CURATED_SKILLS } from '../core/skillsManager.js';
 import { installMcpServer, listConfiguredMcpServers } from '../core/mcpManager.js';
 import { runSystemDiagnostics } from '../core/doctor.js';
+import { compareSemver, getCurrentCliVersion } from '../core/selfUpdater.js';
 
 describe('DevDock CLI Core Engine', () => {
   let tempDir: string;
@@ -88,5 +89,15 @@ describe('DevDock CLI Core Engine', () => {
     expect(diag.length).toBeGreaterThanOrEqual(3);
     const nodeDiag = diag.find((d) => d.name === 'Node.js Runtime');
     expect(nodeDiag?.status).toBe('ok');
+  });
+
+  it('compares SemVer versions accurately for CLI self-updates', async () => {
+    expect(compareSemver('0.4.0', '0.3.0')).toBe(1);
+    expect(compareSemver('0.2.0', '0.4.0')).toBe(-1);
+    expect(compareSemver('0.4.0', '0.4.0')).toBe(0);
+    expect(compareSemver('v1.0.0', '0.9.9')).toBe(1);
+
+    const ver = await getCurrentCliVersion();
+    expect(ver).toBe('0.4.0');
   });
 });

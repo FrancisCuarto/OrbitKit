@@ -89,7 +89,7 @@ export function DocsSection({ lang }: Props) {
                           {lang === 'es' ? 'Instalación Oficial por NPM' : 'Official NPM Installation'}
                         </span>
                         <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-mono">
-                          v0.3.0 on NPM
+                          v0.4.0 on NPM
                         </span>
                       </div>
                       <button
@@ -126,15 +126,15 @@ export function DocsSection({ lang }: Props) {
                       <div className="flex items-center space-x-2">
                         <RefreshCw className="w-4 h-4 text-emerald-400" />
                         <span className="font-semibold text-white text-sm">
-                          {lang === 'es' ? '¿Ya lo tienes instalado? Actualizar CLI' : 'Already installed? Upgrade CLI'}
+                          {lang === 'es' ? 'Comprobar y Actualizar CLI' : 'Check & Upgrade CLI'}
                         </span>
                         <span className="text-[10px] bg-godot-500/20 text-godot-300 border border-godot-500/30 px-2 py-0.5 rounded-full font-mono">
-                          → v0.3.0
+                          → v0.4.0
                         </span>
                       </div>
                       <button
                         type="button"
-                        onClick={() => handleCopy('npm install -g @francisiv/orbitkit@latest', 'upgrade_npm')}
+                        onClick={() => handleCopy('orbitkit upgrade', 'upgrade_npm')}
                         className="flex items-center px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white border border-emerald-500/30 text-xs transition"
                       >
                         <span className="inline-flex mr-1 shrink-0">
@@ -148,17 +148,17 @@ export function DocsSection({ lang }: Props) {
                       </button>
                     </div>
                     <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-emerald-300 border border-emerald-500/30">
-                      npm install -g @francisiv/orbitkit@latest
+                      orbitkit upgrade
                     </code>
                   </div>
                   <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 pt-1">
                     <span>
                       {lang === 'es'
-                        ? 'Usa @latest (o @0.2.0) para saltar a la última versión y verifica con:'
-                        : 'Use @latest (or @0.2.0) to force upgrade and verify with:'}
+                        ? 'O para solo verificar versión sin instalar:'
+                        : 'Or to only check version without installing:'}
                     </span>
                     <code className="text-emerald-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
-                      orbitkit --version
+                      orbitkit upgrade --check
                     </code>
                   </div>
                 </div>
@@ -168,11 +168,11 @@ export function DocsSection({ lang }: Props) {
                 {[
                   {
                     cmd: 'orbitkit  (or: orbitkit ui)',
-                    desc: 'Launches the interactive retro Terminal User Interface (TUI) with keyboard navigation (j/k/arrows), live search (s), project discovery, and 1-key Skill/MCP installation.'
+                    desc: 'Launches the minimalist interactive Terminal User Interface (TUI) with automatic version checking, live search (/), and 1-key Skill/MCP installation.'
                   },
                   {
-                    cmd: 'npm install -g @francisiv/orbitkit@latest',
-                    desc: 'Upgrades your global OrbitKit CLI installation to the newest release on NPM (v0.2.0+).'
+                    cmd: 'orbitkit upgrade [--check]',
+                    desc: 'Checks your installed CLI version against NPM & GitHub and automatically upgrades @francisiv/orbitkit globally (pass --check to only compare versions).'
                   },
                   {
                     cmd: 'orbitkit scan [directory]',

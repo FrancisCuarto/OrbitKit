@@ -36,7 +36,7 @@ export function App() {
   const t = TRANSLATIONS[lang];
 
   const handleCopyUpgrade = () => {
-    void safeCopyToClipboard('npm install -g @francisiv/orbitkit@latest');
+    void safeCopyToClipboard('orbitkit upgrade');
     setCopiedUpgrade(true);
     setTimeout(() => setCopiedUpgrade(false), 2000);
   };
@@ -67,7 +67,7 @@ export function App() {
                   OrbitKit
                 </span>
                 <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-godot-500/20 text-godot-300 border border-godot-500/30">
-                  CLI v0.3.0
+                  CLI v0.4.0
                 </span>
               </div>
             </div>
@@ -399,17 +399,17 @@ export function App() {
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
               <RefreshCw className="w-3.5 h-3.5 mr-1 animate-spin-slow" />
-              <span>{lang === 'es' ? 'Actualización disponible: CLI v0.3.0 (Orbital Command Deck TUI)' : 'Update Available: CLI v0.3.0 (Orbital Command Deck TUI)'}</span>
+              <span>{lang === 'es' ? 'Auto-Verificador de Versiones integrado (v0.4.0)' : 'Built-in Version Checker & Self-Updater (v0.4.0)'}</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-extrabold text-white">
               {lang === 'es'
-                ? '¿Ya tenías OrbitKit instalado? Actualízalo a la última versión'
-                : 'Already have OrbitKit installed? Upgrade to the latest version'}
+                ? '¿Ya tenías OrbitKit instalado? Comprueba y actualiza tu versión'
+                : 'Already have OrbitKit installed? Check & upgrade your version'}
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
               {lang === 'es'
-                ? 'Ejecuta este comando en tu terminal (CMD, PowerShell o Bash) para actualizar globalmente a la versión v0.3.0 con el nuevo panel dividido Orbital Command Deck ("orbitkit") y el pipeline Blender 3D:'
-                : 'Run this command in your terminal (CMD, PowerShell, or Bash) to upgrade globally to v0.3.0 with the new split-pane Orbital Command Deck TUI ("orbitkit") and Blender 3D pipeline:'}
+                ? 'OrbitKit comprueba automáticamente tu versión contra NPM y GitHub. Ejecuta "orbitkit upgrade" (o presiona "u" dentro de la interfaz) para actualizar el CLI en un paso:'
+                : 'OrbitKit automatically checks your version against NPM and GitHub. Run "orbitkit upgrade" (or press "u" inside the TUI) to self-update the CLI in one step:'}
             </p>
           </div>
 
@@ -417,7 +417,7 @@ export function App() {
             <div className="flex items-center space-x-2 px-2">
               <span className="text-emerald-400 font-bold select-none">$</span>
               <code className="text-emerald-300 font-semibold whitespace-nowrap">
-                npm install -g @francisiv/orbitkit@latest
+                orbitkit upgrade
               </code>
             </div>
             <button
