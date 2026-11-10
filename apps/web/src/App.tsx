@@ -136,25 +136,19 @@ export function App() {
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-godot-600/20 via-transparent to-transparent"></div>
 
         <div className="max-w-4xl mx-auto space-y-6 relative z-10">
-          {/* Dark contrast backdrop behind text for crisp readability over moving 3D core */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -inset-x-8 -top-6 bottom-24 -z-10 rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(9,15,20,0.82)_0%,_rgba(9,15,20,0.45)_55%,_transparent_80%)] blur-xl"
-          />
-
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-godot-950/90 border border-godot-500/50 text-godot-300 text-xs font-medium backdrop-blur-md shadow-xl">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-godot-500/15 border border-godot-500/40 text-godot-300 text-xs font-medium backdrop-blur-md shadow-lg">
             <span className="w-2 h-2 rounded-full bg-godot-400 animate-pulse"></span>
             <span>{t.hero.badge}</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight hero-title-shadow">
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
             {t.hero.headline1} <br />
-            <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-godot-300 via-sky-300 to-cyan-200 hero-gradient-shadow">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-godot-300 via-godot-400 to-sky-300">
               {t.hero.headline2}
             </span>
           </h1>
 
-          <p className="text-sm sm:text-lg text-slate-200 font-medium max-w-2xl mx-auto leading-relaxed hero-subtitle-shadow">
+          <p className="text-sm sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
             {t.hero.sub}
           </p>
 
@@ -195,7 +189,7 @@ export function App() {
           <span className="text-xs font-bold uppercase tracking-wider text-godot-400 bg-godot-500/10 border border-godot-500/20 px-3 py-1 rounded-full">
             {t.problem.eyebrow}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight hero-title-shadow">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             {t.problem.title}
           </h2>
         </div>
@@ -263,7 +257,7 @@ export function App() {
           <span className="text-xs font-bold uppercase tracking-wider text-godot-400 bg-godot-500/10 border border-godot-500/20 px-3 py-1 rounded-full">
             {t.features.eyebrow}
           </span>
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight hero-title-shadow">
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
             {t.features.headline}
           </h2>
           <p className="text-slate-400 text-sm sm:text-base">
@@ -351,7 +345,7 @@ export function App() {
           <span className="text-xs font-bold uppercase tracking-wider text-godot-400 bg-godot-500/10 border border-godot-500/20 px-3 py-1 rounded-full">
             {t.how.eyebrow}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight hero-title-shadow">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             {t.how.headline}
           </h2>
         </div>
