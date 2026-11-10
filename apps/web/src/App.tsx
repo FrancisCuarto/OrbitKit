@@ -171,7 +171,7 @@ export function App() {
           </div>
 
           {/* Interactive Terminal Widget */}
-          <div className="pt-8 animate-float-3d hover:[animation-play-state:paused]">
+          <div className="relative z-30 pt-8">
             <TerminalWidget lang={lang} />
           </div>
         </div>

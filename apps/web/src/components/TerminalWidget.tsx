@@ -84,9 +84,9 @@ export function TerminalWidget({ lang }: Props) {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto rounded-2xl bg-godot-card border border-godot-border shadow-2xl overflow-hidden font-mono text-xs sm:text-sm text-left">
+    <div className="relative z-30 pointer-events-auto w-full max-w-3xl mx-auto rounded-2xl bg-godot-card border border-godot-border shadow-2xl overflow-hidden font-mono text-xs sm:text-sm text-left">
       {/* Window Titlebar & Large-Hitbox Tab Bar */}
-      <div className="px-4 pt-3 pb-2.5 bg-godot-950/95 border-b border-godot-border space-y-2.5">
+      <div className="relative z-30 px-4 pt-3.5 pb-3 bg-godot-950 border-b border-godot-border space-y-3">
         <div className="flex items-center space-x-2">
           <div className="w-3 h-3 rounded-full bg-rose-500/80"></div>
           <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
@@ -98,7 +98,7 @@ export function TerminalWidget({ lang }: Props) {
         </div>
 
         {/* Expanded Hitbox Tab Pills */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 pt-0.5" role="tablist">
+        <div className="relative z-30 grid grid-cols-2 sm:grid-cols-5 gap-2" role="tablist">
           {TABS.map((tab) => {
             const active = activeTab === tab.id;
             return (
@@ -107,12 +107,18 @@ export function TerminalWidget({ lang }: Props) {
                 type="button"
                 role="tab"
                 aria-selected={active}
-                onPointerDown={() => setActiveTab(tab.id)}
-                onClick={() => setActiveTab(tab.id)}
-                className={`w-full min-h-[40px] px-3.5 py-2 rounded-xl text-xs sm:text-[13px] font-sans font-semibold cursor-pointer select-none flex items-center justify-center text-center transition-all duration-150 ${
+                onPointerDown={(e) => {
+                  e.stopPropagation();
+                  setActiveTab(tab.id);
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveTab(tab.id);
+                }}
+                className={`relative z-30 pointer-events-auto w-full min-h-[46px] px-4 py-2.5 rounded-xl text-xs sm:text-[13px] font-sans font-semibold cursor-pointer select-none flex items-center justify-center text-center transition-colors duration-150 ${
                   active
-                    ? 'bg-godot-500 text-white shadow-md shadow-godot-500/25 border border-godot-400/50'
-                    : 'bg-godot-card/50 text-slate-300 hover:text-white hover:bg-godot-border/80 border border-godot-border/50'
+                    ? 'bg-godot-500 text-white shadow-md shadow-godot-500/25 border border-godot-400'
+                    : 'bg-godot-card text-slate-200 hover:text-white hover:bg-godot-border border border-godot-border'
                 }`}
               >
                 {t[tab.labelKey]}

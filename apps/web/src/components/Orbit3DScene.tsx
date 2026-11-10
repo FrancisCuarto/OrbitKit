@@ -365,13 +365,18 @@ export function Orbit3DScene() {
   }, []);
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+    <div
+      className="pointer-events-none select-none absolute inset-0 z-0 overflow-hidden"
+      style={{ pointerEvents: 'none' }}
+      aria-hidden="true"
+    >
       <canvas
         ref={canvasRef}
-        className="w-full h-full opacity-95"
+        className="pointer-events-none w-full h-full opacity-95"
+        style={{ pointerEvents: 'none' }}
       />
       {/* Bottom vignette blend into page background */}
-      <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-godot-950/90 via-godot-950/40 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-godot-950/90 via-godot-950/40 to-transparent" />
     </div>
   );
 }

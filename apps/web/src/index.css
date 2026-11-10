@@ -38,10 +38,10 @@ code, pre {
 
 @keyframes float3d {
   0%, 100% {
-    transform: translate3d(0, 0px, 0) rotateX(0deg) rotateY(0deg);
+    transform: translateY(0px);
   }
   50% {
-    transform: translate3d(0, -10px, 12px) rotateX(3deg) rotateY(-3deg);
+    transform: translateY(-6px);
   }
 }
 
@@ -84,7 +84,6 @@ code, pre {
 
 .animate-float-3d {
   animation: float3d 6s ease-in-out infinite;
-  transform-style: preserve-3d;
 }
 
 .mask-fade-edges {

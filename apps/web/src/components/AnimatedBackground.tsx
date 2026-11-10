@@ -249,14 +249,18 @@ export function AnimatedBackground() {
   }, []);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+    <div
+      className="pointer-events-none select-none fixed inset-0 z-0 overflow-hidden"
+      style={{ pointerEvents: 'none' }}
+      aria-hidden="true"
+    >
       {/* Drifting Ambient Nebula Orbs */}
-      <div className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full bg-godot-500/15 blur-[130px] animate-blob-slow" />
-      <div className="absolute top-1/3 -right-32 w-[460px] h-[460px] rounded-full bg-purple-500/10 blur-[130px] animate-blob-reverse" />
-      <div className="absolute -bottom-32 left-1/4 w-[500px] h-[500px] rounded-full bg-sky-500/10 blur-[140px] animate-blob-slow" />
+      <div className="pointer-events-none absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full bg-godot-500/15 blur-[130px] animate-blob-slow" />
+      <div className="pointer-events-none absolute top-1/3 -right-32 w-[460px] h-[460px] rounded-full bg-purple-500/10 blur-[130px] animate-blob-reverse" />
+      <div className="pointer-events-none absolute -bottom-32 left-1/4 w-[500px] h-[500px] rounded-full bg-sky-500/10 blur-[140px] animate-blob-slow" />
 
       {/* Interactive Constellation & Grid Canvas */}
-      <canvas ref={canvasRef} className="w-full h-full opacity-90" />
+      <canvas ref={canvasRef} className="pointer-events-none w-full h-full opacity-90" style={{ pointerEvents: 'none' }} />
     </div>
   );
 }
