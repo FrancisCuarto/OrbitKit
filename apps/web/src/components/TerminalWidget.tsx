@@ -8,14 +8,14 @@ interface Props {
 }
 
 interface CommandTab {
-  id: 'install' | 'upgrade-cli' | 'uninstall-cli' | 'scan' | 'update' | 'mcp';
-  labelKey: 'tabInstall' | 'tabUpgradeCli' | 'tabUninstallCli' | 'tabScan' | 'tabUpdate' | 'tabMcp';
+  id: 'install' | 'gui' | 'upgrade-cli' | 'uninstall-cli' | 'scan' | 'update' | 'mcp';
+  labelKey: 'tabInstall' | 'tabGui' | 'tabUpgradeCli' | 'tabUninstallCli' | 'tabScan' | 'tabUpdate' | 'tabMcp';
   command: string;
   output: string[];
 }
 
 export function TerminalWidget({ lang }: Props) {
-  const [activeTab, setActiveTab] = useState<'install' | 'upgrade-cli' | 'uninstall-cli' | 'scan' | 'update' | 'mcp'>('install');
+  const [activeTab, setActiveTab] = useState<'install' | 'gui' | 'upgrade-cli' | 'uninstall-cli' | 'scan' | 'update' | 'mcp'>('install');
   const [copied, setCopied] = useState(false);
   const t = TRANSLATIONS[lang].hero;
 
@@ -25,10 +25,23 @@ export function TerminalWidget({ lang }: Props) {
       labelKey: 'tabInstall',
       command: 'npm install -g @francisiv/orbitkit',
       output: [
-        '+ @francisiv/orbitkit@0.5.0',
-        'added 6 packages in 1.2s',
+        '+ @francisiv/orbitkit@0.6.0',
+        'added 6 packages in 1.1s',
         '✓ orbitkit and devdock commands registered globally in PATH',
-        '✓ Run "orbitkit" in your terminal to open the minimalist TUI'
+        '✓ Run "orbitkit gui" to open the interactive web dashboard',
+        '✓ Run "orbitkit" in your terminal to open the TUI navigator'
+      ]
+    },
+    {
+      id: 'gui',
+      labelKey: 'tabGui',
+      command: 'orbitkit gui',
+      output: [
+        '🚀 Starting OrbitKit GUI Dashboard...',
+        '✓ OrbitKit GUI Dashboard is live!',
+        '  ➜ Local:   http://localhost:4567',
+        '  ➜ Target:  /home/francis/game',
+        '✓ Connected: 4 Godot projects discovered, 10 AI skills ready'
       ]
     },
     {
@@ -37,8 +50,8 @@ export function TerminalWidget({ lang }: Props) {
       command: 'orbitkit upgrade',
       output: [
         '🔍 Checking OrbitKit CLI version against NPM & GitHub...',
-        '  Installed version: v0.4.0  →  Latest version: v0.5.0',
-        '✓ OrbitKit actualizado correctamente: v0.4.0 → v0.5.0'
+        '  Installed version: v0.5.0  →  Latest version: v0.6.0',
+        '✓ OrbitKit actualizado correctamente: v0.5.0 → v0.6.0'
       ]
     },
     {
@@ -103,12 +116,12 @@ export function TerminalWidget({ lang }: Props) {
           <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
           <span className="ml-2 text-xs text-slate-400 font-sans font-medium flex items-center">
             <Terminal className="w-3.5 h-3.5 mr-1.5 text-godot-400" />
-            terminal — orbitkit v0.5.0
+            terminal — orbitkit v0.6.0
           </span>
         </div>
 
         {/* Expanded Hitbox Tab Pills */}
-        <div className="relative z-30 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2" role="tablist">
+        <div className="relative z-30 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2" role="tablist">
           {TABS.map((tab) => {
             const active = activeTab === tab.id;
             return (
