@@ -141,7 +141,7 @@ export function TerminalWidget({ lang }: Props) {
                 }}
                 className={`relative z-30 pointer-events-auto w-full min-h-[46px] px-3 py-2.5 rounded-xl text-xs font-sans font-semibold cursor-pointer select-none flex items-center justify-center text-center transition-colors duration-150 ${
                   active
-                    ? 'bg-godot-500 text-white shadow-md shadow-godot-500/25 border border-godot-400'
+                    ? 'bg-[#23689b] text-white border border-godot-400/50'
                     : 'bg-godot-card text-slate-200 hover:text-white hover:bg-godot-border border border-godot-border'
                 }`}
               >
@@ -155,7 +155,7 @@ export function TerminalWidget({ lang }: Props) {
       {/* Terminal Content Body */}
       <div className="p-4 sm:p-6 bg-godot-950/60 space-y-4">
         {/* Command line */}
-        <div className="flex items-center justify-between bg-godot-card/80 p-3.5 rounded-xl border border-godot-border">
+        <div className="flex items-center justify-between bg-godot-950 px-4 py-3 rounded-lg">
           <div className="flex items-center space-x-2 overflow-x-auto text-slate-200">
             <span className="text-godot-400 font-bold select-none">$</span>
             <span className="font-semibold text-white">{currentTabData.command}</span>
@@ -164,7 +164,7 @@ export function TerminalWidget({ lang }: Props) {
           <button
             type="button"
             onClick={handleCopy}
-            className="flex items-center px-4 py-2 ml-3 rounded-xl bg-godot-500/20 hover:bg-godot-500 text-godot-300 hover:text-white border border-godot-500/30 transition text-xs font-sans font-semibold cursor-pointer select-none whitespace-nowrap"
+            className="flex items-center px-3.5 py-1.5 ml-3 rounded-md bg-[#23689b] hover:bg-[#2d7bb6] text-white border border-godot-400/30 transition text-xs font-sans font-semibold cursor-pointer select-none whitespace-nowrap"
           >
             <span className="inline-flex mr-1.5 shrink-0">
               {copied ? (

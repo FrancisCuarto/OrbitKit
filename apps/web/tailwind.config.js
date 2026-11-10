@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Chivo', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
+      },
       colors: {
         godot: {
           50: '#f0f7fc',
@@ -17,11 +21,11 @@ export default {
           600: '#3571a0',
           700: '#2b5a81',
           800: '#274b6b',
-          900: '#244059',
-          950: '#0d141b', // Godot Dark Canvas
-          card: '#15202b',
-          cardHover: '#1c2b3a',
-          border: '#233547'
+          900: '#1b2a38',
+          950: '#0b0f15', // Deep Dark Engine Lacquer
+          card: '#111823', // Clean elevated dark surface
+          cardHover: '#172230',
+          border: '#1f2e40' // Crisp technical border
         }
       }
     },
