@@ -63,6 +63,13 @@ export async function runSystemDiagnostics(
       status: 'ok',
       message: `Project: "${proj.name}" (${proj.installedAddons.length} addons, ${proj.installedSkills.length} AI skills, MCP: ${proj.hasMcpConfig ? 'configured' : 'none'}).`
     });
+    items.push({
+      name: 'OrbitKit Godot Plugin',
+      status: proj.hasOrbitKitPlugin ? 'ok' : 'warning',
+      message: proj.hasOrbitKitPlugin
+        ? 'Active in addons/orbitkit and enabled in project.godot'
+        : 'Not enabled in project.godot (select project in OrbitKit or run "orbitkit init" to install)'
+    });
   } catch {
     items.push({
       name: 'Project Context',

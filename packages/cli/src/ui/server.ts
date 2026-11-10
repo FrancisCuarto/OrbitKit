@@ -5,6 +5,7 @@ import { exec } from 'node:child_process';
 import { scanForGodotProjects, inspectProject, DiscoveredProject } from '../core/scanner.js';
 import { CURATED_SKILLS, installSkill } from '../core/skillsManager.js';
 import { OFFICIAL_GODOT_MCP_SERVERS, installMcpServer, listConfiguredMcpServers } from '../core/mcpManager.js';
+import { installGodotPlugin } from '../core/pluginManager.js';
 import { updateProject, updateAllProjects } from '../core/updater.js';
 import { runSystemDiagnostics } from '../core/doctor.js';
 import { renderGuiHtml } from './html.js';
@@ -298,6 +299,9 @@ export async function startGuiServer(options: GuiServerOptions = {}): Promise<Gu
         await fs.mkdir(path.join(target, '.agents', 'skills'), { recursive: true });
         await fs.mkdir(path.join(target, '.claude', 'skills'), { recursive: true });
 
+        // Install & enable Godot 4 Editor plugin (addons/orbitkit/plugin.cfg)
+        await installGodotPlugin(target);
+
         // Install all curated AI skills & official MCP servers
         let installedSkillsCount = 0;
         for (const skill of CURATED_SKILLS) {
@@ -313,7 +317,7 @@ export async function startGuiServer(options: GuiServerOptions = {}): Promise<Gu
 
         return sendJson(res, 200, {
           success: true,
-          message: `OrbitKit instalado en ${target} (${installedSkillsCount} AI Skills + ${installedMcpsCount} MCP Servers)`
+          message: `OrbitKit instalado en ${target} (Plugin Godot + ${installedSkillsCount} AI Skills + ${installedMcpsCount} MCP Servers)`
         });
       }
 

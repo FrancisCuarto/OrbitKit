@@ -7,6 +7,7 @@ import { readFileSync } from 'node:fs';
 import { scanForGodotProjects, inspectProject } from './core/scanner.js';
 import { CURATED_SKILLS, installSkill, checkSkillUpdates } from './core/skillsManager.js';
 import { OFFICIAL_GODOT_MCP_SERVERS, installMcpServer, listConfiguredMcpServers } from './core/mcpManager.js';
+import { installGodotPlugin, uninstallGodotPlugin, getGodotPluginStatus } from './core/pluginManager.js';
 import { updateProject, updateAllProjects } from './core/updater.js';
 import { runSystemDiagnostics } from './core/doctor.js';
 import { startGuiServer } from './ui/server.js';
@@ -205,20 +206,24 @@ export function createCli(): Command {
         await fs.mkdir(path.join(cwd, '.agents', 'skills'), { recursive: true });
         await fs.mkdir(path.join(cwd, '.claude', 'skills'), { recursive: true });
 
+        // Install & enable Godot 4 Editor plugin in addons/orbitkit & project.godot
+        await installGodotPlugin(cwd);
+
         // Install default godot4-syntax-guardian skill
         await installSkill(cwd, 'godot4-syntax-guardian');
 
         // Configure default godot-lsp MCP server
         await installMcpServer(cwd, 'godot-lsp');
 
-        spinner.succeed(pc.green('DevDock initialized successfully!'));
+        spinner.succeed(pc.green('OrbitKit initialized successfully!'));
         if (createdProjectGodot) {
           console.log(pc.cyan('  ✓ Created default project.godot (Godot 4)'));
         }
-        console.log(pc.cyan('  ✓ .devdock/ directory created'));
+        console.log(pc.cyan('  ✓ Godot Editor Plugin installed & enabled (addons/orbitkit/plugin.cfg)'));
+        console.log(pc.cyan('  ✓ .devdock/ directory & catalog created'));
         console.log(pc.cyan('  ✓ Default AI Skill installed (.agents/skills/godot4-syntax-guardian)'));
         console.log(pc.cyan('  ✓ Godot LSP MCP configured in .mcp.json'));
-        console.log(pc.gray('\nRun "devdock doctor" to verify your environment.\n'));
+        console.log(pc.gray('\nOpen your project in Godot Editor — the OrbitKit dock is already enabled!\n'));
       } catch (err: any) {
         spinner.fail(pc.red('Failed to initialize: ' + err.message));
       }
@@ -246,6 +251,11 @@ export function createCli(): Command {
       for (const p of projects) {
         const sourceBadge = p.source === 'godot-registry' ? pc.yellow(' [Godot Engine]') : pc.green(' [Local]');
         console.log(pc.bold(pc.white(`📁 ${p.name}`)) + sourceBadge + pc.gray(` (${p.projectPath})`));
+        console.log(
+          `   OrbitKit Plugin: ${
+            p.hasOrbitKitPlugin ? pc.green('Active (res://addons/orbitkit/plugin.cfg)') : pc.yellow('not installed')
+          }`
+        );
         console.log(
           `   Addons: ${p.installedAddons.length ? pc.green(p.installedAddons.join(', ')) : pc.gray('none')}`
         );
@@ -324,6 +334,48 @@ export function createCli(): Command {
         }
         console.log(pc.green('\nProject is up to date with latest ecosystem standards!\n'));
       }
+    });
+
+  // Command group: plugin
+  const pluginCmd = program
+    .command('plugin')
+    .description('Manage the OrbitKit Godot 4 Editor plugin (addons/orbitkit)');
+
+  pluginCmd
+    .command('install [dir]')
+    .description('Install and automatically enable the OrbitKit plugin in a Godot project')
+    .action(async (dir = '.') => {
+      const spinner = ora('Installing OrbitKit Godot Editor plugin...').start();
+      const res = await installGodotPlugin(dir);
+      if (res.success) {
+        spinner.succeed(pc.green(res.message));
+      } else {
+        spinner.fail(pc.red(res.message));
+      }
+    });
+
+  pluginCmd
+    .command('remove [dir]')
+    .alias('uninstall')
+    .description('Remove the OrbitKit plugin from a Godot project and disable it in project.godot')
+    .action(async (dir = '.') => {
+      const spinner = ora('Removing OrbitKit Godot Editor plugin...').start();
+      const res = await uninstallGodotPlugin(dir);
+      if (res.success) {
+        spinner.succeed(pc.green(res.message));
+      } else {
+        spinner.fail(pc.red(res.message));
+      }
+    });
+
+  pluginCmd
+    .command('status [dir]')
+    .description('Check whether the OrbitKit Godot Editor plugin is installed and enabled')
+    .action(async (dir = '.') => {
+      const status = await getGodotPluginStatus(dir);
+      console.log(pc.bold(pc.cyan('\nOrbitKit Godot Plugin Status:')));
+      console.log(`  Installed in addons/orbitkit: ${status.installed ? pc.green('Yes (v' + status.version + ')') : pc.yellow('No')}`);
+      console.log(`  Enabled in project.godot:     ${status.enabled ? pc.green('Yes') : pc.yellow('No')}\n`);
     });
 
   // Command group: skill

@@ -1,6 +1,7 @@
 import { scanForGodotProjects, inspectProject, DiscoveredProject } from './scanner.js';
 import { checkSkillUpdates, installSkill } from './skillsManager.js';
 import { listConfiguredMcpServers, installMcpServer } from './mcpManager.js';
+import { installGodotPlugin } from './pluginManager.js';
 import { checkForUpdates } from './updateChecker.js';
 import { applyUpdates } from './applier.js';
 import { readConfig } from './config.js';
@@ -10,6 +11,7 @@ export interface ProjectUpdateResult {
   project: DiscoveredProject;
   updatedSkills: string[];
   updatedMcps: string[];
+  pluginInstalled?: boolean;
   errors: string[];
   backupDir?: string;
 }
@@ -22,11 +24,20 @@ export async function updateProject(
   projectDir: string,
   opts?: { allowMajor?: boolean; installNew?: boolean }
 ): Promise<ProjectUpdateResult> {
-  const project = await inspectProject(projectDir);
   const updatedSkills: string[] = [];
   const updatedMcps: string[] = [];
   const errors: string[] = [];
   let backupDir: string | undefined;
+  let pluginInstalled = false;
+
+  // 0. Ensure OrbitKit Godot Editor plugin is installed & enabled in project.godot
+  try {
+    const plugRes = await installGodotPlugin(projectDir);
+    pluginInstalled = plugRes.success;
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    errors.push(`Plugin sync failed: ${msg}`);
+  }
 
   // 1. Check and update skills (via remote/cached catalog if available, or bundled fallback)
   try {
@@ -95,10 +106,13 @@ export async function updateProject(
     await clearUpdateMarker(projectDir);
   }
 
+  const project = await inspectProject(projectDir);
+
   return {
     project,
     updatedSkills,
     updatedMcps,
+    pluginInstalled,
     errors,
     ...(backupDir ? { backupDir } : {})
   };

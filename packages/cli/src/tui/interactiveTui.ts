@@ -3,6 +3,7 @@ import os from 'node:os';
 import { scanForGodotProjects, inspectProject, DiscoveredProject } from '../core/scanner.js';
 import { CURATED_SKILLS, installSkill } from '../core/skillsManager.js';
 import { OFFICIAL_GODOT_MCP_SERVERS, installMcpServer } from '../core/mcpManager.js';
+import { installGodotPlugin } from '../core/pluginManager.js';
 import { runSystemDiagnostics, DiagnosticItem } from '../core/doctor.js';
 import {
   checkCliVersion,
@@ -33,14 +34,28 @@ const C = {
 };
 
 async function installEverythingInProject(projectPath: string): Promise<{
+  pluginInstalled: boolean;
   skillsCount: number;
   mcpsCount: number;
   errors: string[];
 }> {
+  let pluginInstalled = false;
   let skillsCount = 0;
   let mcpsCount = 0;
   const errors: string[] = [];
 
+  // 1. Install and enable the Godot 4 Editor plugin (addons/orbitkit/plugin.cfg) in project.godot
+  try {
+    const plugRes = await installGodotPlugin(projectPath);
+    pluginInstalled = plugRes.success;
+    if (!plugRes.success) {
+      errors.push(plugRes.message);
+    }
+  } catch (err: any) {
+    errors.push(`plugin: ${err.message}`);
+  }
+
+  // 2. Install all curated AI skills (.agents/skills & .claude/skills)
   for (const skill of CURATED_SKILLS) {
     const res = await installSkill(projectPath, skill.id);
     if (res.success) {
@@ -50,6 +65,7 @@ async function installEverythingInProject(projectPath: string): Promise<{
     }
   }
 
+  // 3. Configure all official Godot MCP servers in .mcp.json
   for (const mcp of OFFICIAL_GODOT_MCP_SERVERS) {
     const res = await installMcpServer(projectPath, mcp.id);
     if (res.success) {
@@ -59,7 +75,7 @@ async function installEverythingInProject(projectPath: string): Promise<{
     }
   }
 
-  return { skillsCount, mcpsCount, errors };
+  return { pluginInstalled, skillsCount, mcpsCount, errors };
 }
 
 export async function startInteractiveTui(): Promise<void> {
@@ -322,13 +338,14 @@ export async function startInteractiveTui(): Promise<void> {
         projects.forEach((p, idx) => {
           const active = idx === cursor;
           const prefix = active ? `${C.accent}▸${RESET}` : ' ';
+          const plugTag = p.hasOrbitKitPlugin ? `${C.green}plugin ✓${RESET}` : `${C.amber}no-plugin${RESET}`;
           const mcpTag = p.hasMcpConfig ? `${C.green}mcp ✓${RESET}` : `${C.muted}no-mcp${RESET}`;
           const isCurrentTarget = p.projectPath === activeProjectDir ? ` ${C.cyan}[activo]${RESET}` : '';
           lines.push(
-            `  ${prefix} ${active ? C.white : C.text}${p.name}${RESET}${isCurrentTarget} ${C.muted}(skills: ${p.installedSkills.length}/${CURATED_SKILLS.length}, ${mcpTag}${C.muted})${RESET}`
+            `  ${prefix} ${active ? C.white : C.text}${p.name}${RESET}${isCurrentTarget} ${C.muted}(${plugTag}${C.muted}, skills: ${p.installedSkills.length}/${CURATED_SKILLS.length}, ${mcpTag}${C.muted})${RESET}`
           );
           if (active) {
-            lines.push(`    ${C.muted}${p.projectPath}  —  Presiona Enter para instalar todos los Skills y MCPs aquí${RESET}`);
+            lines.push(`    ${C.muted}${p.projectPath}  —  Presiona Enter para instalar el Plugin Godot, Skills y MCPs aquí${RESET}`);
           }
         });
       }
@@ -578,9 +595,9 @@ export async function startInteractiveTui(): Promise<void> {
         const proj = projects[cursor];
         if (proj) {
           activeProjectDir = proj.projectPath;
-          setNotice(`Instalando todos los AI Skills y servidores MCP en "${proj.name}"...`, 'info');
+          setNotice(`Instalando Plugin de Godot, AI Skills y servidores MCP en "${proj.name}"...`, 'info');
           render();
-          const { skillsCount, mcpsCount, errors } = await installEverythingInProject(proj.projectPath);
+          const { pluginInstalled, skillsCount, mcpsCount, errors } = await installEverythingInProject(proj.projectPath);
           try {
             const refreshed = await inspectProject(proj.projectPath);
             projects[cursor] = { ...refreshed, source: proj.source };
@@ -589,12 +606,12 @@ export async function startInteractiveTui(): Promise<void> {
           }
           if (errors.length === 0) {
             setNotice(
-              `✓ Todo instalado en "${proj.name}" (${skillsCount} AI Skills + ${mcpsCount} MCP Servers).`,
+              `✓ Todo instalado en "${proj.name}" (Plugin Godot ${pluginInstalled ? 'activo en addons/orbitkit' : ''} + ${skillsCount} AI Skills + ${mcpsCount} MCPs).`,
               'ok'
             );
           } else {
             setNotice(
-              `⚠ Instalado en "${proj.name}" (${skillsCount} skills, ${mcpsCount} MCPs) con ${errors.length} aviso(s).`,
+              `⚠ Instalado en "${proj.name}" (plugin: ${pluginInstalled ? 'sí' : 'no'}, ${skillsCount} skills, ${mcpsCount} MCPs) con ${errors.length} aviso(s).`,
               'warn'
             );
           }

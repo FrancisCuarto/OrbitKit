@@ -10,6 +10,7 @@ export interface DiscoveredProject {
   installedAddons: string[];
   installedSkills: string[];
   hasMcpConfig: boolean;
+  hasOrbitKitPlugin: boolean;
   registryRecordCount: number;
   source?: 'local' | 'godot-registry';
 }
@@ -374,7 +375,17 @@ export async function inspectProject(projectDir: string): Promise<DiscoveredProj
     }
   }
 
-  // 4. Detect DevDock local registry
+  // 4. Detect OrbitKit Godot Editor plugin (installed in addons/orbitkit & enabled in project.godot)
+  let hasOrbitKitPlugin = false;
+  try {
+    await fs.access(path.join(projectDir, 'addons', 'orbitkit', 'plugin.cfg'));
+    const configContent = await fs.readFile(actualConfigPath, 'utf8');
+    hasOrbitKitPlugin = configContent.includes('res://addons/orbitkit/plugin.cfg');
+  } catch {
+    hasOrbitKitPlugin = false;
+  }
+
+  // 5. Detect DevDock local registry
   let registryRecordCount = 0;
   const registryPath = path.join(projectDir, '.devdock', 'installed.json');
   try {
@@ -393,6 +404,7 @@ export async function inspectProject(projectDir: string): Promise<DiscoveredProj
     installedAddons,
     installedSkills,
     hasMcpConfig,
+    hasOrbitKitPlugin,
     registryRecordCount
   };
 }

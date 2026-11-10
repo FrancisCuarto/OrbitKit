@@ -5,6 +5,12 @@ import os from 'node:os';
 import { scanForGodotProjects, inspectProject } from '../core/scanner.js';
 import { installSkill, checkSkillUpdates, CURATED_SKILLS } from '../core/skillsManager.js';
 import { installMcpServer, listConfiguredMcpServers } from '../core/mcpManager.js';
+import {
+  installGodotPlugin,
+  uninstallGodotPlugin,
+  getGodotPluginStatus,
+  enablePluginInProjectGodot
+} from '../core/pluginManager.js';
 import { runSystemDiagnostics } from '../core/doctor.js';
 import { startGuiServer } from '../ui/server.js';
 import { renderGuiHtml } from '../ui/html.js';
@@ -199,6 +205,53 @@ describe('DevDock CLI Core Engine', () => {
     expect(compareSemver('v1.0.0', '0.9.9')).toBe(1);
 
     const ver = await getCurrentCliVersion();
-    expect(ver).toBe('0.6.3');
+    expect(ver).toBe('0.6.4');
+  });
+
+  it('automatically installs and enables the OrbitKit Godot Editor plugin on project selection', async () => {
+    const beforeStatus = await getGodotPluginStatus(tempDir);
+    expect(beforeStatus.installed).toBe(false);
+    expect(beforeStatus.enabled).toBe(false);
+
+    const res = await installGodotPlugin(tempDir);
+    expect(res.success).toBe(true);
+    expect(res.enabledInProject).toBe(true);
+
+    const afterStatus = await getGodotPluginStatus(tempDir);
+    expect(afterStatus.installed).toBe(true);
+    expect(afterStatus.enabled).toBe(true);
+
+    const proj = await inspectProject(tempDir);
+    expect(proj.hasOrbitKitPlugin).toBe(true);
+    expect(proj.installedAddons).toContain('orbitkit');
+
+    const projectGodotContent = await fs.readFile(path.join(tempDir, 'project.godot'), 'utf8');
+    expect(projectGodotContent).toContain('[editor_plugins]');
+    expect(projectGodotContent).toContain('enabled=PackedStringArray("res://addons/orbitkit/plugin.cfg")');
+
+    // Verify catalog.json was created for offline Godot Editor usage
+    const catalogRaw = await fs.readFile(path.join(tempDir, '.devdock', 'catalog.json'), 'utf8');
+    const catalog = JSON.parse(catalogRaw);
+    expect(catalog.skills.length).toBeGreaterThan(0);
+    expect(catalog.mcpServers.length).toBeGreaterThan(0);
+  });
+
+  it('preserves existing Godot editor plugins when enabling and disabling OrbitKit', async () => {
+    const projectGodotPath = path.join(tempDir, 'project.godot');
+    await fs.writeFile(
+      projectGodotPath,
+      'config_version=5\n\n[application]\nconfig/name="Test Godot Game"\n\n[editor_plugins]\n\nenabled=PackedStringArray("res://addons/gut/plugin.cfg")\n'
+    );
+
+    await enablePluginInProjectGodot(projectGodotPath);
+    const updatedRaw = await fs.readFile(projectGodotPath, 'utf8');
+    expect(updatedRaw).toContain(
+      'enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/orbitkit/plugin.cfg")'
+    );
+
+    await uninstallGodotPlugin(tempDir);
+    const afterUninstallRaw = await fs.readFile(projectGodotPath, 'utf8');
+    expect(afterUninstallRaw).toContain('enabled=PackedStringArray("res://addons/gut/plugin.cfg")');
+    expect(afterUninstallRaw).not.toContain('res://addons/orbitkit/plugin.cfg');
   });
 });
