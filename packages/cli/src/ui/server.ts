@@ -298,13 +298,22 @@ export async function startGuiServer(options: GuiServerOptions = {}): Promise<Gu
         await fs.mkdir(path.join(target, '.agents', 'skills'), { recursive: true });
         await fs.mkdir(path.join(target, '.claude', 'skills'), { recursive: true });
 
-        // Default skill & MCP
-        await installSkill(target, 'godot4-syntax-guardian');
-        await installMcpServer(target, 'godot-lsp');
+        // Install all curated AI skills & official MCP servers
+        let installedSkillsCount = 0;
+        for (const skill of CURATED_SKILLS) {
+          const r = await installSkill(target, skill.id);
+          if (r.success) installedSkillsCount++;
+        }
+
+        let installedMcpsCount = 0;
+        for (const mcp of OFFICIAL_GODOT_MCP_SERVERS) {
+          const r = await installMcpServer(target, mcp.id);
+          if (r.success) installedMcpsCount++;
+        }
 
         return sendJson(res, 200, {
           success: true,
-          message: `OrbitKit inicializado con éxito en ${target}`
+          message: `OrbitKit instalado en ${target} (${installedSkillsCount} AI Skills + ${installedMcpsCount} MCP Servers)`
         });
       }
 

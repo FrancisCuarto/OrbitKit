@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-10T07:59:06Z",
+  "generatedAt": "2026-11-10T15:22:13Z",
   "cli": {
-    "latest": "0.6.2",
+    "latest": "0.6.3",
     "minSupported": "0.5.0",
     "channel": "stable"
   },

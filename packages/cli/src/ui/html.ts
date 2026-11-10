@@ -1155,12 +1155,15 @@ export function renderGuiHtml(): string {
             <div style="margin-bottom:0.4rem;"><strong>AI Skills:</strong> \${p.installedSkills.length ? p.installedSkills.join(', ') : 'Ninguno'}</div>
             <div><strong>MCP:</strong> \${p.hasMcpConfig ? '✓ Configurado (.mcp.json)' : '✗ Sin configurar'}</div>
           </div>
-          <div style="display:flex; gap:0.5rem; margin-top:auto;">
-            <button class="btn btn-primary btn-sm" onclick="changeActiveProject('\${escapeHtml(p.projectPath)}'); switchTab('skills');">
-              Instalar Skills
+          <div style="display:flex; gap:0.5rem; margin-top:auto; flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="installAllInProject('\${escapeHtml(p.projectPath)}')">
+              ⚡ Instalar Todo
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="changeActiveProject('\${escapeHtml(p.projectPath)}'); switchTab('skills');">
+              Skills
             </button>
             <button class="btn btn-secondary btn-sm" onclick="changeActiveProject('\${escapeHtml(p.projectPath)}'); switchTab('mcps');">
-              Configurar MCPs
+              MCPs
             </button>
           </div>
         \`;
@@ -1408,6 +1411,12 @@ export function renderGuiHtml(): string {
         log('Fallo al actualizar: ' + err.message, 'error');
         showToast('Fallo al actualizar', 'error');
       }
+    }
+
+    async function installAllInProject(targetDir) {
+      appState.activeProjectDir = targetDir;
+      updateProjectSelector();
+      await initProject();
     }
 
     async function initProject() {

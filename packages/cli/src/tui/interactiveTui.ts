@@ -1,10 +1,9 @@
 import readline from 'node:readline';
 import os from 'node:os';
-import { scanForGodotProjects, DiscoveredProject } from '../core/scanner.js';
+import { scanForGodotProjects, inspectProject, DiscoveredProject } from '../core/scanner.js';
 import { CURATED_SKILLS, installSkill } from '../core/skillsManager.js';
 import { OFFICIAL_GODOT_MCP_SERVERS, installMcpServer } from '../core/mcpManager.js';
 import { runSystemDiagnostics, DiagnosticItem } from '../core/doctor.js';
-import { updateAllProjects } from '../core/updater.js';
 import {
   checkCliVersion,
   getCurrentCliVersion,
@@ -33,6 +32,36 @@ const C = {
   red: fg(244, 63, 94)                   // Error red
 };
 
+async function installEverythingInProject(projectPath: string): Promise<{
+  skillsCount: number;
+  mcpsCount: number;
+  errors: string[];
+}> {
+  let skillsCount = 0;
+  let mcpsCount = 0;
+  const errors: string[] = [];
+
+  for (const skill of CURATED_SKILLS) {
+    const res = await installSkill(projectPath, skill.id);
+    if (res.success) {
+      skillsCount++;
+    } else {
+      errors.push(`${skill.id}: ${res.message}`);
+    }
+  }
+
+  for (const mcp of OFFICIAL_GODOT_MCP_SERVERS) {
+    const res = await installMcpServer(projectPath, mcp.id);
+    if (res.success) {
+      mcpsCount++;
+    } else {
+      errors.push(`${mcp.id}: ${res.message}`);
+    }
+  }
+
+  return { skillsCount, mcpsCount, errors };
+}
+
 export async function startInteractiveTui(): Promise<void> {
   const stdin = process.stdin;
   const stdout = process.stdout;
@@ -52,6 +81,7 @@ export async function startInteractiveTui(): Promise<void> {
     updateAvailable: false
   };
 
+  let activeProjectDir = process.cwd();
   let projects: DiscoveredProject[] = [];
   let screen: Screen = 'main';
   let cursor = 0;
@@ -61,10 +91,13 @@ export async function startInteractiveTui(): Promise<void> {
   let doctorItems: DiagnosticItem[] | null = null;
   let confirmingUninstall = false;
 
-  // Non-blocking background startup checks (projects + remote version)
-  scanForGodotProjects(process.cwd())
+  // Non-blocking background startup checks (projects + Godot registry + remote version)
+  scanForGodotProjects(process.cwd(), { maxDepth: 4, includeGodotConfig: true })
     .then((found) => {
       projects = found;
+      if (projects.length > 0 && !projects.some((p) => p.projectPath === activeProjectDir)) {
+        activeProjectDir = projects[0].projectPath;
+      }
       render();
     })
     .catch(() => {});
@@ -121,7 +154,7 @@ export async function startInteractiveTui(): Promise<void> {
         setNotice('Launching OrbitKit Web GUI...', 'info');
         render();
         try {
-          const { url } = await startGuiServer({ port: 4567, dir: process.cwd(), openBrowser: true });
+          const { url } = await startGuiServer({ port: 4567, dir: activeProjectDir, openBrowser: true });
           setNotice(`✓ GUI running at ${url} (opened in browser)`, 'ok');
         } catch (err: any) {
           setNotice(`✗ Failed to start GUI: ${err.message}`, 'err');
@@ -147,10 +180,23 @@ export async function startInteractiveTui(): Promise<void> {
     },
     {
       label: 'Projects',
-      hint: () => `Scan & sync Godot 4 projects (${projects.length} in current dir)`,
+      hint: () => `Select Godot 4 project & install everything (${projects.length} detected)`,
       action: async () => {
         screen = 'projects';
         cursor = 0;
+        if (projects.length === 0) {
+          setNotice(`Escaneando proyectos Godot en ${os.homedir()}...`, 'info');
+          render();
+          projects = await scanForGodotProjects(os.homedir(), { maxDepth: 4, includeGodotConfig: true });
+          if (projects.length > 0) {
+            activeProjectDir = projects[0].projectPath;
+            setNotice(`✓ ${projects.length} proyecto(s) encontrado(s). Presiona Enter para instalar todo en el proyecto seleccionado.`, 'ok');
+          } else {
+            setNotice('No se encontraron proyectos Godot.', 'warn');
+          }
+        } else {
+          setNotice('Presiona Enter sobre un proyecto para instalarle todos los Skills y MCPs.', 'info');
+        }
       }
     },
     {
@@ -162,7 +208,7 @@ export async function startInteractiveTui(): Promise<void> {
         if (!doctorItems) {
           setNotice('Running environment diagnostics...', 'info');
           render();
-          doctorItems = await runSystemDiagnostics(process.cwd());
+          doctorItems = await runSystemDiagnostics(activeProjectDir);
           notice = '';
         }
       }
@@ -227,8 +273,8 @@ export async function startInteractiveTui(): Promise<void> {
       ? `${C.amber}⬆ v${versionStatus.latestVersion} available (press u)${RESET}`
       : `${C.green}✓ v${versionStatus.currentVersion}${RESET}`;
 
-    const shortCwd = process.cwd().replace(os.homedir(), '~');
-    lines.push(`  ${C.accent}●${RESET} ${C.white}orbitkit${RESET}  ${verBadge}  ${C.muted}${shortCwd}${RESET}`);
+    const shortTarget = activeProjectDir.replace(os.homedir(), '~');
+    lines.push(`  ${C.accent}●${RESET} ${C.white}orbitkit${RESET}  ${verBadge}  ${C.muted}${shortTarget}${RESET}`);
     lines.push(`  ${C.dim}${'─'.repeat(58)}${RESET}`);
     lines.push('');
 
@@ -236,12 +282,12 @@ export async function startInteractiveTui(): Promise<void> {
       mainItems.forEach((item, idx) => {
         const active = idx === cursor;
         const prefix = active ? `${C.accent}▸${RESET}` : ' ';
-        const label = active ? `${C.white}${item.label.padEnd(15)}${RESET}` : `${C.text}${item.label.padEnd(15)}${RESET}`;
+        const label = active ? `${C.white}${item.label.padEnd(18)}${RESET}` : `${C.text}${item.label.padEnd(18)}${RESET}`;
         const hint = active ? `${C.cyan}${item.hint()}${RESET}` : `${C.muted}${item.hint()}${RESET}`;
         lines.push(`  ${prefix} ${label} ${hint}`);
       });
     } else if (screen === 'skills') {
-      lines.push(`  ${C.white}AI Skills${RESET} ${C.muted}· Enter to install into current project${RESET}`);
+      lines.push(`  ${C.white}AI Skills${RESET} ${C.muted}· Enter to install into ${shortTarget}${RESET}`);
       lines.push('');
       CURATED_SKILLS.forEach((s, idx) => {
         const active = idx === cursor;
@@ -253,7 +299,7 @@ export async function startInteractiveTui(): Promise<void> {
         }
       });
     } else if (screen === 'mcp') {
-      lines.push(`  ${C.white}MCP Servers${RESET} ${C.muted}· Enter to configure in .mcp.json${RESET}`);
+      lines.push(`  ${C.white}MCP Servers${RESET} ${C.muted}· Enter to configure in ${shortTarget}/.mcp.json${RESET}`);
       lines.push('');
       OFFICIAL_GODOT_MCP_SERVERS.forEach((m, idx) => {
         const active = idx === cursor;
@@ -265,7 +311,9 @@ export async function startInteractiveTui(): Promise<void> {
         }
       });
     } else if (screen === 'projects') {
-      lines.push(`  ${C.white}Godot Projects${RESET} ${C.muted}· Press 'r' to scan home directory, 'a' to sync all${RESET}`);
+      lines.push(
+        `  ${C.white}Godot Projects${RESET} ${C.muted}· Enter: instalar todo · 'a': instalar en todos · 'r': re-escanear${RESET}`
+      );
       lines.push('');
       if (projects.length === 0) {
         lines.push(`    ${C.muted}No project.godot found in current directory.${RESET}`);
@@ -274,12 +322,13 @@ export async function startInteractiveTui(): Promise<void> {
         projects.forEach((p, idx) => {
           const active = idx === cursor;
           const prefix = active ? `${C.accent}▸${RESET}` : ' ';
-          const mcpTag = p.hasMcpConfig ? `${C.green}mcp${RESET}` : `${C.muted}no-mcp${RESET}`;
+          const mcpTag = p.hasMcpConfig ? `${C.green}mcp ✓${RESET}` : `${C.muted}no-mcp${RESET}`;
+          const isCurrentTarget = p.projectPath === activeProjectDir ? ` ${C.cyan}[activo]${RESET}` : '';
           lines.push(
-            `  ${prefix} ${active ? C.white : C.text}${p.name}${RESET} ${C.muted}(skills: ${p.installedSkills.length}, ${mcpTag}${C.muted})${RESET}`
+            `  ${prefix} ${active ? C.white : C.text}${p.name}${RESET}${isCurrentTarget} ${C.muted}(skills: ${p.installedSkills.length}/${CURATED_SKILLS.length}, ${mcpTag}${C.muted})${RESET}`
           );
           if (active) {
-            lines.push(`    ${C.muted}${p.projectPath}${RESET}`);
+            lines.push(`    ${C.muted}${p.projectPath}  —  Presiona Enter para instalar todos los Skills y MCPs aquí${RESET}`);
           }
         });
       }
@@ -327,8 +376,10 @@ export async function startInteractiveTui(): Promise<void> {
       lines.push(`  ${C.muted}↑/↓ move  ·  enter select  ·  / search  ·  u upgrade  ·  q quit${RESET}`);
     } else if (screen === 'search') {
       lines.push(`  ${C.muted}type to filter  ·  ↑/↓ move  ·  enter install  ·  esc back${RESET}`);
+    } else if (screen === 'projects') {
+      lines.push(`  ${C.muted}↑/↓ move  ·  enter install all  ·  a sync all  ·  r scan  ·  esc/b back${RESET}`);
     } else {
-      lines.push(`  ${C.muted}↑/↓ move  ·  enter run  ·  esc/b back  ·  q quit${RESET}`);
+      lines.push(`  ${C.muted}↑/↓ move  ·  enter install  ·  esc/b back  ·  q quit${RESET}`);
     }
 
     stdout.write(lines.join('\n') + '\n');
@@ -393,8 +444,8 @@ export async function startInteractiveTui(): Promise<void> {
         if (chosen) {
           const res =
             chosen.type === 'skill'
-              ? await installSkill(process.cwd(), chosen.id)
-              : await installMcpServer(process.cwd(), chosen.id);
+              ? await installSkill(activeProjectDir, chosen.id)
+              : await installMcpServer(activeProjectDir, chosen.id);
           setNotice(res.message, res.success ? 'ok' : 'err');
           render();
         }
@@ -456,20 +507,42 @@ export async function startInteractiveTui(): Promise<void> {
     }
 
     if (key.name === 'r' && screen === 'projects') {
-      setNotice(`Scanning ${os.homedir()} for Godot 4 projects...`, 'info');
+      setNotice(`Escaneando ${os.homedir()} y registro de Godot 4...`, 'info');
       render();
-      projects = await scanForGodotProjects(os.homedir(), 3);
+      projects = await scanForGodotProjects(os.homedir(), { maxDepth: 4, includeGodotConfig: true });
       cursor = 0;
-      setNotice(`Found ${projects.length} Godot project(s).`, 'ok');
+      if (projects.length > 0 && !projects.some((p) => p.projectPath === activeProjectDir)) {
+        activeProjectDir = projects[0].projectPath;
+      }
+      setNotice(`✓ Encontrados ${projects.length} proyecto(s) Godot. Presiona Enter para instalar todo.`, 'ok');
       render();
       return;
     }
 
     if (key.name === 'a' && screen === 'projects') {
-      setNotice('Updating all discovered projects...', 'info');
+      if (projects.length === 0) {
+        projects = await scanForGodotProjects(os.homedir(), { maxDepth: 4, includeGodotConfig: true });
+      }
+      if (projects.length === 0) {
+        setNotice('No se encontraron proyectos Godot para sincronizar.', 'warn');
+        render();
+        return;
+      }
+      setNotice(`Instalando todos los Skills y MCPs en ${projects.length} proyecto(s)...`, 'info');
       render();
-      const updated = await updateAllProjects(process.cwd());
-      setNotice(`Synced ${updated.length} project(s).`, 'ok');
+      for (let i = 0; i < projects.length; i++) {
+        await installEverythingInProject(projects[i].projectPath);
+        try {
+          const updatedProj = await inspectProject(projects[i].projectPath);
+          projects[i] = { ...updatedProj, source: projects[i].source };
+        } catch {
+          // ignore
+        }
+      }
+      setNotice(
+        `✓ Instalados ${CURATED_SKILLS.length} Skills y ${OFFICIAL_GODOT_MCP_SERVERS.length} MCPs en ${projects.length} proyecto(s).`,
+        'ok'
+      );
       render();
       return;
     }
@@ -477,7 +550,7 @@ export async function startInteractiveTui(): Promise<void> {
     if (key.name === 'r' && screen === 'doctor') {
       setNotice('Re-running diagnostics...', 'info');
       render();
-      doctorItems = await runSystemDiagnostics(process.cwd());
+      doctorItems = await runSystemDiagnostics(activeProjectDir);
       setNotice('Diagnostics updated.', 'ok');
       render();
       return;
@@ -490,15 +563,41 @@ export async function startInteractiveTui(): Promise<void> {
       } else if (screen === 'skills') {
         const skill = CURATED_SKILLS[cursor];
         if (skill) {
-          const res = await installSkill(process.cwd(), skill.id);
+          const res = await installSkill(activeProjectDir, skill.id);
           setNotice(res.message, res.success ? 'ok' : 'err');
           render();
         }
       } else if (screen === 'mcp') {
         const mcp = OFFICIAL_GODOT_MCP_SERVERS[cursor];
         if (mcp) {
-          const res = await installMcpServer(process.cwd(), mcp.id);
+          const res = await installMcpServer(activeProjectDir, mcp.id);
           setNotice(res.message, res.success ? 'ok' : 'err');
+          render();
+        }
+      } else if (screen === 'projects') {
+        const proj = projects[cursor];
+        if (proj) {
+          activeProjectDir = proj.projectPath;
+          setNotice(`Instalando todos los AI Skills y servidores MCP en "${proj.name}"...`, 'info');
+          render();
+          const { skillsCount, mcpsCount, errors } = await installEverythingInProject(proj.projectPath);
+          try {
+            const refreshed = await inspectProject(proj.projectPath);
+            projects[cursor] = { ...refreshed, source: proj.source };
+          } catch {
+            // ignore
+          }
+          if (errors.length === 0) {
+            setNotice(
+              `✓ Todo instalado en "${proj.name}" (${skillsCount} AI Skills + ${mcpsCount} MCP Servers).`,
+              'ok'
+            );
+          } else {
+            setNotice(
+              `⚠ Instalado en "${proj.name}" (${skillsCount} skills, ${mcpsCount} MCPs) con ${errors.length} aviso(s).`,
+              'warn'
+            );
+          }
           render();
         }
       }
