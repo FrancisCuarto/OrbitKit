@@ -20,6 +20,7 @@ export const TRANSLATIONS = {
       btnGithub: 'Ver en GitHub',
       tabInstall: 'Instalar Global',
       tabUpgradeCli: 'Actualizar CLI',
+      tabUninstallCli: 'Desinstalar CLI',
       tabScan: 'Escanear Proyectos',
       tabUpdate: 'Actualizar Proyectos',
       tabMcp: 'Conectar MCP'
@@ -106,6 +107,7 @@ export const TRANSLATIONS = {
       btnGithub: 'View on GitHub',
       tabInstall: 'Install Global',
       tabUpgradeCli: 'Upgrade CLI',
+      tabUninstallCli: 'Uninstall CLI',
       tabScan: 'Scan Projects',
       tabUpdate: 'Update Projects',
       tabMcp: 'Connect MCP'

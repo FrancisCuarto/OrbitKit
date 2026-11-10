@@ -215,3 +215,47 @@ export async function performCliSelfUpdate(options?: {
     }
   }
 }
+
+export async function performCliUninstall(options?: {
+  cleanProject?: boolean;
+  projectDir?: string;
+}): Promise<{
+  success: boolean;
+  message: string;
+}> {
+  try {
+    // 1. If requested, clean .devdock/ metadata in the current project
+    if (options?.cleanProject) {
+      const targetDir = options.projectDir || process.cwd();
+      await fs.rm(path.join(targetDir, '.devdock'), { recursive: true, force: true }).catch(() => {});
+    }
+
+    // 2. Remove custom ~/.local/bin symlinks if present
+    for (const binName of ['orbitkit', 'devdock']) {
+      const localBin = path.join(process.env.HOME || '', '.local', 'bin', binName);
+      try {
+        const stat = await fs.lstat(localBin);
+        if (stat.isSymbolicLink() || stat.isFile()) {
+          await fs.unlink(localBin);
+        }
+      } catch {
+        // Ignore if not present
+      }
+    }
+
+    // 3. Uninstall global npm package(s)
+    await execAsync('npm uninstall -g @francisiv/orbitkit @devdock/cli').catch(async () => {
+      await execAsync('npm uninstall -g @francisiv/orbitkit');
+    });
+
+    return {
+      success: true,
+      message: 'OrbitKit CLI (@francisiv/orbitkit) fue desinstalado globalmente del sistema.'
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: `Error al desinstalar OrbitKit CLI: ${err.message || String(err)}`
+    };
+  }
+}

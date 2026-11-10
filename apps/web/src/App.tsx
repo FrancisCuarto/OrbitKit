@@ -12,7 +12,8 @@ import {
   FolderSearch,
   Stethoscope,
   Copy,
-  Check
+  Check,
+  Trash2
 } from 'lucide-react';
 import { Language, TRANSLATIONS } from './content/translations';
 import { TerminalWidget } from './components/TerminalWidget';
@@ -33,12 +34,19 @@ export function App() {
     return 'es';
   });
   const [copiedUpgrade, setCopiedUpgrade] = useState(false);
+  const [copiedUninstall, setCopiedUninstall] = useState(false);
   const t = TRANSLATIONS[lang];
 
   const handleCopyUpgrade = () => {
     void safeCopyToClipboard('orbitkit upgrade');
     setCopiedUpgrade(true);
     setTimeout(() => setCopiedUpgrade(false), 2000);
+  };
+
+  const handleCopyUninstall = () => {
+    void safeCopyToClipboard('orbitkit uninstall');
+    setCopiedUninstall(true);
+    setTimeout(() => setCopiedUninstall(false), 2000);
   };
 
   return (
@@ -67,7 +75,7 @@ export function App() {
                   OrbitKit
                 </span>
                 <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-godot-500/20 text-godot-300 border border-godot-500/30">
-                  CLI v0.4.0
+                  CLI v0.5.0
                 </span>
               </div>
             </div>
@@ -394,50 +402,100 @@ export function App() {
           ))}
         </div>
 
-        {/* Dedicated Upgrade CLI Section */}
-        <div className="mt-10 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-godot-card via-godot-900/90 to-godot-card border border-emerald-500/40 shadow-xl shadow-emerald-500/5 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-          <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
-              <RefreshCw className="w-3.5 h-3.5 mr-1 animate-spin-slow" />
-              <span>{lang === 'es' ? 'Auto-Verificador de Versiones integrado (v0.4.0)' : 'Built-in Version Checker & Self-Updater (v0.4.0)'}</span>
+        {/* Dedicated Upgrade & Uninstall CLI Grid */}
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Upgrade Card */}
+          <div className="p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-godot-card via-godot-900/90 to-godot-card border border-emerald-500/40 shadow-xl shadow-emerald-500/5 flex flex-col justify-between gap-5">
+            <div className="space-y-2">
+              <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
+                <RefreshCw className="w-3.5 h-3.5 mr-1" />
+                <span>{lang === 'es' ? 'Verificador de Versiones (v0.5.0)' : 'Version Checker & Self-Updater (v0.5.0)'}</span>
+              </div>
+              <h3 className="text-lg sm:text-xl font-extrabold text-white">
+                {lang === 'es'
+                  ? '¿Ya lo tenías instalado? Actualizar CLI'
+                  : 'Already installed? Upgrade CLI'}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {lang === 'es'
+                  ? 'Comprueba tu versión contra NPM y GitHub y actualiza el CLI en un paso (o presiona "u" dentro de orbitkit):'
+                  : 'Checks your version against NPM and GitHub and upgrades the CLI in one step (or press "u" inside orbitkit):'}
+              </p>
             </div>
-            <h3 className="text-xl sm:text-2xl font-extrabold text-white">
-              {lang === 'es'
-                ? '¿Ya tenías OrbitKit instalado? Comprueba y actualiza tu versión'
-                : 'Already have OrbitKit installed? Check & upgrade your version'}
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              {lang === 'es'
-                ? 'OrbitKit comprueba automáticamente tu versión contra NPM y GitHub. Ejecuta "orbitkit upgrade" (o presiona "u" dentro de la interfaz) para actualizar el CLI en un paso:'
-                : 'OrbitKit automatically checks your version against NPM and GitHub. Run "orbitkit upgrade" (or press "u" inside the TUI) to self-update the CLI in one step:'}
-            </p>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-godot-950/90 p-3 rounded-xl border border-emerald-500/30 font-mono text-xs sm:text-sm">
+              <div className="flex items-center space-x-2 px-2">
+                <span className="text-emerald-400 font-bold select-none">$</span>
+                <code className="text-emerald-300 font-semibold whitespace-nowrap">
+                  orbitkit upgrade
+                </code>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyUpgrade}
+                className="flex items-center justify-center px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-bold text-xs transition shadow-md shadow-emerald-500/20 whitespace-nowrap"
+              >
+                <span className="inline-flex mr-1.5 shrink-0">
+                  {copiedUpgrade ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                </span>
+                <span>
+                  {copiedUpgrade
+                    ? lang === 'es'
+                      ? '¡Copiado!'
+                      : 'Copied!'
+                    : lang === 'es'
+                    ? 'Copiar comando'
+                    : 'Copy command'}
+                </span>
+              </button>
+            </div>
           </div>
 
-          <div className="w-full lg:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3 bg-godot-950/90 p-3.5 rounded-xl border border-emerald-500/30 font-mono text-xs sm:text-sm">
-            <div className="flex items-center space-x-2 px-2">
-              <span className="text-emerald-400 font-bold select-none">$</span>
-              <code className="text-emerald-300 font-semibold whitespace-nowrap">
-                orbitkit upgrade
-              </code>
+          {/* Uninstall Card */}
+          <div className="p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-godot-card via-godot-900/90 to-godot-card border border-rose-500/35 shadow-xl shadow-rose-500/5 flex flex-col justify-between gap-5">
+            <div className="space-y-2">
+              <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-semibold">
+                <Trash2 className="w-3.5 h-3.5 mr-1" />
+                <span>{lang === 'es' ? 'Desinstalación Limpia' : 'Clean Uninstallation'}</span>
+              </div>
+              <h3 className="text-lg sm:text-xl font-extrabold text-white">
+                {lang === 'es'
+                  ? '¿Quieres desinstalar OrbitKit CLI?'
+                  : 'Want to uninstall OrbitKit CLI?'}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {lang === 'es'
+                  ? 'Elimina limpiamente el binario global y enlaces simbólicos de tu sistema (o elige "Uninstall CLI" dentro de la interfaz):'
+                  : 'Cleanly removes the global binary and symlinks from your system (or select "Uninstall CLI" inside the TUI):'}
+              </p>
             </div>
-            <button
-              type="button"
-              onClick={handleCopyUpgrade}
-              className="flex items-center justify-center px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-bold text-xs transition shadow-md shadow-emerald-500/20 whitespace-nowrap"
-            >
-              <span className="inline-flex mr-1.5 shrink-0">
-                {copiedUpgrade ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-              </span>
-              <span>
-                {copiedUpgrade
-                  ? lang === 'es'
-                    ? '¡Copiado!'
-                    : 'Copied!'
-                  : lang === 'es'
-                  ? 'Copiar comando'
-                  : 'Copy command'}
-              </span>
-            </button>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-godot-950/90 p-3 rounded-xl border border-rose-500/30 font-mono text-xs sm:text-sm">
+              <div className="flex items-center space-x-2 px-2">
+                <span className="text-rose-400 font-bold select-none">$</span>
+                <code className="text-rose-300 font-semibold whitespace-nowrap">
+                  orbitkit uninstall
+                </code>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyUninstall}
+                className="flex items-center justify-center px-4 py-2 rounded-lg bg-rose-500 hover:bg-rose-400 text-white font-sans font-bold text-xs transition shadow-md shadow-rose-500/20 whitespace-nowrap"
+              >
+                <span className="inline-flex mr-1.5 shrink-0">
+                  {copiedUninstall ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                </span>
+                <span>
+                  {copiedUninstall
+                    ? lang === 'es'
+                      ? '¡Copiado!'
+                      : 'Copied!'
+                    : lang === 'es'
+                    ? 'Copiar comando'
+                    : 'Copy command'}
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </section>

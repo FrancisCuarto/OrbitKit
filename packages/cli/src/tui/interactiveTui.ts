@@ -9,6 +9,7 @@ import {
   checkCliVersion,
   getCurrentCliVersion,
   performCliSelfUpdate,
+  performCliUninstall,
   VersionCheckResult
 } from '../core/selfUpdater.js';
 
@@ -57,6 +58,7 @@ export async function startInteractiveTui(): Promise<void> {
   let notice = '';
   let noticeColor = C.muted;
   let doctorItems: DiagnosticItem[] | null = null;
+  let confirmingUninstall = false;
 
   // Non-blocking background startup checks (projects + remote version)
   scanForGodotProjects(process.cwd())
@@ -157,6 +159,14 @@ export async function startInteractiveTui(): Promise<void> {
           : `Check for updates (v${versionStatus.currentVersion} installed)`,
       action: async () => {
         await runSelfUpgrade();
+      }
+    },
+    {
+      label: 'Uninstall CLI',
+      hint: () => 'Remove OrbitKit CLI globally from this system',
+      action: async () => {
+        confirmingUninstall = true;
+        setNotice('⚠ Confirm uninstall OrbitKit CLI? Press [y] to confirm or any other key to cancel.', 'warn');
       }
     }
   ];
@@ -319,6 +329,29 @@ export async function startInteractiveTui(): Promise<void> {
 
     if (key.ctrl && key.name === 'c') {
       cleanupAndExit();
+      return;
+    }
+
+    if (confirmingUninstall) {
+      confirmingUninstall = false;
+      if (key.name === 'y') {
+        setNotice('Uninstalling OrbitKit CLI globally...', 'warn');
+        render();
+        const res = await performCliUninstall();
+        if (res.success) {
+          stdout.write('\x1B[?25h\n');
+          console.log(`${C.green}✓ ${res.message}${RESET}\n`);
+          if (stdin.isTTY) stdin.setRawMode(false);
+          stdin.pause();
+          process.exit(0);
+        } else {
+          setNotice(`✗ ${res.message}`, 'err');
+          render();
+        }
+      } else {
+        setNotice('Uninstall cancelled.', 'info');
+        render();
+      }
       return;
     }
 

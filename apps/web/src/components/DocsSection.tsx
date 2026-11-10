@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Terminal, Bot, Cpu, Copy, Check, Sparkles, BookOpen, Layers, RefreshCw } from 'lucide-react';
+import { Terminal, Bot, Cpu, Copy, Check, Sparkles, BookOpen, Layers, RefreshCw, Trash2 } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../content/translations';
 import { safeCopyToClipboard } from '../utils/clipboard';
 
@@ -77,8 +77,8 @@ export function DocsSection({ lang }: Props) {
                 </p>
               </div>
 
-              {/* Quick Install & Upgrade Grid */}
-              <div id="update-cli" className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {/* Quick Install, Upgrade & Uninstall Grid */}
+              <div id="update-cli" className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 {/* 1. Fresh Install Box */}
                 <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-godot-950 via-godot-900 to-godot-950 border border-godot-500/30 space-y-3 flex flex-col justify-between">
                   <div className="space-y-3">
@@ -86,10 +86,10 @@ export function DocsSection({ lang }: Props) {
                       <div className="flex items-center space-x-2">
                         <Terminal className="w-4 h-4 text-godot-400" />
                         <span className="font-semibold text-white text-sm">
-                          {lang === 'es' ? 'Instalación Oficial por NPM' : 'Official NPM Installation'}
+                          {lang === 'es' ? '1. Instalar por NPM' : '1. Install via NPM'}
                         </span>
                         <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-mono">
-                          v0.4.0 on NPM
+                          v0.5.0
                         </span>
                       </div>
                       <button
@@ -112,7 +112,7 @@ export function DocsSection({ lang }: Props) {
                     </code>
                   </div>
                   <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400 pt-1">
-                    <span>{lang === 'es' ? '💡 O abre la interfaz interactiva:' : '💡 Or launch interactive TUI:'}</span>
+                    <span>{lang === 'es' ? '💡 Abre la interfaz:' : '💡 Open TUI:'}</span>
                     <code className="text-slate-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
                       orbitkit
                     </code>
@@ -126,10 +126,7 @@ export function DocsSection({ lang }: Props) {
                       <div className="flex items-center space-x-2">
                         <RefreshCw className="w-4 h-4 text-emerald-400" />
                         <span className="font-semibold text-white text-sm">
-                          {lang === 'es' ? 'Comprobar y Actualizar CLI' : 'Check & Upgrade CLI'}
-                        </span>
-                        <span className="text-[10px] bg-godot-500/20 text-godot-300 border border-godot-500/30 px-2 py-0.5 rounded-full font-mono">
-                          → v0.4.0
+                          {lang === 'es' ? '2. Comprobar y Actualizar' : '2. Check & Upgrade CLI'}
                         </span>
                       </div>
                       <button
@@ -154,11 +151,50 @@ export function DocsSection({ lang }: Props) {
                   <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 pt-1">
                     <span>
                       {lang === 'es'
-                        ? 'O para solo verificar versión sin instalar:'
-                        : 'Or to only check version without installing:'}
+                        ? 'Solo comprobar versión:'
+                        : 'Only check version:'}
                     </span>
                     <code className="text-emerald-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
                       orbitkit upgrade --check
+                    </code>
+                  </div>
+                </div>
+
+                {/* 3. Dedicated Uninstall CLI Box */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-rose-950/35 via-godot-900 to-godot-950 border border-rose-500/35 space-y-3 flex flex-col justify-between shadow-lg shadow-rose-500/5">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Trash2 className="w-4 h-4 text-rose-400" />
+                        <span className="font-semibold text-white text-sm">
+                          {lang === 'es' ? '3. Desinstalar CLI' : '3. Uninstall CLI'}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy('orbitkit uninstall', 'uninstall_cli')}
+                        className="flex items-center px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/30 text-xs transition"
+                      >
+                        <span className="inline-flex mr-1 shrink-0">
+                          {copiedId === 'uninstall_cli' ? (
+                            <Check className="w-3.5 h-3.5 text-white" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </span>
+                        <span>{copiedId === 'uninstall_cli' ? (lang === 'es' ? '¡Copiado!' : 'Copied!') : (lang === 'es' ? 'Copiar' : 'Copy')}</span>
+                      </button>
+                    </div>
+                    <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-rose-300 border border-rose-500/30">
+                      orbitkit uninstall
+                    </code>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 pt-1">
+                    <span>
+                      {lang === 'es' ? 'O directo con NPM:' : 'Or directly via NPM:'}
+                    </span>
+                    <code className="text-rose-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
+                      npm uninstall -g @francisiv/orbitkit
                     </code>
                   </div>
                 </div>
@@ -173,6 +209,10 @@ export function DocsSection({ lang }: Props) {
                   {
                     cmd: 'orbitkit upgrade [--check]',
                     desc: 'Checks your installed CLI version against NPM & GitHub and automatically upgrades @francisiv/orbitkit globally (pass --check to only compare versions).'
+                  },
+                  {
+                    cmd: 'orbitkit uninstall [--project]',
+                    desc: 'Cleanly uninstalls the global @francisiv/orbitkit CLI binary and symlinks from your system (pass --project to also remove .devdock/ from current project).'
                   },
                   {
                     cmd: 'orbitkit scan [directory]',

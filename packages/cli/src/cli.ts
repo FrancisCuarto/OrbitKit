@@ -9,7 +9,7 @@ import { OFFICIAL_GODOT_MCP_SERVERS, installMcpServer, listConfiguredMcpServers 
 import { updateProject, updateAllProjects } from './core/updater.js';
 import { runSystemDiagnostics } from './core/doctor.js';
 import { startInteractiveTui } from './tui/interactiveTui.js';
-import { checkCliVersion, performCliSelfUpdate } from './core/selfUpdater.js';
+import { checkCliVersion, performCliSelfUpdate, performCliUninstall } from './core/selfUpdater.js';
 
 export function createCli(): Command {
   const program = new Command();
@@ -17,7 +17,7 @@ export function createCli(): Command {
   program
     .name('orbitkit')
     .description('OrbitKit CLI — Automated AI Skills, MCP Servers and Addon Manager for Godot Projects')
-    .version('0.4.0')
+    .version('0.5.0')
     .action(async () => {
       if (process.stdout.isTTY) {
         await startInteractiveTui();
@@ -71,6 +71,22 @@ export function createCli(): Command {
         console.log(pc.gray('  ✓ Global binary verified in PATH.\n'));
       } else {
         updateSpinner.fail(pc.red(res.message));
+      }
+    });
+
+  // Command: uninstall / remove
+  program
+    .command('uninstall')
+    .alias('remove')
+    .description('Uninstall OrbitKit CLI globally from your system')
+    .option('-p, --project', 'Also remove .devdock/ configuration from the current project')
+    .action(async (options) => {
+      const spinner = ora('Desinstalando OrbitKit CLI globalmente...').start();
+      const res = await performCliUninstall({ cleanProject: Boolean(options.project) });
+      if (res.success) {
+        spinner.succeed(pc.green(res.message));
+      } else {
+        spinner.fail(pc.red(res.message));
       }
     });
 

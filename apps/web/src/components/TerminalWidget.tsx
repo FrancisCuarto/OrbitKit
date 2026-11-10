@@ -8,14 +8,14 @@ interface Props {
 }
 
 interface CommandTab {
-  id: 'install' | 'upgrade-cli' | 'scan' | 'update' | 'mcp';
-  labelKey: 'tabInstall' | 'tabUpgradeCli' | 'tabScan' | 'tabUpdate' | 'tabMcp';
+  id: 'install' | 'upgrade-cli' | 'uninstall-cli' | 'scan' | 'update' | 'mcp';
+  labelKey: 'tabInstall' | 'tabUpgradeCli' | 'tabUninstallCli' | 'tabScan' | 'tabUpdate' | 'tabMcp';
   command: string;
   output: string[];
 }
 
 export function TerminalWidget({ lang }: Props) {
-  const [activeTab, setActiveTab] = useState<'install' | 'upgrade-cli' | 'scan' | 'update' | 'mcp'>('install');
+  const [activeTab, setActiveTab] = useState<'install' | 'upgrade-cli' | 'uninstall-cli' | 'scan' | 'update' | 'mcp'>('install');
   const [copied, setCopied] = useState(false);
   const t = TRANSLATIONS[lang].hero;
 
@@ -25,7 +25,7 @@ export function TerminalWidget({ lang }: Props) {
       labelKey: 'tabInstall',
       command: 'npm install -g @francisiv/orbitkit',
       output: [
-        '+ @francisiv/orbitkit@0.4.0',
+        '+ @francisiv/orbitkit@0.5.0',
         'added 6 packages in 1.2s',
         '✓ orbitkit and devdock commands registered globally in PATH',
         '✓ Run "orbitkit" in your terminal to open the minimalist TUI'
@@ -37,8 +37,17 @@ export function TerminalWidget({ lang }: Props) {
       command: 'orbitkit upgrade',
       output: [
         '🔍 Checking OrbitKit CLI version against NPM & GitHub...',
-        '  Installed version: v0.3.0  →  Latest version: v0.4.0',
-        '✓ Updated @francisiv/orbitkit from v0.3.0 to v0.4.0'
+        '  Installed version: v0.4.0  →  Latest version: v0.5.0',
+        '✓ OrbitKit actualizado correctamente: v0.4.0 → v0.5.0'
+      ]
+    },
+    {
+      id: 'uninstall-cli',
+      labelKey: 'tabUninstallCli',
+      command: 'orbitkit uninstall',
+      output: [
+        '🗑️  Removing global @francisiv/orbitkit binary and symlinks...',
+        '✓ OrbitKit CLI (@francisiv/orbitkit) fue desinstalado globalmente del sistema.'
       ]
     },
     {
@@ -94,12 +103,12 @@ export function TerminalWidget({ lang }: Props) {
           <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
           <span className="ml-2 text-xs text-slate-400 font-sans font-medium flex items-center">
             <Terminal className="w-3.5 h-3.5 mr-1.5 text-godot-400" />
-            terminal — orbitkit v0.4.0
+            terminal — orbitkit v0.5.0
           </span>
         </div>
 
         {/* Expanded Hitbox Tab Pills */}
-        <div className="relative z-30 grid grid-cols-2 sm:grid-cols-5 gap-2" role="tablist">
+        <div className="relative z-30 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2" role="tablist">
           {TABS.map((tab) => {
             const active = activeTab === tab.id;
             return (
@@ -116,7 +125,7 @@ export function TerminalWidget({ lang }: Props) {
                   e.stopPropagation();
                   setActiveTab(tab.id);
                 }}
-                className={`relative z-30 pointer-events-auto w-full min-h-[46px] px-4 py-2.5 rounded-xl text-xs sm:text-[13px] font-sans font-semibold cursor-pointer select-none flex items-center justify-center text-center transition-colors duration-150 ${
+                className={`relative z-30 pointer-events-auto w-full min-h-[46px] px-3 py-2.5 rounded-xl text-xs font-sans font-semibold cursor-pointer select-none flex items-center justify-center text-center transition-colors duration-150 ${
                   active
                     ? 'bg-godot-500 text-white shadow-md shadow-godot-500/25 border border-godot-400'
                     : 'bg-godot-card text-slate-200 hover:text-white hover:bg-godot-border border border-godot-border'
