@@ -10,7 +10,9 @@ import {
   ArrowRight,
   RefreshCw,
   FolderSearch,
-  Stethoscope
+  Stethoscope,
+  Copy,
+  Check
 } from 'lucide-react';
 import { Language, TRANSLATIONS } from './content/translations';
 import { TerminalWidget } from './components/TerminalWidget';
@@ -29,7 +31,14 @@ export function App() {
     }
     return 'es';
   });
+  const [copiedUpgrade, setCopiedUpgrade] = useState(false);
   const t = TRANSLATIONS[lang];
+
+  const handleCopyUpgrade = () => {
+    navigator.clipboard.writeText('npm install -g @francisiv/orbitkit@latest');
+    setCopiedUpgrade(true);
+    setTimeout(() => setCopiedUpgrade(false), 2000);
+  };
 
   return (
     <div className="relative min-h-screen flex flex-col bg-godot-950 text-slate-100 font-sans selection:bg-godot-500 selection:text-white isolate">
@@ -384,6 +393,51 @@ export function App() {
               </div>
             </Tilt3DCard>
           ))}
+        </div>
+
+        {/* Dedicated Upgrade CLI Section */}
+        <div className="mt-10 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-godot-card via-godot-900/90 to-godot-card border border-emerald-500/40 shadow-xl shadow-emerald-500/5 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="space-y-2 max-w-2xl">
+            <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
+              <RefreshCw className="w-3.5 h-3.5 mr-1 animate-spin-slow" />
+              <span>{lang === 'es' ? 'Actualización disponible: CLI v0.2.0 (TUI Interactiva)' : 'Update Available: CLI v0.2.0 (Interactive TUI)'}</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-extrabold text-white">
+              {lang === 'es'
+                ? '¿Ya tenías OrbitKit instalado? Actualízalo a la última versión'
+                : 'Already have OrbitKit installed? Upgrade to the latest version'}
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              {lang === 'es'
+                ? 'Ejecuta este comando en tu terminal (CMD, PowerShell o Bash) para actualizar globalmente a la versión v0.2.0 con la nueva interfaz interactiva estilo Engram ("orbitkit") y el pipeline Blender 3D:'
+                : 'Run this command in your terminal (CMD, PowerShell, or Bash) to upgrade globally to v0.2.0 with the new interactive Engram-style TUI ("orbitkit") and Blender 3D pipeline:'}
+            </p>
+          </div>
+
+          <div className="w-full lg:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3 bg-godot-950/90 p-3.5 rounded-xl border border-emerald-500/30 font-mono text-xs sm:text-sm">
+            <div className="flex items-center space-x-2 px-2">
+              <span className="text-emerald-400 font-bold select-none">$</span>
+              <code className="text-emerald-300 font-semibold whitespace-nowrap">
+                npm install -g @francisiv/orbitkit@latest
+              </code>
+            </div>
+            <button
+              onClick={handleCopyUpgrade}
+              className="flex items-center justify-center px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-bold text-xs transition shadow-md shadow-emerald-500/20 whitespace-nowrap"
+            >
+              {copiedUpgrade ? (
+                <>
+                  <Check className="w-4 h-4 mr-1.5" />
+                  {lang === 'es' ? '¡Copiado!' : 'Copied!'}
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4 mr-1.5" />
+                  {lang === 'es' ? 'Copiar comando' : 'Copy command'}
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </section>
 

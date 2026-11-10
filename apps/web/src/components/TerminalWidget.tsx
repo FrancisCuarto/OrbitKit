@@ -7,14 +7,14 @@ interface Props {
 }
 
 interface CommandTab {
-  id: 'install' | 'scan' | 'update' | 'mcp';
-  labelKey: 'tabInstall' | 'tabScan' | 'tabUpdate' | 'tabMcp';
+  id: 'install' | 'upgrade-cli' | 'scan' | 'update' | 'mcp';
+  labelKey: 'tabInstall' | 'tabUpgradeCli' | 'tabScan' | 'tabUpdate' | 'tabMcp';
   command: string;
   output: string[];
 }
 
 export function TerminalWidget({ lang }: Props) {
-  const [activeTab, setActiveTab] = useState<'install' | 'scan' | 'update' | 'mcp'>('install');
+  const [activeTab, setActiveTab] = useState<'install' | 'upgrade-cli' | 'scan' | 'update' | 'mcp'>('install');
   const [copied, setCopied] = useState(false);
   const t = TRANSLATIONS[lang].hero;
 
@@ -24,15 +24,26 @@ export function TerminalWidget({ lang }: Props) {
       labelKey: 'tabInstall',
       command: 'npm install -g @francisiv/orbitkit',
       output: [
-        '+ @francisiv/orbitkit@0.1.0',
-        'added 6 packages in 1.4s',
-        '✓ orbitkit and devdock commands registered globally in PATH'
+        '+ @francisiv/orbitkit@0.2.0',
+        'added 6 packages in 1.2s',
+        '✓ orbitkit and devdock commands registered globally in PATH',
+        '✓ Run "orbitkit" in your terminal to launch the interactive TUI'
+      ]
+    },
+    {
+      id: 'upgrade-cli',
+      labelKey: 'tabUpgradeCli',
+      command: 'npm install -g @francisiv/orbitkit@latest',
+      output: [
+        '🔄 Upgrading global @francisiv/orbitkit package from NPM...',
+        '+ @francisiv/orbitkit@0.2.0 (updated from 0.1.0)',
+        '✓ Interactive Engram-style TUI ("orbitkit") & Blender 3D Skill ready!'
       ]
     },
     {
       id: 'scan',
       labelKey: 'tabScan',
-      command: 'devdock scan .',
+      command: 'orbitkit scan .',
       output: [
         '🔍 Scanning for Godot projects...',
         'Found 3 Godot project(s):',
@@ -44,20 +55,20 @@ export function TerminalWidget({ lang }: Props) {
     {
       id: 'update',
       labelKey: 'tabUpdate',
-      command: 'devdock update --all',
+      command: 'orbitkit update --all',
       output: [
         '🔄 Checking ecosystem versions against catalog...',
         '✓ Updated skill "gdscript-architect" (v1.0.0 → v1.2.0)',
-        '✓ Updated skill "godot-shader-expert" (v1.0.0 → v1.1.0)',
+        '✓ Updated skill "godot-blender-pipeline" (v1.2.0)',
         '✓ All 3 Godot projects synchronized with latest standards!'
       ]
     },
     {
       id: 'mcp',
       labelKey: 'tabMcp',
-      command: 'devdock mcp add godot-lsp',
+      command: 'orbitkit mcp add godot-docs-ctx7',
       output: [
-        '⚙️  Configuring Godot GDScript LSP bridge on port 6005...',
+        '⚙️  Configuring Godot 4 Context7 (ctx7) & GDScript LSP bridge...',
         '✓ Written to .mcp.json',
         '✓ Antigravity, Claude Code & Cursor can now inspect Godot in real time'
       ]
@@ -75,19 +86,19 @@ export function TerminalWidget({ lang }: Props) {
   return (
     <div className="w-full max-w-3xl mx-auto rounded-2xl bg-godot-card border border-godot-border shadow-2xl overflow-hidden font-mono text-xs sm:text-sm text-left">
       {/* Window Titlebar */}
-      <div className="flex items-center justify-between px-4 py-3 bg-godot-950/90 border-b border-godot-border">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 bg-godot-950/90 border-b border-godot-border">
         <div className="flex items-center space-x-2">
           <div className="w-3 h-3 rounded-full bg-rose-500/80"></div>
           <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
           <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
           <span className="ml-2 text-xs text-slate-400 font-sans font-medium flex items-center">
             <Terminal className="w-3.5 h-3.5 mr-1.5 text-godot-400" />
-            terminal — devdock
+            terminal — orbitkit v0.2.0
           </span>
         </div>
 
         {/* Tab pills */}
-        <div className="flex items-center space-x-1">
+        <div className="flex flex-wrap items-center gap-1">
           {TABS.map((tab) => {
             const active = activeTab === tab.id;
             return (
@@ -139,7 +150,7 @@ export function TerminalWidget({ lang }: Props) {
           {currentTabData.output.map((line, idx) => (
             <div key={idx} className="flex items-start space-x-2">
               <span className="text-slate-600 select-none">&gt;</span>
-              <span className={line.includes('✓') ? 'text-emerald-400 font-medium' : ''}>
+              <span className={line.includes('✓') || line.startsWith('+') ? 'text-emerald-400 font-medium' : ''}>
                 {line}
               </span>
             </div>

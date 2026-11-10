@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Terminal, Bot, Cpu, Copy, Check, Sparkles, BookOpen, Layers } from 'lucide-react';
+import { Terminal, Bot, Cpu, Copy, Check, Sparkles, BookOpen, Layers, RefreshCw } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../content/translations';
 
 interface Props {
@@ -72,42 +72,103 @@ export function DocsSection({ lang }: Props) {
                 </p>
               </div>
 
-              {/* Quick Install Box */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-godot-950 via-godot-900 to-godot-950 border border-godot-500/30 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Terminal className="w-4 h-4 text-godot-400" />
-                    <span className="font-semibold text-white text-sm">Official NPM Installation</span>
-                    <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-mono">v0.1.0 on NPM</span>
+              {/* Quick Install & Upgrade Grid */}
+              <div id="update-cli" className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {/* 1. Fresh Install Box */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-godot-950 via-godot-900 to-godot-950 border border-godot-500/30 space-y-3 flex flex-col justify-between">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Terminal className="w-4 h-4 text-godot-400" />
+                        <span className="font-semibold text-white text-sm">
+                          {lang === 'es' ? 'Instalación Oficial por NPM' : 'Official NPM Installation'}
+                        </span>
+                        <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-mono">
+                          v0.2.0 on NPM
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => handleCopy('npm install -g @francisiv/orbitkit', 'quick_npm')}
+                        className="flex items-center px-2.5 py-1 rounded-lg bg-godot-card border border-godot-border text-xs text-slate-300 hover:text-white transition"
+                      >
+                        {copiedId === 'quick_npm' ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 mr-1 text-emerald-400" /> Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5 mr-1" /> Copy
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-godot-300 border border-godot-border/60">
+                      npm install -g @francisiv/orbitkit
+                    </code>
                   </div>
-                  <button
-                    onClick={() => handleCopy('npm install -g @francisiv/orbitkit', 'quick_npm')}
-                    className="flex items-center px-2.5 py-1 rounded-lg bg-godot-card border border-godot-border text-xs text-slate-300 hover:text-white transition"
-                  >
-                    {copiedId === 'quick_npm' ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 mr-1 text-emerald-400" /> Copied!
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5 mr-1" /> Copy
-                      </>
-                    )}
-                  </button>
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400 pt-1">
+                    <span>{lang === 'es' ? '💡 O abre la interfaz interactiva:' : '💡 Or launch interactive TUI:'}</span>
+                    <code className="text-slate-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
+                      orbitkit
+                    </code>
+                  </div>
                 </div>
-                <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-godot-300 border border-godot-border/60">
-                  npm install -g @francisiv/orbitkit
-                </code>
-                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400 pt-1">
-                  <span>💡 Or run on-demand with zero install:</span>
-                  <code className="text-slate-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
-                    npx @francisiv/orbitkit doctor
-                  </code>
+
+                {/* 2. Dedicated Upgrade / Update Existing CLI Box */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-godot-900 to-godot-950 border border-emerald-500/40 space-y-3 flex flex-col justify-between shadow-lg shadow-emerald-500/5">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <RefreshCw className="w-4 h-4 text-emerald-400" />
+                        <span className="font-semibold text-white text-sm">
+                          {lang === 'es' ? '¿Ya lo tienes instalado? Actualizar CLI' : 'Already installed? Upgrade CLI'}
+                        </span>
+                        <span className="text-[10px] bg-godot-500/20 text-godot-300 border border-godot-500/30 px-2 py-0.5 rounded-full font-mono">
+                          0.1.0 → 0.2.0
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => handleCopy('npm install -g @francisiv/orbitkit@latest', 'upgrade_npm')}
+                        className="flex items-center px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white border border-emerald-500/30 text-xs transition"
+                      >
+                        {copiedId === 'upgrade_npm' ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 mr-1 text-white" /> Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5 mr-1" /> Copy
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-emerald-300 border border-emerald-500/30">
+                      npm install -g @francisiv/orbitkit@latest
+                    </code>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 pt-1">
+                    <span>
+                      {lang === 'es'
+                        ? 'Usa @latest (o @0.2.0) para saltar a la última versión y verifica con:'
+                        : 'Use @latest (or @0.2.0) to force upgrade and verify with:'}
+                    </span>
+                    <code className="text-emerald-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
+                      orbitkit --version
+                    </code>
+                  </div>
                 </div>
               </div>
 
               <div className="space-y-4">
                 {[
+                  {
+                    cmd: 'orbitkit  (or: orbitkit ui)',
+                    desc: 'Launches the interactive retro Terminal User Interface (TUI) with keyboard navigation (j/k/arrows), live search (s), project discovery, and 1-key Skill/MCP installation.'
+                  },
+                  {
+                    cmd: 'npm install -g @francisiv/orbitkit@latest',
+                    desc: 'Upgrades your global OrbitKit CLI installation to the newest release on NPM (v0.2.0+).'
+                  },
                   {
                     cmd: 'orbitkit scan [directory]',
                     desc: 'Recursively locates all Godot projects (containing project.godot) on your system. Reports installed addons, AI skills, and MCP configuration status.'
