@@ -93,7 +93,6 @@ describe('DevDock CLI Core Engine', () => {
     expect(nodeDiag?.status).toBe('ok');
   });
 
-<<<<<<< HEAD
   it('renders GUI HTML containing brand and interactive sections', () => {
     const html = renderGuiHtml();
     expect(html).toContain('OrbitKit GUI');
