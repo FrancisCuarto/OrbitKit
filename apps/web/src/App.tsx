@@ -66,7 +66,7 @@ export function App() {
                   OrbitKit
                 </span>
                 <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-godot-500/20 text-godot-300 border border-godot-500/30">
-                  CLI v0.2.0
+                  CLI v0.3.0
                 </span>
               </div>
             </div>
@@ -135,19 +135,25 @@ export function App() {
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-godot-600/20 via-transparent to-transparent"></div>
 
         <div className="max-w-4xl mx-auto space-y-6 relative z-10">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-godot-500/15 border border-godot-500/40 text-godot-300 text-xs font-medium backdrop-blur-md shadow-lg">
+          {/* Dark contrast backdrop behind text for crisp readability over moving 3D core */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-8 -top-6 bottom-24 -z-10 rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(9,15,20,0.82)_0%,_rgba(9,15,20,0.45)_55%,_transparent_80%)] blur-xl"
+          />
+
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-godot-950/90 border border-godot-500/50 text-godot-300 text-xs font-medium backdrop-blur-md shadow-xl">
             <span className="w-2 h-2 rounded-full bg-godot-400 animate-pulse"></span>
             <span>{t.hero.badge}</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight drop-shadow-2xl">
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight hero-title-shadow">
             {t.hero.headline1} <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-godot-300 via-godot-400 to-sky-300">
+            <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-godot-300 via-sky-300 to-cyan-200 hero-gradient-shadow">
               {t.hero.headline2}
             </span>
           </h1>
 
-          <p className="text-sm sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed drop-shadow">
+          <p className="text-sm sm:text-lg text-slate-200 font-medium max-w-2xl mx-auto leading-relaxed hero-subtitle-shadow">
             {t.hero.sub}
           </p>
 
@@ -188,7 +194,7 @@ export function App() {
           <span className="text-xs font-bold uppercase tracking-wider text-godot-400 bg-godot-500/10 border border-godot-500/20 px-3 py-1 rounded-full">
             {t.problem.eyebrow}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight hero-title-shadow">
             {t.problem.title}
           </h2>
         </div>
@@ -256,7 +262,7 @@ export function App() {
           <span className="text-xs font-bold uppercase tracking-wider text-godot-400 bg-godot-500/10 border border-godot-500/20 px-3 py-1 rounded-full">
             {t.features.eyebrow}
           </span>
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight hero-title-shadow">
             {t.features.headline}
           </h2>
           <p className="text-slate-400 text-sm sm:text-base">
@@ -344,7 +350,7 @@ export function App() {
           <span className="text-xs font-bold uppercase tracking-wider text-godot-400 bg-godot-500/10 border border-godot-500/20 px-3 py-1 rounded-full">
             {t.how.eyebrow}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight hero-title-shadow">
             {t.how.headline}
           </h2>
         </div>
@@ -398,7 +404,7 @@ export function App() {
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
               <RefreshCw className="w-3.5 h-3.5 mr-1 animate-spin-slow" />
-              <span>{lang === 'es' ? 'Actualización disponible: CLI v0.2.0 (TUI Interactiva)' : 'Update Available: CLI v0.2.0 (Interactive TUI)'}</span>
+              <span>{lang === 'es' ? 'Actualización disponible: CLI v0.3.0 (Orbital Command Deck TUI)' : 'Update Available: CLI v0.3.0 (Orbital Command Deck TUI)'}</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-extrabold text-white">
               {lang === 'es'
@@ -407,8 +413,8 @@ export function App() {
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
               {lang === 'es'
-                ? 'Ejecuta este comando en tu terminal (CMD, PowerShell o Bash) para actualizar globalmente a la versión v0.2.0 con la nueva interfaz interactiva estilo Engram ("orbitkit") y el pipeline Blender 3D:'
-                : 'Run this command in your terminal (CMD, PowerShell, or Bash) to upgrade globally to v0.2.0 with the new interactive Engram-style TUI ("orbitkit") and Blender 3D pipeline:'}
+                ? 'Ejecuta este comando en tu terminal (CMD, PowerShell o Bash) para actualizar globalmente a la versión v0.3.0 con el nuevo panel dividido Orbital Command Deck ("orbitkit") y el pipeline Blender 3D:'
+                : 'Run this command in your terminal (CMD, PowerShell, or Bash) to upgrade globally to v0.3.0 with the new split-pane Orbital Command Deck TUI ("orbitkit") and Blender 3D pipeline:'}
             </p>
           </div>
 

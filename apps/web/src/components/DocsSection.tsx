@@ -88,7 +88,7 @@ export function DocsSection({ lang }: Props) {
                           {lang === 'es' ? 'Instalación Oficial por NPM' : 'Official NPM Installation'}
                         </span>
                         <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-mono">
-                          v0.2.0 on NPM
+                          v0.3.0 on NPM
                         </span>
                       </div>
                       <button
@@ -128,7 +128,7 @@ export function DocsSection({ lang }: Props) {
                           {lang === 'es' ? '¿Ya lo tienes instalado? Actualizar CLI' : 'Already installed? Upgrade CLI'}
                         </span>
                         <span className="text-[10px] bg-godot-500/20 text-godot-300 border border-godot-500/30 px-2 py-0.5 rounded-full font-mono">
-                          0.1.0 → 0.2.0
+                          → v0.3.0
                         </span>
                       </div>
                       <button
