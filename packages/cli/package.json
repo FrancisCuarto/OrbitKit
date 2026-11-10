@@ -1,6 +1,6 @@
 {
   "name": "@francisiv/orbitkit",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "OrbitKit CLI - Interactive Web GUI Dashboard, TUI & CLI to keep your Godot 4 and Blender projects updated with AI Skills, Addons and MCPs",
   "bin": {
     "orbitkit": "bin/devdock.js",

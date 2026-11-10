@@ -75,7 +75,7 @@ export function App() {
                   OrbitKit
                 </span>
                 <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-godot-500/20 text-godot-300 border border-godot-500/30">
-                  CLI v0.6.0
+                  CLI v0.6.1
                 </span>
               </div>
             </div>
@@ -409,7 +409,7 @@ export function App() {
             <div className="space-y-2">
               <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
                 <RefreshCw className="w-3.5 h-3.5 mr-1" />
-                <span>{lang === 'es' ? 'Verificador de Versiones (v0.6.0)' : 'Version Checker & Self-Updater (v0.6.0)'}</span>
+                <span>{lang === 'es' ? 'Verificador de Versiones (v0.6.1)' : 'Version Checker & Self-Updater (v0.6.1)'}</span>
               </div>
               <h3 className="text-lg sm:text-xl font-extrabold text-white">
                 {lang === 'es'

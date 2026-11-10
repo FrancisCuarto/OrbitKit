@@ -199,6 +199,6 @@ describe('DevDock CLI Core Engine', () => {
     expect(compareSemver('v1.0.0', '0.9.9')).toBe(1);
 
     const ver = await getCurrentCliVersion();
-    expect(ver).toBe('0.6.0');
+    expect(ver).toBe('0.6.1');
   });
 });
