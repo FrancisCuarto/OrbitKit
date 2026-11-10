@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Copy, Check, Sparkles, Layers, Bot, Cpu, ArrowRight } from 'lucide-react';
 import { Language } from '../content/translations';
 import { Tilt3DCard } from './Tilt3DCard';
+import { safeCopyToClipboard } from '../utils/clipboard';
 
 export interface EcosystemTool {
   id: string;
@@ -284,7 +285,7 @@ export function EcosystemCarousel({ lang }: Props) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = (cmd: string) => {
-    navigator.clipboard.writeText(cmd);
+    void safeCopyToClipboard(cmd);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -493,20 +494,22 @@ export function EcosystemCarousel({ lang }: Props) {
                   $ {selectedTool.cliCommand}
                 </code>
                 <button
+                  type="button"
                   onClick={() => handleCopy(selectedTool.cliCommand)}
                   className="inline-flex items-center px-3 py-1.5 rounded-lg bg-godot-500 hover:bg-godot-400 text-white text-xs font-semibold transition shrink-0"
                 >
-                  {copied ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 mr-1.5" />
-                      {lang === 'es' ? 'Copiado' : 'Copied'}
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5 mr-1.5" />
-                      {lang === 'es' ? 'Copiar Comando' : 'Copy Command'}
-                    </>
-                  )}
+                  <span className="inline-flex mr-1.5 shrink-0">
+                    {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  </span>
+                  <span>
+                    {copied
+                      ? lang === 'es'
+                        ? 'Copiado'
+                        : 'Copied'
+                      : lang === 'es'
+                      ? 'Copiar Comando'
+                      : 'Copy Command'}
+                  </span>
                 </button>
               </div>
             </div>

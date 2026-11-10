@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Terminal, Bot, Cpu, Copy, Check, Sparkles, BookOpen, Layers, RefreshCw } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../content/translations';
+import { safeCopyToClipboard } from '../utils/clipboard';
 
 interface Props {
   lang: Language;
@@ -12,7 +13,7 @@ export function DocsSection({ lang }: Props) {
   const t = TRANSLATIONS[lang].docs;
 
   const handleCopy = (code: string, id: string) => {
-    navigator.clipboard.writeText(code);
+    void safeCopyToClipboard(code);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
   };
@@ -92,18 +93,18 @@ export function DocsSection({ lang }: Props) {
                         </span>
                       </div>
                       <button
+                        type="button"
                         onClick={() => handleCopy('npm install -g @francisiv/orbitkit', 'quick_npm')}
                         className="flex items-center px-2.5 py-1 rounded-lg bg-godot-card border border-godot-border text-xs text-slate-300 hover:text-white transition"
                       >
-                        {copiedId === 'quick_npm' ? (
-                          <>
-                            <Check className="w-3.5 h-3.5 mr-1 text-emerald-400" /> Copied!
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3.5 h-3.5 mr-1" /> Copy
-                          </>
-                        )}
+                        <span className="inline-flex mr-1 shrink-0">
+                          {copiedId === 'quick_npm' ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </span>
+                        <span>{copiedId === 'quick_npm' ? (lang === 'es' ? '¡Copiado!' : 'Copied!') : (lang === 'es' ? 'Copiar' : 'Copy')}</span>
                       </button>
                     </div>
                     <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-godot-300 border border-godot-border/60">
@@ -132,18 +133,18 @@ export function DocsSection({ lang }: Props) {
                         </span>
                       </div>
                       <button
+                        type="button"
                         onClick={() => handleCopy('npm install -g @francisiv/orbitkit@latest', 'upgrade_npm')}
                         className="flex items-center px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white border border-emerald-500/30 text-xs transition"
                       >
-                        {copiedId === 'upgrade_npm' ? (
-                          <>
-                            <Check className="w-3.5 h-3.5 mr-1 text-white" /> Copied!
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3.5 h-3.5 mr-1" /> Copy
-                          </>
-                        )}
+                        <span className="inline-flex mr-1 shrink-0">
+                          {copiedId === 'upgrade_npm' ? (
+                            <Check className="w-3.5 h-3.5 text-white" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </span>
+                        <span>{copiedId === 'upgrade_npm' ? (lang === 'es' ? '¡Copiado!' : 'Copied!') : (lang === 'es' ? 'Copiar' : 'Copy')}</span>
                       </button>
                     </div>
                     <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-emerald-300 border border-emerald-500/30">
@@ -215,14 +216,17 @@ export function DocsSection({ lang }: Props) {
                         $ {item.cmd}
                       </code>
                       <button
+                        type="button"
                         onClick={() => handleCopy(item.cmd, `cmd_${idx}`)}
                         className="p-1.5 rounded-lg bg-godot-card border border-godot-border text-slate-400 hover:text-white transition"
                       >
-                        {copiedId === `cmd_${idx}` ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
+                        <span className="inline-flex">
+                          {copiedId === `cmd_${idx}` ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </span>
                       </button>
                     </div>
                     <p className="text-slate-400 text-xs leading-relaxed">{item.desc}</p>
@@ -367,15 +371,14 @@ export function DocsSection({ lang }: Props) {
                     }
                     className="flex items-center text-godot-400 hover:text-godot-300 transition"
                   >
-                    {copiedId === 'mcp_json' ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 mr-1 text-emerald-400" /> Copied
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5 mr-1" /> Copy JSON
-                      </>
-                    )}
+                    <span className="inline-flex mr-1 shrink-0">
+                      {copiedId === 'mcp_json' ? (
+                        <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      ) : (
+                        <Copy className="w-3.5 h-3.5" />
+                      )}
+                    </span>
+                    <span>{copiedId === 'mcp_json' ? (lang === 'es' ? '¡Copiado!' : 'Copied') : (lang === 'es' ? 'Copiar JSON' : 'Copy JSON')}</span>
                   </button>
                 </div>
 
@@ -482,10 +485,11 @@ export function DocsSection({ lang }: Props) {
                     </div>
 
                     <button
-                      onClick={() => handleCopy(`devdock skill install ${s.id}`, s.id)}
+                      type="button"
+                      onClick={() => handleCopy(`orbitkit skill install ${s.id}`, s.id)}
                       className="px-3 py-1.5 rounded-lg bg-godot-500/20 hover:bg-godot-500 text-godot-300 hover:text-white border border-godot-500/30 transition text-xs font-mono whitespace-nowrap"
                     >
-                      {copiedId === s.id ? 'Copied Command!' : `devdock skill install ${s.id}`}
+                      <span>{copiedId === s.id ? (lang === 'es' ? '¡Copiado!' : 'Copied Command!') : `orbitkit skill install ${s.id}`}</span>
                     </button>
                   </div>
                 ))}

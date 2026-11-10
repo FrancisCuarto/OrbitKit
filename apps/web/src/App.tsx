@@ -22,6 +22,7 @@ import { AnimatedBackground } from './components/AnimatedBackground';
 import { EcosystemCarousel } from './components/EcosystemCarousel';
 import { Tilt3DCard } from './components/Tilt3DCard';
 import { SeoHead } from './components/SeoHead';
+import { safeCopyToClipboard } from './utils/clipboard';
 
 export function App() {
   const [lang, setLang] = useState<Language>(() => {
@@ -35,7 +36,7 @@ export function App() {
   const t = TRANSLATIONS[lang];
 
   const handleCopyUpgrade = () => {
-    navigator.clipboard.writeText('npm install -g @francisiv/orbitkit@latest');
+    void safeCopyToClipboard('npm install -g @francisiv/orbitkit@latest');
     setCopiedUpgrade(true);
     setTimeout(() => setCopiedUpgrade(false), 2000);
   };
@@ -426,20 +427,22 @@ export function App() {
               </code>
             </div>
             <button
+              type="button"
               onClick={handleCopyUpgrade}
               className="flex items-center justify-center px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-bold text-xs transition shadow-md shadow-emerald-500/20 whitespace-nowrap"
             >
-              {copiedUpgrade ? (
-                <>
-                  <Check className="w-4 h-4 mr-1.5" />
-                  {lang === 'es' ? '¡Copiado!' : 'Copied!'}
-                </>
-              ) : (
-                <>
-                  <Copy className="w-4 h-4 mr-1.5" />
-                  {lang === 'es' ? 'Copiar comando' : 'Copy command'}
-                </>
-              )}
+              <span className="inline-flex mr-1.5 shrink-0">
+                {copiedUpgrade ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              </span>
+              <span>
+                {copiedUpgrade
+                  ? lang === 'es'
+                    ? '¡Copiado!'
+                    : 'Copied!'
+                  : lang === 'es'
+                  ? 'Copiar comando'
+                  : 'Copy command'}
+              </span>
             </button>
           </div>
         </div>

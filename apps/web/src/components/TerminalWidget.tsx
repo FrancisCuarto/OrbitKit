@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Copy, Check, Terminal } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../content/translations';
+import { safeCopyToClipboard } from '../utils/clipboard';
 
 interface Props {
   lang: Language;
@@ -78,7 +79,7 @@ export function TerminalWidget({ lang }: Props) {
   const currentTabData = TABS.find((t) => t.id === activeTab) || TABS[0];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(currentTabData.command);
+    void safeCopyToClipboard(currentTabData.command);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -139,21 +140,17 @@ export function TerminalWidget({ lang }: Props) {
 
           <button
             type="button"
-            onPointerDown={handleCopy}
             onClick={handleCopy}
             className="flex items-center px-4 py-2 ml-3 rounded-xl bg-godot-500/20 hover:bg-godot-500 text-godot-300 hover:text-white border border-godot-500/30 transition text-xs font-sans font-semibold cursor-pointer select-none whitespace-nowrap"
           >
-            {copied ? (
-              <>
-                <Check className="w-3.5 h-3.5 mr-1.5 text-emerald-400" />
-                Copied!
-              </>
-            ) : (
-              <>
-                <Copy className="w-3.5 h-3.5 mr-1.5" />
-                Copy
-              </>
-            )}
+            <span className="inline-flex mr-1.5 shrink-0">
+              {copied ? (
+                <Check className="w-3.5 h-3.5 text-emerald-400" />
+              ) : (
+                <Copy className="w-3.5 h-3.5" />
+              )}
+            </span>
+            <span>{copied ? (lang === 'es' ? '¡Copiado!' : 'Copied!') : (lang === 'es' ? 'Copiar' : 'Copy')}</span>
           </button>
         </div>
 
