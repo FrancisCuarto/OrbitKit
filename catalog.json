@@ -1,0 +1,159 @@
+{
+  "schema": 1,
+  "generatedAt": "2026-11-10T07:07:34Z",
+  "cli": {
+    "latest": "0.6.0",
+    "minSupported": "0.5.0",
+    "channel": "stable"
+  },
+  "skills": [
+    {
+      "id": "ctx7-docs-fetcher",
+      "name": "Context7 (ctx7) Live Documentation Fetcher",
+      "version": "1.0.0",
+      "description": "Instructs AI coding assistants to fetch fresh, version-specific library docs and syntax examples via Context7.",
+      "checksum": "sha256:036fcdf13bcd9cf14d2bc1b9be47ac01bdcd0651a3e54679f4c9dafadf3dec17",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/ctx7-docs-fetcher.zip",
+      "tags": [
+        "docs",
+        "context7",
+        "mcp"
+      ],
+      "channel": "stable"
+    },
+    {
+      "id": "gdscript-architect",
+      "name": "GDScript 4 Architect Skill (Legacy Alias)",
+      "version": "1.2.0",
+      "description": "Legacy alias for Godot 4 architectural conventions.",
+      "checksum": "sha256:4d286a8ed5a2672b0e67f6277c26382011e00dcb11a84a47f07dd2bf99348b29",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/gdscript-architect.zip",
+      "tags": [
+        "architecture",
+        "core",
+        "gdscript"
+      ],
+      "minGodot": "4.0",
+      "channel": "stable"
+    },
+    {
+      "id": "gdscript-fsm-master",
+      "name": "GDScript Finite State Machine (FSM)",
+      "version": "1.2.0",
+      "description": "Decoupled, modular state machine pattern using dedicated Node/State classes for combat, movement, and AI.",
+      "checksum": "sha256:ecd6454399731b9618a6bbd53cff805daab8964069e8680787a7fa9698b532b2",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/gdscript-fsm-master.zip",
+      "tags": [
+        "architecture",
+        "fsm",
+        "gameplay"
+      ],
+      "minGodot": "4.0",
+      "channel": "stable"
+    },
+    {
+      "id": "godot-blender-pipeline",
+      "name": "Blender 3D to Godot 4 Asset & Rigging Pipeline",
+      "version": "1.1.0",
+      "description": "Automates .blend and glTF 2.0 import suffixes (-col, -convcol, -loop), Skeleton3D retargeting, and PBR materials.",
+      "checksum": "sha256:001fe1e74a56e63101b8d6253f05127cfba64fa48559fe255cdb633768d7fb44",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/godot-blender-pipeline.zip",
+      "tags": [
+        "blender",
+        "3d",
+        "pipeline"
+      ],
+      "minGodot": "4.0",
+      "channel": "stable"
+    },
+    {
+      "id": "godot-multiplayer-enet",
+      "name": "Godot 4 High-Level Networking & ENet",
+      "version": "1.0.0",
+      "description": "Multiplayer architecture using ENetMultiplayerPeer, @rpc decorators, MultiplayerSynchronizer and MultiplayerSpawner.",
+      "checksum": "sha256:b6fca48a1a03df792f2a231e7227172ac61daa525be47ede127c1b1fb92cf213",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/godot-multiplayer-enet.zip",
+      "tags": [
+        "networking",
+        "multiplayer",
+        "enet"
+      ],
+      "minGodot": "4.0",
+      "channel": "stable"
+    },
+    {
+      "id": "godot-procedural-generation",
+      "name": "Godot 4 Procedural Generation & Pathfinding",
+      "version": "1.1.0",
+      "description": "Algorithms for FastNoiseLite, dungeon room placement, TileMapLayer autotiling, and AStar2D/AStar3D pathfinding.",
+      "checksum": "sha256:bb301c52df746af8a1054aca3f1f447c48616ba930058a2648fa97bfeb260ac1",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/godot-procedural-generation.zip",
+      "tags": [
+        "procgen",
+        "pathfinding",
+        "tilemap"
+      ],
+      "minGodot": "4.3",
+      "channel": "stable"
+    },
+    {
+      "id": "godot-responsive-ui",
+      "name": "Godot 4 Responsive UI & Layouts",
+      "version": "1.1.0",
+      "description": "Scalable UI architecture using Control nodes, Anchors, BoxContainers, GridContainers, and custom theme overrides.",
+      "checksum": "sha256:ae2f954e5b19c88664ae7e5d804323a7b0ed25cb8834d995ce93b97909eb9e73",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/godot-responsive-ui.zip",
+      "tags": [
+        "ui",
+        "control",
+        "layouts"
+      ],
+      "minGodot": "4.0",
+      "channel": "stable"
+    },
+    {
+      "id": "godot-save-system",
+      "name": "Godot 4 Cryptographic Save System",
+      "version": "1.0.0",
+      "description": "Architecture for saving and loading player state with JSON / binary serialization and HMAC/SHA-256 integrity checks.",
+      "checksum": "sha256:0de1fedf39953ec135b99004dfe8e069d1866c9509d951320cbdb3adbafe3626",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/godot-save-system.zip",
+      "tags": [
+        "save",
+        "security",
+        "serialization"
+      ],
+      "minGodot": "4.0",
+      "channel": "stable"
+    },
+    {
+      "id": "godot-shader-vfx",
+      "name": "Godot 4 Shader & VFX Master",
+      "version": "1.2.0",
+      "description": "Expert knowledge of 2D canvas_item and 3D spatial shaders, UV operations, hint_screen_texture, and mobile optimization.",
+      "checksum": "sha256:09696249e30375ccd704fff1e34f9e08817f09f7724cc858525ac3abfff235c1",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/godot-shader-vfx.zip",
+      "tags": [
+        "shaders",
+        "vfx",
+        "rendering"
+      ],
+      "minGodot": "4.0",
+      "channel": "stable"
+    },
+    {
+      "id": "godot4-syntax-guardian",
+      "name": "Godot 4 Syntax Guardian (Anti-Hallucination)",
+      "version": "1.3.0",
+      "description": "Enforces strict Godot 4.3+ rules: TileMapLayer, FileAccess/DirAccess, Callables signals, CharacterBody move_and_slide.",
+      "checksum": "sha256:8ecbf4d9096ac6683daf5e0d9caf2e3e194f484ac6bfc9f2b1a25a670d0faa64",
+      "url": "https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/skills/godot4-syntax-guardian.zip",
+      "tags": [
+        "syntax",
+        "core"
+      ],
+      "minGodot": "4.3",
+      "channel": "stable"
+    }
+  ]
+}

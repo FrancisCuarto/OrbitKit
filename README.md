@@ -56,6 +56,9 @@ orbitkit update --all
 | `orbitkit doctor` | Diagnoses Godot 4 binary, LSP port 6005, and project context. |
 | `orbitkit scan [dir]` | Recursively scans for Godot projects and inspects installed addons and skills. |
 | `orbitkit init` | Initializes OrbitKit in current game project and installs default skills/MCPs. |
+| `orbitkit check [--json] [--force]` | Checks remote catalog for new/outdated AI skills and CLI updates (works offline via cache). |
+| `orbitkit watch` | Foreground watcher that periodically checks and applies safe skill updates. |
+| `orbitkit autoupdate enable\|disable` | Configures OS-native scheduled checks (systemd, launchd, schtasks). |
 | `orbitkit update [--all]` | Upgrades AI skills and addons to latest verified versions across projects. |
 | `orbitkit skill list` | Lists all verified Godot 4 AI Skills. |
 | `orbitkit skill install <id>` | Installs an AI skill into `.agents/skills/` and `.claude/skills/`. |
@@ -99,6 +102,17 @@ orbitkit mcp add godot-lsp
 ```
 
 👉 [Read the detailed MCP Documentation](docs/mcp.md)
+
+---
+
+## 🔔 Auto-Updates & Notifications
+
+OrbitKit continuously detects newly published AI skills and updates to installed skills without blocking your terminal commands:
+
+- **Passive Background Checks**: Uses HTTP `ETag` caching (`~/.local/state/orbitkit/state.json`) and a detached worker so CLI commands never wait on network requests.
+- **On-Demand Check**: Run `orbitkit check` (or `orbitkit check --json` for CI/tooling) to inspect new skills, outdated skills, and CLI version status.
+- **OS Scheduler Integration**: Run `orbitkit autoupdate enable --every 6h` to register a native `systemd` user timer (Linux), `LaunchAgent` (macOS), or `schtasks` job (Windows).
+- **Safe Atomic Updates & Rollback**: `orbitkit update --all` verifies SHA-256 checksums, creates backups in `.devdock/backups/`, extracts atomically, and rolls back automatically if verification fails.
 
 ---
 

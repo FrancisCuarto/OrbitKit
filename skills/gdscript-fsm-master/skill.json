@@ -1,0 +1,10 @@
+{
+  "id": "gdscript-fsm-master",
+  "name": "GDScript Finite State Machine (FSM)",
+  "version": "1.2.0",
+  "description": "Decoupled, modular state machine pattern using dedicated Node/State classes for combat, movement, and AI.",
+  "tags": ["architecture", "fsm", "gameplay"],
+  "minGodot": "4.0",
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

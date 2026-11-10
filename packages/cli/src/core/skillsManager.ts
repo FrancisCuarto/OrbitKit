@@ -1,5 +1,8 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import type { Catalog, CatalogSkill } from './catalog.js';
+import { installRemoteSkill } from './skillSource.js';
+import { compareSemver } from './selfUpdater.js';
 
 export interface SkillDefinition {
   id: string;
@@ -187,12 +190,19 @@ Follow strict static typing, signal-based decoupling, and node composition over 
 ];
 
 /**
- * Installs or updates a skill in both .agents/skills and .claude/skills directories
+ * Installs or updates a skill in both .agents/skills and .claude/skills directories.
+ * If source?.url is provided, downloads, verifies checksum, and extracts remotely;
+ * otherwise uses bundled CURATED_SKILLS as fallback.
  */
 export async function installSkill(
   projectDir: string,
-  skillId: string
+  skillId: string,
+  source?: CatalogSkill
 ): Promise<{ success: boolean; version: string; message: string }> {
+  if (source?.url) {
+    return installRemoteSkill(projectDir, skillId, source);
+  }
+
   const skill = CURATED_SKILLS.find((s) => s.id === skillId);
   if (!skill) {
     return {
@@ -201,6 +211,10 @@ export async function installSkill(
       message: `Skill '${skillId}' not found. Available: ${CURATED_SKILLS.map((s) => s.id).join(', ')}`
     };
   }
+
+  const targetVersion = source?.version || skill.version;
+  const targetName = source?.name || skill.name;
+  const targetDescription = source?.description || skill.description;
 
   const targets = [
     path.join(projectDir, '.agents', 'skills', skill.id),
@@ -212,10 +226,10 @@ export async function installSkill(
 
     // Write SKILL.md
     const skillMdContent = `---
-name: ${skill.name}
+name: ${targetName}
 id: ${skill.id}
-version: ${skill.version}
-description: ${skill.description}
+version: ${targetVersion}
+description: ${targetDescription}
 ---
 
 ${skill.systemPrompt}
@@ -225,8 +239,8 @@ ${skill.systemPrompt}
     // Write metadata
     const meta = {
       id: skill.id,
-      name: skill.name,
-      version: skill.version,
+      name: targetName,
+      version: targetVersion,
       updated_at: new Date().toISOString()
     };
     await fs.writeFile(path.join(targetPath, 'skill.json'), JSON.stringify(meta, null, 2), 'utf8');
@@ -234,19 +248,21 @@ ${skill.systemPrompt}
 
   return {
     success: true,
-    version: skill.version,
-    message: `Installed ${skill.name} (v${skill.version}) into .agents/skills and .claude/skills`
+    version: targetVersion,
+    message: `Installed ${targetName} (v${targetVersion}) into .agents/skills and .claude/skills`
   };
 }
 
 /**
- * Checks for available skill updates in a project
+ * Checks for available skill updates in a project against a remote catalog or bundled CURATED_SKILLS.
  */
 export async function checkSkillUpdates(
-  projectDir: string
+  projectDir: string,
+  catalog?: Catalog
 ): Promise<{ skillId: string; currentVersion: string; latestVersion: string }[]> {
   const updates: { skillId: string; currentVersion: string; latestVersion: string }[] = [];
   const baseSkillsDir = path.join(projectDir, '.agents', 'skills');
+  const referenceList: { id: string; version: string }[] = catalog ? catalog.skills : CURATED_SKILLS;
 
   try {
     const entries = await fs.readdir(baseSkillsDir, { withFileTypes: true });
@@ -258,8 +274,8 @@ export async function checkSkillUpdates(
           const data = JSON.parse(raw);
           const currentVersion = data.version || '1.0.0';
 
-          const catalogSkill = CURATED_SKILLS.find((s) => s.id === entry.name);
-          if (catalogSkill && catalogSkill.version !== currentVersion) {
+          const catalogSkill = referenceList.find((s) => s.id === entry.name);
+          if (catalogSkill && compareSemver(catalogSkill.version, currentVersion) > 0) {
             updates.push({
               skillId: entry.name,
               currentVersion,

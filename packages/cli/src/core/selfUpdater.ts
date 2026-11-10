@@ -22,9 +22,9 @@ export async function getCurrentCliVersion(): Promise<string> {
     const pkgPath = path.resolve(__dirname, '../../package.json');
     const raw = await fs.readFile(pkgPath, 'utf-8');
     const pkg = JSON.parse(raw);
-    return pkg.version || '0.4.0';
+    return pkg.version || '0.6.0';
   } catch {
-    return '0.4.0';
+    return '0.6.0';
   }
 }
 

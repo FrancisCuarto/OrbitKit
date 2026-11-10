@@ -38,6 +38,31 @@ OrbitKit is an end-to-end tooling and catalog ecosystem tailored for Godot 4 gam
 | `apps/web` | `@devdock/web` | Documentation portal, Engram-inspired aesthetics with Godot palette. |
 | `apps/api` | `@devdock/api` | Central registry REST API with Argon2id auth and rate limiting. |
 | `godot-plugin/addons/devdock` | `devdock` Godot Addon | Native Godot 4 editor plugin for package management inside the engine. |
+| `catalog.json` | Versioned Catalog | Root catalog with SHA-256 checksums for deterministic skill archives (`skills/*.zip`). |
+
+---
+
+## Continuous Update & Notification Flow
+
+```
+┌──────────────────┐   HTTPS + ETag   ┌───────────────────┐
+│  catalog.json    │◄────────────────│  updateChecker.ts │
+│  (repo or API)   │                  └─────────┬─────────┘
+└──────────────────┘                            │ diff
+                                     ┌──────────▼──────────┐
+                                     │  state.json (cache) │
+                                     │  + config.json      │
+                                     └──────┬───────┬──────┘
+                                            │       │
+                              ┌─────────────▼─┐   ┌─▼──────────────┐
+                              │ notifier.ts   │   │ applier.ts     │
+                              │ terminal/     │   │ safe apply     │
+                              │ desktop/marker│   │ backup+rollback│
+                              └───────────────┘   └────────────────┘
+```
+
+- **Non-blocking passive checks**: Every CLI invocation spawns a detached background worker (`checkWorker.ts`) when `now >= nextCheckAt` and renders a cached one-line banner in `postAction` with zero network latency on the main process.
+- **Safe application (`applier.ts`)**: Verifies `sha256` checksums, backs up existing skills into `.devdock/backups/<timestamp>/`, extracts atomically with Zip Slip protection, rolls back automatically on failure, and skips major versions unless `allowMajor` is enabled.
 
 ---
 

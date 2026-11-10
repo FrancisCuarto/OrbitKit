@@ -1,0 +1,10 @@
+{
+  "id": "godot-blender-pipeline",
+  "name": "Blender 3D to Godot 4 Asset & Rigging Pipeline",
+  "version": "1.1.0",
+  "description": "Automates .blend and glTF 2.0 import suffixes (-col, -convcol, -loop), Skeleton3D retargeting, and PBR materials.",
+  "tags": ["blender", "3d", "pipeline"],
+  "minGodot": "4.0",
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

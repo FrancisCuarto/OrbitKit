@@ -1,0 +1,9 @@
+{
+  "id": "ctx7-docs-fetcher",
+  "name": "Context7 (ctx7) Live Documentation Fetcher",
+  "version": "1.0.0",
+  "description": "Instructs AI coding assistants to fetch fresh, version-specific library docs and syntax examples via Context7.",
+  "tags": ["docs", "context7", "mcp"],
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

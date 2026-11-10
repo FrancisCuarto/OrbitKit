@@ -1,0 +1,10 @@
+{
+  "id": "godot-save-system",
+  "name": "Godot 4 Cryptographic Save System",
+  "version": "1.0.0",
+  "description": "Architecture for saving and loading player state with JSON / binary serialization and HMAC/SHA-256 integrity checks.",
+  "tags": ["save", "security", "serialization"],
+  "minGodot": "4.0",
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

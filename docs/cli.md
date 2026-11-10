@@ -60,6 +60,33 @@ cd my-godot-project
 orbitkit init
 ```
 
+### `orbitkit check [--json] [--force]`
+Checks the remote `catalog.json` (with ETag + local cache in `~/.local/state/orbitkit/state.json`) for new AI Skills, outdated project skills, and newer CLI versions without modifying project files.
+- `--json`: Outputs a machine-readable `UpdateReport` JSON object without colors or spinners.
+- `--force`: Bypasses the cached `nextCheckAt` interval and queries the remote catalog immediately.
+- `--notify`: Emits deduplicated desktop notifications and updates `.devdock/update-available.json`.
+
+```bash
+orbitkit check
+orbitkit check --force
+orbitkit check --json
+```
+
+### `orbitkit watch [--interval <minutes>] [--auto-update] [--notify]`
+Runs a foreground daemon that periodically checks for catalog updates (with jitter and exponential backoff when offline) and optionally applies patch/minor skill updates.
+
+```bash
+orbitkit watch --interval 60 --auto-update --notify
+```
+
+### `orbitkit autoupdate <enable|disable>`
+Configures OS-native background update checks (systemd user timer on Linux, LaunchAgent on macOS, or `schtasks` on Windows) with zero resident daemon overhead.
+
+```bash
+orbitkit autoupdate enable --every 6h
+orbitkit autoupdate disable
+```
+
 ### `orbitkit update [--all]`
 Checks installed skills and addons against latest catalog versions.
 - Running without flags updates the current project.
@@ -101,3 +128,16 @@ orbitkit mcp add ctx7
 orbitkit mcp add godot-lsp
 orbitkit mcp add godot-engine-bridge
 ```
+
+---
+
+## Environment Variables
+
+| Variable | Effect |
+|---|---|
+| `ORBITKIT_NO_UPDATE_CHECK=1` | Disables all passive background update checks and banners. |
+| `ORBITKIT_CATALOG_URL` | Overrides the remote `catalog.json` URL (HTTPS required, or `http://localhost` in tests). |
+| `ORBITKIT_CONFIG` | Overrides the path to `config.json`. |
+| `CI=true` | Automatically disables passive background checks and terminal banners. |
+| `NO_COLOR=1` | Disables ANSI colors in terminal output. |
+

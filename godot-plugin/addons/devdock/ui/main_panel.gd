@@ -21,6 +21,9 @@ const DevDockHealthChecker = preload("res://addons/devdock/validators/health_che
 var api_client: DevDockApiClient
 var installer: DevDockPackageInstaller
 var pending_manifest: Dictionary = {}
+var _marker_timer: Timer
+
+const UPDATE_MARKER_PATH = "res://.devdock/update-available.json"
 
 func _ready() -> void:
 	api_client = DevDockApiClient.new()
@@ -50,6 +53,50 @@ func _ready() -> void:
 		
 	_refresh_explore_catalog()
 	_refresh_installed_view()
+	_check_update_marker()
+	_setup_marker_timer()
+
+func _setup_marker_timer() -> void:
+	_marker_timer = Timer.new()
+	_marker_timer.wait_time = 1800.0 # 30 minutes
+	_marker_timer.autostart = true
+	_marker_timer.timeout.connect(_check_update_marker)
+	add_child(_marker_timer)
+
+func _check_update_marker() -> void:
+	if not FileAccess.file_exists(UPDATE_MARKER_PATH):
+		return
+	var file = FileAccess.open(UPDATE_MARKER_PATH, FileAccess.READ)
+	if not file:
+		return
+	var raw = file.get_as_text()
+	file.close()
+
+	var json = JSON.new()
+	if json.parse(raw) != OK or not json.data is Dictionary:
+		return
+
+	var data: Dictionary = json.data
+	var new_skills: Array = data.get("newSkills", [])
+	var outdated_skills: Array = data.get("outdatedSkills", [])
+	var cli_info: Dictionary = data.get("cli", {})
+	var cli_update: bool = cli_info.get("updateAvailable", false)
+
+	var total_updates: int = new_skills.size() + outdated_skills.size() + (1 if cli_update else 0)
+	if total_updates > 0 and status_bar_label:
+		status_bar_label.text = "⬆ %d update(s) available · Run 'orbitkit update --all'" % total_updates
+
+	if updates_list:
+		for child in updates_list.get_children():
+			child.queue_free()
+		for item in outdated_skills:
+			var lbl = Label.new()
+			lbl.text = "↑ %s: v%s → v%s" % [item.get("id", ""), item.get("from", ""), item.get("to", "")]
+			updates_list.add_child(lbl)
+		for item in new_skills:
+			var lbl = Label.new()
+			lbl.text = "+ %s (v%s)" % [item.get("id", ""), item.get("version", "")]
+			updates_list.add_child(lbl)
 
 func _on_search_button_pressed() -> void:
 	_refresh_explore_catalog()

@@ -1,0 +1,10 @@
+{
+  "id": "godot-responsive-ui",
+  "name": "Godot 4 Responsive UI & Layouts",
+  "version": "1.1.0",
+  "description": "Scalable UI architecture using Control nodes, Anchors, BoxContainers, GridContainers, and custom theme overrides.",
+  "tags": ["ui", "control", "layouts"],
+  "minGodot": "4.0",
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "godot-shader-vfx",
+  "name": "Godot 4 Shader & VFX Master",
+  "version": "1.2.0",
+  "description": "Expert knowledge of 2D canvas_item and 3D spatial shaders, UV operations, hint_screen_texture, and mobile optimization.",
+  "tags": ["shaders", "vfx", "rendering"],
+  "minGodot": "4.0",
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

@@ -47,4 +47,18 @@ describe('DevDock REST API Endpoints & Security', () => {
     expect(decoded?.email).toBe('admin@devdock.io');
     expect(decoded?.role).toBe('admin');
   });
+
+  it('serves /api/catalog with schema 1, skills, and ETag 304 support', async () => {
+    const res1 = await request(app).get('/api/catalog');
+    expect(res1.status).toBe(200);
+    expect(res1.body.schema).toBe(1);
+    expect(Array.isArray(res1.body.skills)).toBe(true);
+    expect(res1.body.skills.length).toBeGreaterThanOrEqual(10);
+
+    const etag = res1.headers['etag'];
+    expect(typeof etag).toBe('string');
+
+    const res2 = await request(app).get('/api/catalog').set('If-None-Match', etag);
+    expect(res2.status).toBe(304);
+  });
 });

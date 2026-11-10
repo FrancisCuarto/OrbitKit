@@ -1,0 +1,10 @@
+{
+  "id": "godot4-syntax-guardian",
+  "name": "Godot 4 Syntax Guardian (Anti-Hallucination)",
+  "version": "1.3.0",
+  "description": "Enforces strict Godot 4.3+ rules: TileMapLayer, FileAccess/DirAccess, Callables signals, CharacterBody move_and_slide.",
+  "tags": ["syntax", "core"],
+  "minGodot": "4.3",
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

@@ -6,6 +6,7 @@ import resourceRoutes from './routes/resourceRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import catalogRoutes from './routes/catalogRoutes.js';
 
 export function createApp(): Express {
   const app = express();
@@ -32,6 +33,7 @@ export function createApp(): Express {
   });
 
   // REST API Endpoints
+  app.use('/api/catalog', catalogRoutes);
   app.use('/api/resources', resourceRoutes);
   app.use('/api/categories', categoryRoutes);
   app.use('/api/auth', authRoutes);

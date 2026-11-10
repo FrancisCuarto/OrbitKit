@@ -1,0 +1,10 @@
+{
+  "id": "gdscript-architect",
+  "name": "GDScript 4 Architect Skill (Legacy Alias)",
+  "version": "1.2.0",
+  "description": "Legacy alias for Godot 4 architectural conventions.",
+  "tags": ["architecture", "core", "gdscript"],
+  "minGodot": "4.0",
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}
