@@ -6,3 +6,4 @@ export * from './core/updater.js';
 export * from './core/doctor.js';
 export * from './ui/server.js';
 export * from './ui/html.js';
+export * from './tui/interactiveTui.js';

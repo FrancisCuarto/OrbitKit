@@ -9,14 +9,146 @@ import { OFFICIAL_GODOT_MCP_SERVERS, installMcpServer, listConfiguredMcpServers 
 import { updateProject, updateAllProjects } from './core/updater.js';
 import { runSystemDiagnostics } from './core/doctor.js';
 import { startGuiServer } from './ui/server.js';
+import { startInteractiveTui } from './tui/interactiveTui.js';
+import { checkCliVersion, performCliSelfUpdate, performCliUninstall } from './core/selfUpdater.js';
 
 export function createCli(): Command {
   const program = new Command();
 
   program
-    .name('devdock')
-    .description('DevDock CLI — Automated AI Skills, MCP Servers and Addon Manager for Godot Projects')
-    .version('0.1.0');
+    .name('orbitkit')
+    .description('OrbitKit CLI — Automated AI Skills, MCP Servers and Addon Manager for Godot Projects')
+    .version('0.5.0')
+    .action(async () => {
+      if (process.stdout.isTTY) {
+        await startInteractiveTui();
+      } else {
+        program.help();
+      }
+    });
+
+  // Command: gui (alias: dashboard)
+  program
+    .command('gui')
+    .alias('dashboard')
+    .description('Launch the interactive OrbitKit GUI web dashboard in your browser')
+    .option('-p, --port <port>', 'Port to run the dashboard server on', '4567')
+    .option('-d, --dir <dir>', 'Directory to inspect or manage', '.')
+    .option('--no-open', 'Do not open the browser automatically')
+    .action(async (options) => {
+      const port = parseInt(options.port, 10) || 4567;
+      const targetDir = path.resolve(options.dir || '.');
+      const spinner = ora('Starting OrbitKit GUI Dashboard...').start();
+      try {
+        const { url, port: actualPort } = await startGuiServer({
+          port,
+          dir: targetDir,
+          openBrowser: options.open !== false
+        });
+        spinner.succeed(pc.green('OrbitKit GUI Dashboard is live!'));
+        console.log(pc.bold(pc.cyan(`\n  🚀 Local:   ${pc.underline(url)}`)));
+        console.log(pc.gray(`  📁 Target:  ${targetDir}`));
+        console.log(pc.gray(`  🔌 Port:    ${actualPort}`));
+        console.log(pc.yellow(`\nPress Ctrl+C to stop the GUI server.\n`));
+      } catch (err: any) {
+        spinner.fail(pc.red(`Failed to start GUI server: ${err.message}`));
+      }
+    });
+
+  // Command: ui (GUI by default, or TUI with --tui)
+  program
+    .command('ui')
+    .description('Launch interactive User Interface (Web GUI by default, or TUI with --tui)')
+    .option('--tui', 'Launch terminal text UI instead of web GUI')
+    .option('-p, --port <port>', 'Port to run the dashboard server on', '4567')
+    .option('-d, --dir <dir>', 'Directory to inspect or manage', '.')
+    .option('--no-open', 'Do not open the browser automatically')
+    .action(async (options) => {
+      if (options.tui) {
+        await startInteractiveTui();
+      } else {
+        const port = parseInt(options.port, 10) || 4567;
+        const targetDir = path.resolve(options.dir || '.');
+        const spinner = ora('Starting OrbitKit GUI Dashboard...').start();
+        try {
+          const { url, port: actualPort } = await startGuiServer({
+            port,
+            dir: targetDir,
+            openBrowser: options.open !== false
+          });
+          spinner.succeed(pc.green('OrbitKit GUI Dashboard is live!'));
+          console.log(pc.bold(pc.cyan(`\n  🚀 Local:   ${pc.underline(url)}`)));
+          console.log(pc.gray(`  📁 Target:  ${targetDir}`));
+          console.log(pc.gray(`  🔌 Port:    ${actualPort}`));
+          console.log(pc.yellow(`\nPress Ctrl+C to stop the GUI server.\n`));
+        } catch (err: any) {
+          spinner.fail(pc.red(`Failed to start GUI server: ${err.message}`));
+        }
+      }
+    });
+
+  // Command: tui
+  program
+    .command('tui')
+    .description('Launch minimalist interactive Terminal User Interface (TUI)')
+    .action(async () => {
+      await startInteractiveTui();
+    });
+
+  // Command: upgrade / self-update
+  program
+    .command('upgrade')
+    .alias('self-update')
+    .description('Check for the latest OrbitKit CLI version and upgrade globally')
+    .option('-c, --check', 'Only check if a newer version is available without installing')
+    .action(async (options) => {
+      const spinner = ora('Checking OrbitKit CLI version against NPM & GitHub...').start();
+      const check = await checkCliVersion();
+      spinner.stop();
+
+      console.log(pc.bold(pc.cyan('\nOrbitKit Version Check:')));
+      console.log(`  Installed version: ${pc.white('v' + check.currentVersion)}`);
+      console.log(
+        `  Latest version:    ${
+          check.updateAvailable ? pc.yellow('v' + check.latestVersion + ' (Update available!)') : pc.green('v' + check.latestVersion + ' (Up to date)')
+        }`
+      );
+
+      if (options.check || !check.updateAvailable) {
+        if (check.updateAvailable) {
+          console.log(pc.yellow(`\nRun ${pc.bold('orbitkit upgrade')} to install v${check.latestVersion}.\n`));
+        } else {
+          await performCliSelfUpdate({ force: false });
+          console.log(pc.green(`\n✓ Ya tienes la última versión instalada (v${check.currentVersion}).\n`));
+        }
+        return;
+      }
+
+      const updateSpinner = ora(`Actualizando OrbitKit CLI (v${check.currentVersion} → v${check.latestVersion})...`).start();
+      const res = await performCliSelfUpdate({ force: true });
+      if (res.success) {
+        updateSpinner.succeed(pc.green(res.message));
+        console.log(pc.gray('  ✓ Global binary verified in PATH.\n'));
+      } else {
+        updateSpinner.fail(pc.red(res.message));
+      }
+    });
+
+  // Command: uninstall / remove
+  program
+    .command('uninstall')
+    .alias('remove')
+    .description('Uninstall OrbitKit CLI globally from your system')
+    .option('-p, --project', 'Also remove .devdock/ configuration from the current project')
+    .action(async (options) => {
+      const spinner = ora('Desinstalando OrbitKit CLI globalmente...').start();
+      const res = await performCliUninstall({ cleanProject: Boolean(options.project) });
+      if (res.success) {
+        spinner.succeed(pc.green(res.message));
+      } else {
+        spinner.fail(pc.red(res.message));
+      }
+    });
 
   // Command: ui (alias: gui)
   program
@@ -129,9 +261,28 @@ export function createCli(): Command {
   // Command: update
   program
     .command('update [target]')
-    .description('Update AI Skills, MCPs, and Addons to the latest versions')
+    .description('Check & update OrbitKit CLI, AI Skills, MCPs, and Addons to the latest versions')
     .option('-a, --all', 'Update all detected Godot projects in the directory tree')
+    .option('-c, --cli', 'Only check and update the global OrbitKit CLI binary')
     .action(async (target = '.', options) => {
+      // 1. Always check if the CLI itself has a newer release
+      const verCheck = await checkCliVersion();
+      if (verCheck.updateAvailable || options.cli) {
+        const cliSpin = ora(
+          verCheck.updateAvailable
+            ? `New OrbitKit CLI found (v${verCheck.currentVersion} → v${verCheck.latestVersion}). Updating CLI...`
+            : `Verifying OrbitKit CLI v${verCheck.currentVersion}...`
+        ).start();
+        const selfRes = await performCliSelfUpdate({ force: verCheck.updateAvailable });
+        if (selfRes.success) {
+          cliSpin.succeed(pc.green(selfRes.message));
+        } else {
+          cliSpin.warn(pc.yellow(selfRes.message));
+        }
+        if (options.cli) return;
+      } else {
+        console.log(pc.gray(`✓ OrbitKit CLI v${verCheck.currentVersion} is up to date.`));
+      }
       if (options.all) {
         const spinner = ora('Scanning and updating all Godot projects...').start();
         const results = await updateAllProjects(target);

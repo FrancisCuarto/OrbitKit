@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Terminal, Bot, Cpu, Copy, Check, Sparkles, BookOpen, Layers } from 'lucide-react';
+import { Terminal, Bot, Cpu, Copy, Check, Sparkles, BookOpen, Layers, RefreshCw, Trash2 } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../content/translations';
+import { safeCopyToClipboard } from '../utils/clipboard';
 
 interface Props {
   lang: Language;
@@ -12,7 +13,7 @@ export function DocsSection({ lang }: Props) {
   const t = TRANSLATIONS[lang].docs;
 
   const handleCopy = (code: string, id: string) => {
-    navigator.clipboard.writeText(code);
+    void safeCopyToClipboard(code);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
   };
@@ -34,7 +35,7 @@ export function DocsSection({ lang }: Props) {
       {/* Docs Tabs Container */}
       <div className="bg-godot-card border border-godot-border rounded-2xl overflow-hidden shadow-2xl">
         {/* Navigation Bar */}
-        <div className="flex flex-wrap items-center gap-2 p-3 bg-godot-950/80 border-b border-godot-border">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 bg-godot-950/80 border-b border-godot-border" role="tablist">
           {[
             { id: 'cli', label: t.tabCli, icon: Terminal },
             { id: 'mcp', label: t.tabMcp, icon: Layers },
@@ -46,15 +47,19 @@ export function DocsSection({ lang }: Props) {
             return (
               <button
                 key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onPointerDown={() => setActiveTab(tab.id as any)}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition ${
+                className={`flex items-center justify-center min-h-[44px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold cursor-pointer select-none transition ${
                   active
-                    ? 'bg-godot-500 text-white shadow-md shadow-godot-500/20'
-                    : 'text-slate-400 hover:text-white hover:bg-godot-cardHover border border-transparent'
+                    ? 'bg-godot-500 text-white shadow-md shadow-godot-500/20 border border-godot-400/50'
+                    : 'bg-godot-card/50 text-slate-300 hover:text-white hover:bg-godot-cardHover border border-godot-border/50'
                 }`}
               >
-                <Icon className="w-4 h-4 mr-2" />
-                {tab.label}
+                <Icon className="w-4 h-4 mr-2 shrink-0" />
+                <span>{tab.label}</span>
               </button>
             );
           })}
@@ -72,42 +77,143 @@ export function DocsSection({ lang }: Props) {
                 </p>
               </div>
 
-              {/* Quick Install Box */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-godot-950 via-godot-900 to-godot-950 border border-godot-500/30 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Terminal className="w-4 h-4 text-godot-400" />
-                    <span className="font-semibold text-white text-sm">Official NPM Installation</span>
-                    <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-mono">v0.1.0 on NPM</span>
+              {/* Quick Install, Upgrade & Uninstall Grid */}
+              <div id="update-cli" className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                {/* 1. Fresh Install Box */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-godot-950 via-godot-900 to-godot-950 border border-godot-500/30 space-y-3 flex flex-col justify-between">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Terminal className="w-4 h-4 text-godot-400" />
+                        <span className="font-semibold text-white text-sm">
+                          {lang === 'es' ? '1. Instalar por NPM' : '1. Install via NPM'}
+                        </span>
+                        <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-mono">
+                          v0.5.0
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy('npm install -g @francisiv/orbitkit', 'quick_npm')}
+                        className="flex items-center px-2.5 py-1 rounded-lg bg-godot-card border border-godot-border text-xs text-slate-300 hover:text-white transition"
+                      >
+                        <span className="inline-flex mr-1 shrink-0">
+                          {copiedId === 'quick_npm' ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </span>
+                        <span>{copiedId === 'quick_npm' ? (lang === 'es' ? '¡Copiado!' : 'Copied!') : (lang === 'es' ? 'Copiar' : 'Copy')}</span>
+                      </button>
+                    </div>
+                    <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-godot-300 border border-godot-border/60">
+                      npm install -g @francisiv/orbitkit
+                    </code>
                   </div>
-                  <button
-                    onClick={() => handleCopy('npm install -g @francisiv/orbitkit', 'quick_npm')}
-                    className="flex items-center px-2.5 py-1 rounded-lg bg-godot-card border border-godot-border text-xs text-slate-300 hover:text-white transition"
-                  >
-                    {copiedId === 'quick_npm' ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 mr-1 text-emerald-400" /> Copied!
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5 mr-1" /> Copy
-                      </>
-                    )}
-                  </button>
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400 pt-1">
+                    <span>{lang === 'es' ? '💡 Abre la interfaz:' : '💡 Open TUI:'}</span>
+                    <code className="text-slate-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
+                      orbitkit
+                    </code>
+                  </div>
                 </div>
-                <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-godot-300 border border-godot-border/60">
-                  npm install -g @francisiv/orbitkit
-                </code>
-                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400 pt-1">
-                  <span>💡 Or run on-demand with zero install:</span>
-                  <code className="text-slate-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
-                    npx @francisiv/orbitkit doctor
-                  </code>
+
+                {/* 2. Dedicated Upgrade / Update Existing CLI Box */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-godot-900 to-godot-950 border border-emerald-500/40 space-y-3 flex flex-col justify-between shadow-lg shadow-emerald-500/5">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <RefreshCw className="w-4 h-4 text-emerald-400" />
+                        <span className="font-semibold text-white text-sm">
+                          {lang === 'es' ? '2. Comprobar y Actualizar' : '2. Check & Upgrade CLI'}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy('orbitkit upgrade', 'upgrade_npm')}
+                        className="flex items-center px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white border border-emerald-500/30 text-xs transition"
+                      >
+                        <span className="inline-flex mr-1 shrink-0">
+                          {copiedId === 'upgrade_npm' ? (
+                            <Check className="w-3.5 h-3.5 text-white" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </span>
+                        <span>{copiedId === 'upgrade_npm' ? (lang === 'es' ? '¡Copiado!' : 'Copied!') : (lang === 'es' ? 'Copiar' : 'Copy')}</span>
+                      </button>
+                    </div>
+                    <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-emerald-300 border border-emerald-500/30">
+                      orbitkit upgrade
+                    </code>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 pt-1">
+                    <span>
+                      {lang === 'es'
+                        ? 'Solo comprobar versión:'
+                        : 'Only check version:'}
+                    </span>
+                    <code className="text-emerald-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
+                      orbitkit upgrade --check
+                    </code>
+                  </div>
+                </div>
+
+                {/* 3. Dedicated Uninstall CLI Box */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-rose-950/35 via-godot-900 to-godot-950 border border-rose-500/35 space-y-3 flex flex-col justify-between shadow-lg shadow-rose-500/5">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Trash2 className="w-4 h-4 text-rose-400" />
+                        <span className="font-semibold text-white text-sm">
+                          {lang === 'es' ? '3. Desinstalar CLI' : '3. Uninstall CLI'}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy('orbitkit uninstall', 'uninstall_cli')}
+                        className="flex items-center px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/30 text-xs transition"
+                      >
+                        <span className="inline-flex mr-1 shrink-0">
+                          {copiedId === 'uninstall_cli' ? (
+                            <Check className="w-3.5 h-3.5 text-white" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </span>
+                        <span>{copiedId === 'uninstall_cli' ? (lang === 'es' ? '¡Copiado!' : 'Copied!') : (lang === 'es' ? 'Copiar' : 'Copy')}</span>
+                      </button>
+                    </div>
+                    <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-rose-300 border border-rose-500/30">
+                      orbitkit uninstall
+                    </code>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 pt-1">
+                    <span>
+                      {lang === 'es' ? 'O directo con NPM:' : 'Or directly via NPM:'}
+                    </span>
+                    <code className="text-rose-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
+                      npm uninstall -g @francisiv/orbitkit
+                    </code>
+                  </div>
                 </div>
               </div>
 
               <div className="space-y-4">
                 {[
+                  {
+                    cmd: 'orbitkit  (or: orbitkit ui)',
+                    desc: 'Launches the minimalist interactive Terminal User Interface (TUI) with automatic version checking, live search (/), and 1-key Skill/MCP installation.'
+                  },
+                  {
+                    cmd: 'orbitkit upgrade [--check]',
+                    desc: 'Checks your installed CLI version against NPM & GitHub and automatically upgrades @francisiv/orbitkit globally (pass --check to only compare versions).'
+                  },
+                  {
+                    cmd: 'orbitkit uninstall [--project]',
+                    desc: 'Cleanly uninstalls the global @francisiv/orbitkit CLI binary and symlinks from your system (pass --project to also remove .devdock/ from current project).'
+                  },
                   {
                     cmd: 'orbitkit scan [directory]',
                     desc: 'Recursively locates all Godot projects (containing project.godot) on your system. Reports installed addons, AI skills, and MCP configuration status.'
@@ -150,14 +256,17 @@ export function DocsSection({ lang }: Props) {
                         $ {item.cmd}
                       </code>
                       <button
+                        type="button"
                         onClick={() => handleCopy(item.cmd, `cmd_${idx}`)}
                         className="p-1.5 rounded-lg bg-godot-card border border-godot-border text-slate-400 hover:text-white transition"
                       >
-                        {copiedId === `cmd_${idx}` ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
+                        <span className="inline-flex">
+                          {copiedId === `cmd_${idx}` ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </span>
                       </button>
                     </div>
                     <p className="text-slate-400 text-xs leading-relaxed">{item.desc}</p>
@@ -302,15 +411,14 @@ export function DocsSection({ lang }: Props) {
                     }
                     className="flex items-center text-godot-400 hover:text-godot-300 transition"
                   >
-                    {copiedId === 'mcp_json' ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 mr-1 text-emerald-400" /> Copied
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5 mr-1" /> Copy JSON
-                      </>
-                    )}
+                    <span className="inline-flex mr-1 shrink-0">
+                      {copiedId === 'mcp_json' ? (
+                        <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      ) : (
+                        <Copy className="w-3.5 h-3.5" />
+                      )}
+                    </span>
+                    <span>{copiedId === 'mcp_json' ? (lang === 'es' ? '¡Copiado!' : 'Copied') : (lang === 'es' ? 'Copiar JSON' : 'Copy JSON')}</span>
                   </button>
                 </div>
 
@@ -367,6 +475,11 @@ export function DocsSection({ lang }: Props) {
                     desc: 'Anti-hallucination skill enforcing strict Godot 4.3+ rules: TileMapLayer, FileAccess/DirAccess, Callables signals, CharacterBody move_and_slide.'
                   },
                   {
+                    id: 'godot-blender-pipeline',
+                    name: 'Blender 3D to Godot 4 Asset Pipeline (v1.1.0)',
+                    desc: 'Automates .blend and glTF 2.0 import suffixes (-col, -convcol, -loop), Skeleton3D BoneMap retargeting, and PBR materials.'
+                  },
+                  {
                     id: 'gdscript-fsm-master',
                     name: 'GDScript Finite State Machine (v1.2.0)',
                     desc: 'Decoupled, modular state machine pattern using dedicated Node/State classes for combat, movement, and enemy AI.'
@@ -412,10 +525,11 @@ export function DocsSection({ lang }: Props) {
                     </div>
 
                     <button
-                      onClick={() => handleCopy(`devdock skill install ${s.id}`, s.id)}
+                      type="button"
+                      onClick={() => handleCopy(`orbitkit skill install ${s.id}`, s.id)}
                       className="px-3 py-1.5 rounded-lg bg-godot-500/20 hover:bg-godot-500 text-godot-300 hover:text-white border border-godot-500/30 transition text-xs font-mono whitespace-nowrap"
                     >
-                      {copiedId === s.id ? 'Copied Command!' : `devdock skill install ${s.id}`}
+                      <span>{copiedId === s.id ? (lang === 'es' ? '¡Copiado!' : 'Copied Command!') : `orbitkit skill install ${s.id}`}</span>
                     </button>
                   </div>
                 ))}

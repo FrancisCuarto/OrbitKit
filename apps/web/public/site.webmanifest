@@ -1,0 +1,17 @@
+{
+  "name": "OrbitKit (DevDock) — Godot 4 AI Skills & MCP Ecosystem",
+  "short_name": "OrbitKit",
+  "description": "Global CLI, curated AI Skills, and Model Context Protocol (MCP) servers for Godot 4, Blender 3D, and Context7 (ctx7).",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d141b",
+  "theme_color": "#478cbf",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

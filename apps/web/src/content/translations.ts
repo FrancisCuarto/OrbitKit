@@ -19,8 +19,10 @@ export const TRANSLATIONS = {
       btnDocs: 'Ver Documentación',
       btnGithub: 'Ver en GitHub',
       tabInstall: 'Instalar Global',
+      tabUpgradeCli: 'Actualizar CLI',
+      tabUninstallCli: 'Desinstalar CLI',
       tabScan: 'Escanear Proyectos',
-      tabUpdate: 'Actualizar Todo',
+      tabUpdate: 'Actualizar Proyectos',
       tabMcp: 'Conectar MCP'
     },
     problem: {
@@ -104,8 +106,10 @@ export const TRANSLATIONS = {
       btnDocs: 'View Documentation',
       btnGithub: 'View on GitHub',
       tabInstall: 'Install Global',
+      tabUpgradeCli: 'Upgrade CLI',
+      tabUninstallCli: 'Uninstall CLI',
       tabScan: 'Scan Projects',
-      tabUpdate: 'Update All',
+      tabUpdate: 'Update Projects',
       tabMcp: 'Connect MCP'
     },
     problem: {

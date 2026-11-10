@@ -8,6 +8,7 @@ import { installMcpServer, listConfiguredMcpServers } from '../core/mcpManager.j
 import { runSystemDiagnostics } from '../core/doctor.js';
 import { startGuiServer } from '../ui/server.js';
 import { renderGuiHtml } from '../ui/html.js';
+import { compareSemver, getCurrentCliVersion } from '../core/selfUpdater.js';
 
 describe('DevDock CLI Core Engine', () => {
   let tempDir: string;
@@ -92,6 +93,7 @@ describe('DevDock CLI Core Engine', () => {
     expect(nodeDiag?.status).toBe('ok');
   });
 
+<<<<<<< HEAD
   it('renders GUI HTML containing brand and interactive sections', () => {
     const html = renderGuiHtml();
     expect(html).toContain('OrbitKit GUI');
@@ -189,5 +191,15 @@ describe('DevDock CLI Core Engine', () => {
         // Ignore
       }
     }
+  });
+
+  it('compares SemVer versions accurately for CLI self-updates', async () => {
+    expect(compareSemver('0.4.0', '0.3.0')).toBe(1);
+    expect(compareSemver('0.2.0', '0.4.0')).toBe(-1);
+    expect(compareSemver('0.4.0', '0.4.0')).toBe(0);
+    expect(compareSemver('v1.0.0', '0.9.9')).toBe(1);
+
+    const ver = await getCurrentCliVersion();
+    expect(ver).toBe('0.5.0');
   });
 });

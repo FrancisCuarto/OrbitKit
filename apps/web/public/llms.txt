@@ -1,0 +1,41 @@
+# OrbitKit (DevDock) — Godot 4 AI Skills & MCP Ecosystem
+
+> OrbitKit (`@francisiv/orbitkit`) is an open-source CLI and ecosystem that keeps Godot 4.x game projects updated with curated AI coding skills, Model Context Protocol (MCP) servers (including Upstash Context7 `ctx7` and GDScript LSP), and Blender 3D asset pipelines.
+
+## Quick Installation
+- Install globally via NPM: `npm install -g @francisiv/orbitkit`
+- Run interactive TUI in terminal: `orbitkit` or `orbitkit ui`
+- Zero-install execution: `npx @francisiv/orbitkit doctor`
+- Binary aliases: `orbitkit` and `devdock`
+
+## Core CLI Commands
+- `orbitkit` / `orbitkit ui`: Launch interactive retro Terminal User Interface (TUI) with live search (`s`), project scanner, and 1-key skill/MCP installer.
+- `orbitkit init`: Initialize OrbitKit in a Godot 4 project (`project.godot`).
+- `orbitkit scan [dir]`: Recursively scan directories for Godot projects and inspect installed skills, addons, and MCPs.
+- `orbitkit update [--all]`: Synchronize and update AI skills and addons across one or all local Godot projects.
+- `orbitkit skill list` / `orbitkit skill install <id>`: Install Godot 4 AI skills into `.agents/skills/` and `.claude/skills/`.
+- `orbitkit mcp list` / `orbitkit mcp add <id>`: Configure MCP servers in `.mcp.json`.
+- `orbitkit doctor`: Diagnose Node.js runtime, Godot 4 binary in PATH, and GDScript LSP port 6005.
+
+## Curated Godot 4 AI Skills
+- `godot4-syntax-guardian`: Anti-hallucination guard enforcing Godot 4.3+ syntax (`TileMapLayer`, `FileAccess`, typed Callables, `move_and_slide()`).
+- `godot-blender-pipeline`: Blender 3D `.blend` and glTF 2.0 import pipeline (`-col`, `-convcol`, `-loop`, `Skeleton3D` BoneMap, PBR materials).
+- `gdscript-fsm-master`: Modular Finite State Machine architecture using decoupled Node states.
+- `godot-multiplayer-enet`: High-level authoritative multiplayer with `ENetMultiplayerPeer` and `@rpc` annotations.
+- `godot-shader-vfx`: 2D `canvas_item` and 3D `spatial` GDShader pipeline and mobile GPU optimization.
+- `godot-procedural-generation`: `FastNoiseLite`, `TileMapLayer` autotiling, and `AStar2D`/`AStar3D` navigation.
+- `godot-responsive-ui`: Multi-resolution responsive Control containers and theme overrides.
+- `godot-save-system`: Atomic JSON/binary serialization with SHA-256 HMAC integrity verification.
+- `ctx7-docs-fetcher`: Upstash Context7 live version-locked documentation protocol.
+
+## Supported MCP Servers
+- `ctx7`: Context7 by Upstash (`npx -y ctx7 mcp`) — live version-locked API documentation.
+- `godot-engine-bridge`: Live Godot 4 editor control, runtime error capture, and hot-reload (`npx -y @devdock/mcp-godot-bridge`).
+- `godot-lsp`: GDScript Language Server bridge on port 6005 (`npx -y @devdock/mcp-godot-lsp`).
+- `godot-docs`: Offline Godot 4 class reference lookup (`npx -y @devdock/mcp-godot-docs`).
+- `godot-scene-inspector`: Safe `.tscn` and `.tres` node hierarchy parser (`npx -y @devdock/mcp-godot-project`).
+- `godot-gut-runner`: Automated GUT unit test runner (`npx -y @devdock/mcp-godot-gut`).
+
+## Links
+- NPM Package: https://www.npmjs.com/package/@francisiv/orbitkit
+- GitHub Repository: https://github.com/FrancisCuarto/OrbitKit
