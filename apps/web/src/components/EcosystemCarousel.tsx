@@ -294,16 +294,16 @@ export function EcosystemCarousel({ lang }: Props) {
   const rowTwo = [...ECOSYSTEM_TOOLS.slice().reverse(), ...ECOSYSTEM_TOOLS.slice().reverse()];
 
   return (
-    <section className="py-20 relative overflow-hidden border-t border-godot-border/60">
+    <section className="py-20 relative z-10 overflow-hidden border-t border-godot-border/60">
       {/* Subtle 3D radial background glow */}
       <div
-        className="pointer-events-none absolute inset-0 -z-10 transition-colors duration-700"
+        className="pointer-events-none absolute inset-0 z-0 transition-colors duration-700"
         style={{
-          background: `radial-gradient(circle at 50% 55%, ${selectedTool.brandColor}14, transparent 70%)`
+          background: `radial-gradient(circle at 50% 55%, ${selectedTool.brandColor}22, transparent 70%)`
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 mb-12 text-center space-y-3">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 mb-12 text-center space-y-3">
         <span className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-godot-300 bg-godot-500/10 border border-godot-500/30 px-3.5 py-1 rounded-full">
           <Sparkles className="w-3.5 h-3.5 text-godot-400" />
           <span>

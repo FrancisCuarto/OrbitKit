@@ -45,6 +45,35 @@ code, pre {
   }
 }
 
+@keyframes blobSlow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(45px, -35px, 0) scale(1.08);
+  }
+  66% {
+    transform: translate3d(-30px, 25px, 0) scale(0.95);
+  }
+}
+
+@keyframes blobReverse {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-50px, 40px, 0) scale(1.1);
+  }
+}
+
+.animate-blob-slow {
+  animation: blobSlow 18s ease-in-out infinite;
+}
+
+.animate-blob-reverse {
+  animation: blobReverse 22s ease-in-out infinite;
+}
+
 .animate-marquee {
   animation: marquee 38s linear infinite;
 }

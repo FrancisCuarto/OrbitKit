@@ -16,6 +16,7 @@ import { Language, TRANSLATIONS } from './content/translations';
 import { TerminalWidget } from './components/TerminalWidget';
 import { DocsSection } from './components/DocsSection';
 import { Orbit3DScene } from './components/Orbit3DScene';
+import { AnimatedBackground } from './components/AnimatedBackground';
 import { EcosystemCarousel } from './components/EcosystemCarousel';
 import { Tilt3DCard } from './components/Tilt3DCard';
 
@@ -24,7 +25,9 @@ export function App() {
   const t = TRANSLATIONS[lang];
 
   return (
-    <div className="min-h-screen flex flex-col bg-godot-950 text-slate-100 font-sans selection:bg-godot-500 selection:text-white">
+    <div className="relative min-h-screen flex flex-col bg-godot-950 text-slate-100 font-sans selection:bg-godot-500 selection:text-white isolate">
+      {/* Full-Page Animated Interactive Background */}
+      <AnimatedBackground />
       {/* 1. Header / Navbar */}
       <header className="border-b border-godot-border/80 bg-godot-950/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -106,12 +109,12 @@ export function App() {
       </header>
 
       {/* 2. Hero Section with Interactive 3D Orbital Canvas */}
-      <section className="relative pt-20 pb-16 px-4 text-center overflow-hidden">
+      <section className="relative z-10 pt-20 pb-16 px-4 text-center overflow-hidden">
         {/* Interactive 3D Geodesic Core & Orbiting Satellites */}
         <Orbit3DScene />
 
         {/* Godot Blue Radial Glow Background */}
-        <div className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-godot-600/20 via-godot-950 to-godot-950"></div>
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-godot-600/20 via-transparent to-transparent"></div>
 
         <div className="max-w-4xl mx-auto space-y-6 relative z-10">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-godot-500/15 border border-godot-500/40 text-godot-300 text-xs font-medium backdrop-blur-md shadow-lg">
@@ -159,12 +162,12 @@ export function App() {
       </section>
 
       {/* 3. Connected 3D Ecosystem Logo Carousel (Godot, Blender, ctx7, Claude, etc.) */}
-      <div id="ecosystem">
+      <div id="ecosystem" className="relative z-10">
         <EcosystemCarousel lang={lang} />
       </div>
 
       {/* 4. The Problem & Solution Section (Engram Style with 3D Tilt) */}
-      <section className="py-20 px-4 max-w-7xl mx-auto border-t border-godot-border/60">
+      <section className="relative z-10 py-20 px-4 max-w-7xl mx-auto border-t border-godot-border/60">
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-godot-400 bg-godot-500/10 border border-godot-500/20 px-3 py-1 rounded-full">
             {t.problem.eyebrow}
@@ -232,7 +235,7 @@ export function App() {
       </section>
 
       {/* 5. Features Grid with 3D Interactive Perspective Cards */}
-      <section id="features" className="py-20 px-4 max-w-7xl mx-auto border-t border-godot-border/60">
+      <section id="features" className="relative z-10 py-20 px-4 max-w-7xl mx-auto border-t border-godot-border/60">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-godot-400 bg-godot-500/10 border border-godot-500/20 px-3 py-1 rounded-full">
             {t.features.eyebrow}
@@ -320,7 +323,7 @@ export function App() {
       </section>
 
       {/* 6. How It Works Section with 3D Cards */}
-      <section id="how-it-works" className="py-20 px-4 max-w-7xl mx-auto border-t border-godot-border/60">
+      <section id="how-it-works" className="relative z-10 py-20 px-4 max-w-7xl mx-auto border-t border-godot-border/60">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-godot-400 bg-godot-500/10 border border-godot-500/20 px-3 py-1 rounded-full">
             {t.how.eyebrow}
@@ -376,10 +379,12 @@ export function App() {
       </section>
 
       {/* 7. Complete Documentation Section */}
-      <DocsSection lang={lang} />
+      <div className="relative z-10">
+        <DocsSection lang={lang} />
+      </div>
 
       {/* 8. Footer */}
-      <footer className="border-t border-godot-border/80 py-10 bg-godot-950 text-xs text-slate-500 mt-auto">
+      <footer className="relative z-10 border-t border-godot-border/80 py-10 bg-godot-950/90 backdrop-blur-md text-xs text-slate-500 mt-auto">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-2">
             <span className="font-bold text-white">OrbitKit (DevDock)</span>
