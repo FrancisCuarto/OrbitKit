@@ -230,7 +230,7 @@ describe('OrbitKit Update System — Fase 0 & Fase 1', () => {
     expect(report.newSkills.map((s) => s.id)).toEqual(['godot-dialogue-system']);
 
     // CLI flags
-    expect(report.cli?.current).toBe('0.6.1');
+    expect(report.cli?.current).toBe('0.6.2');
     expect(report.cli?.latest).toBe('1.0.0');
     expect(report.cli?.updateAvailable).toBe(true);
     expect(report.cli?.major).toBe(true);

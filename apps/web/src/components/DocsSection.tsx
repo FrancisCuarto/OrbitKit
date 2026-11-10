@@ -89,7 +89,7 @@ export function DocsSection({ lang }: Props) {
                           {lang === 'es' ? '1. Instalar por NPM' : '1. Install via NPM'}
                         </span>
                         <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-mono">
-                          v0.6.1
+                          v0.6.2
                         </span>
                       </div>
                       <button
@@ -223,8 +223,20 @@ export function DocsSection({ lang }: Props) {
                     desc: 'Recursively locates all Godot projects (containing project.godot) on your system. Reports installed addons, AI skills, and MCP configuration status.'
                   },
                   {
+                    cmd: 'orbitkit check [--json] [--force]',
+                    desc: 'Queries the versioned remote catalog (with ETag cache & offline fallback) to detect newly published AI skills, outdated project skills, and CLI updates.'
+                  },
+                  {
+                    cmd: 'orbitkit watch [--interval <min>] [--auto-update]',
+                    desc: 'Runs a continuous watcher with jitter and exponential backoff that automatically notifies and applies verified patch/minor skill updates.'
+                  },
+                  {
+                    cmd: 'orbitkit autoupdate enable | disable',
+                    desc: 'Configures OS-native background update checks via systemd user timers (Linux), LaunchAgents (macOS), or schtasks (Windows) with zero daemon overhead.'
+                  },
+                  {
                     cmd: 'orbitkit update [--all]',
-                    desc: 'Checks installed skills and addons against latest catalog versions. Run with "--all" to batch update every Godot project on your PC.'
+                    desc: 'Safely applies skill and MCP updates with SHA-256 checksum verification, atomic extraction, automatic pre-update backups (.devdock/backups/), and rollback on failure.'
                   },
                   {
                     cmd: 'orbitkit init',
