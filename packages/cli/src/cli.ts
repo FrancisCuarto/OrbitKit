@@ -8,14 +8,31 @@ import { CURATED_SKILLS, installSkill, checkSkillUpdates } from './core/skillsMa
 import { OFFICIAL_GODOT_MCP_SERVERS, installMcpServer, listConfiguredMcpServers } from './core/mcpManager.js';
 import { updateProject, updateAllProjects } from './core/updater.js';
 import { runSystemDiagnostics } from './core/doctor.js';
+import { startInteractiveTui } from './tui/interactiveTui.js';
 
 export function createCli(): Command {
   const program = new Command();
 
   program
-    .name('devdock')
-    .description('DevDock CLI — Automated AI Skills, MCP Servers and Addon Manager for Godot Projects')
-    .version('0.1.0');
+    .name('orbitkit')
+    .description('OrbitKit CLI — Automated AI Skills, MCP Servers and Addon Manager for Godot Projects')
+    .version('0.1.0')
+    .action(async () => {
+      if (process.stdout.isTTY) {
+        await startInteractiveTui();
+      } else {
+        program.help();
+      }
+    });
+
+  // Command: ui / tui
+  program
+    .command('ui')
+    .alias('tui')
+    .description('Launch interactive retro Terminal User Interface (TUI)')
+    .action(async () => {
+      await startInteractiveTui();
+    });
 
   // Command: init
   program
