@@ -25,9 +25,10 @@ export function TerminalWidget({ lang }: Props) {
       labelKey: 'tabInstall',
       command: 'npm install -g @francisiv/orbitkit',
       output: [
-        '+ @francisiv/orbitkit@0.6.2',
+        '+ @francisiv/orbitkit@0.6.4',
         'added 6 packages in 1.1s',
         '✓ orbitkit and devdock commands registered globally in PATH',
+        '✓ Godot Editor Plugin auto-configured (addons/orbitkit)',
         '✓ Run "orbitkit gui" to open the interactive web dashboard',
         '✓ Run "orbitkit" in your terminal to open the TUI navigator'
       ]
@@ -41,7 +42,7 @@ export function TerminalWidget({ lang }: Props) {
         '✓ OrbitKit GUI Dashboard is live!',
         '  ➜ Local:   http://localhost:4567',
         '  ➜ Target:  /home/francis/game',
-        '✓ Connected: 4 Godot projects discovered, 10 AI skills ready'
+        '✓ Connected: Godot Plugin active, 10 AI skills ready'
       ]
     },
     {
@@ -50,8 +51,8 @@ export function TerminalWidget({ lang }: Props) {
       command: 'orbitkit upgrade',
       output: [
         '🔍 Checking OrbitKit CLI version against NPM & GitHub...',
-        '  Installed version: v0.6.1  →  Latest version: v0.6.2',
-        '✓ OrbitKit actualizado correctamente: v0.6.1 → v0.6.2'
+        '  Installed version: v0.6.3  →  Latest version: v0.6.4',
+        '✓ OrbitKit actualizado correctamente: v0.6.3 → v0.6.4'
       ]
     },
     {
@@ -116,7 +117,7 @@ export function TerminalWidget({ lang }: Props) {
           <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
           <span className="ml-2 text-xs text-slate-400 font-sans font-medium flex items-center">
             <Terminal className="w-3.5 h-3.5 mr-1.5 text-godot-400" />
-            terminal — orbitkit v0.6.2
+            terminal — orbitkit v0.6.4
           </span>
         </div>
 

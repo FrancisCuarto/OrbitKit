@@ -89,7 +89,7 @@ export function DocsSection({ lang }: Props) {
                           {lang === 'es' ? '1. Instalar por NPM' : '1. Install via NPM'}
                         </span>
                         <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-mono">
-                          v0.6.2
+                          v0.6.4
                         </span>
                       </div>
                       <button
