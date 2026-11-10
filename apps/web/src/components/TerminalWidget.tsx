@@ -85,8 +85,8 @@ export function TerminalWidget({ lang }: Props) {
 
   return (
     <div className="w-full max-w-3xl mx-auto rounded-2xl bg-godot-card border border-godot-border shadow-2xl overflow-hidden font-mono text-xs sm:text-sm text-left">
-      {/* Window Titlebar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 bg-godot-950/90 border-b border-godot-border">
+      {/* Window Titlebar & Large-Hitbox Tab Bar */}
+      <div className="px-4 pt-3 pb-2.5 bg-godot-950/95 border-b border-godot-border space-y-2.5">
         <div className="flex items-center space-x-2">
           <div className="w-3 h-3 rounded-full bg-rose-500/80"></div>
           <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
@@ -97,18 +97,22 @@ export function TerminalWidget({ lang }: Props) {
           </span>
         </div>
 
-        {/* Tab pills */}
-        <div className="flex flex-wrap items-center gap-1">
+        {/* Expanded Hitbox Tab Pills */}
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 pt-0.5" role="tablist">
           {TABS.map((tab) => {
             const active = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onPointerDown={() => setActiveTab(tab.id)}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-2.5 py-1 rounded-lg text-xs font-sans font-medium transition ${
+                className={`w-full min-h-[40px] px-3.5 py-2 rounded-xl text-xs sm:text-[13px] font-sans font-semibold cursor-pointer select-none flex items-center justify-center text-center transition-all duration-150 ${
                   active
-                    ? 'bg-godot-500 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-white hover:bg-godot-border/60'
+                    ? 'bg-godot-500 text-white shadow-md shadow-godot-500/25 border border-godot-400/50'
+                    : 'bg-godot-card/50 text-slate-300 hover:text-white hover:bg-godot-border/80 border border-godot-border/50'
                 }`}
               >
                 {t[tab.labelKey]}
@@ -121,15 +125,17 @@ export function TerminalWidget({ lang }: Props) {
       {/* Terminal Content Body */}
       <div className="p-4 sm:p-6 bg-godot-950/60 space-y-4">
         {/* Command line */}
-        <div className="flex items-center justify-between bg-godot-card/80 p-3 rounded-xl border border-godot-border">
+        <div className="flex items-center justify-between bg-godot-card/80 p-3.5 rounded-xl border border-godot-border">
           <div className="flex items-center space-x-2 overflow-x-auto text-slate-200">
             <span className="text-godot-400 font-bold select-none">$</span>
             <span className="font-semibold text-white">{currentTabData.command}</span>
           </div>
 
           <button
+            type="button"
+            onPointerDown={handleCopy}
             onClick={handleCopy}
-            className="flex items-center px-3 py-1.5 ml-2 rounded-lg bg-godot-500/20 hover:bg-godot-500 text-godot-300 hover:text-white border border-godot-500/30 transition text-xs font-sans whitespace-nowrap"
+            className="flex items-center px-4 py-2 ml-3 rounded-xl bg-godot-500/20 hover:bg-godot-500 text-godot-300 hover:text-white border border-godot-500/30 transition text-xs font-sans font-semibold cursor-pointer select-none whitespace-nowrap"
           >
             {copied ? (
               <>

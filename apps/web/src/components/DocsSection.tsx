@@ -34,7 +34,7 @@ export function DocsSection({ lang }: Props) {
       {/* Docs Tabs Container */}
       <div className="bg-godot-card border border-godot-border rounded-2xl overflow-hidden shadow-2xl">
         {/* Navigation Bar */}
-        <div className="flex flex-wrap items-center gap-2 p-3 bg-godot-950/80 border-b border-godot-border">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 bg-godot-950/80 border-b border-godot-border" role="tablist">
           {[
             { id: 'cli', label: t.tabCli, icon: Terminal },
             { id: 'mcp', label: t.tabMcp, icon: Layers },
@@ -46,15 +46,19 @@ export function DocsSection({ lang }: Props) {
             return (
               <button
                 key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onPointerDown={() => setActiveTab(tab.id as any)}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition ${
+                className={`flex items-center justify-center min-h-[44px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold cursor-pointer select-none transition ${
                   active
-                    ? 'bg-godot-500 text-white shadow-md shadow-godot-500/20'
-                    : 'text-slate-400 hover:text-white hover:bg-godot-cardHover border border-transparent'
+                    ? 'bg-godot-500 text-white shadow-md shadow-godot-500/20 border border-godot-400/50'
+                    : 'bg-godot-card/50 text-slate-300 hover:text-white hover:bg-godot-cardHover border border-godot-border/50'
                 }`}
               >
-                <Icon className="w-4 h-4 mr-2" />
-                {tab.label}
+                <Icon className="w-4 h-4 mr-2 shrink-0" />
+                <span>{tab.label}</span>
               </button>
             );
           })}

@@ -10,8 +10,8 @@ interface Tilt3DCardProps {
 export function Tilt3DCard({
   children,
   className = '',
-  intensity = 10,
-  glareColor = 'rgba(71, 140, 191, 0.18)'
+  intensity = 8,
+  glareColor = 'rgba(71, 140, 191, 0.16)'
 }: Tilt3DCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState('perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)');
@@ -25,11 +25,11 @@ export function Tilt3DCard({
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
-    const rotateY = ((mouseX / width) - 0.5) * intensity * 2;
-    const rotateX = ((mouseY / height) - 0.5) * -intensity * 2;
+    const rotateY = ((mouseX / width) - 0.5) * intensity * 1.6;
+    const rotateX = ((mouseY / height) - 0.5) * -intensity * 1.6;
 
     setTransform(
-      `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`
+      `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.01, 1.01, 1.01)`
     );
     setGlarePosition({
       x: (mouseX / width) * 100,
@@ -50,8 +50,7 @@ export function Tilt3DCard({
       onMouseLeave={handleMouseLeave}
       style={{
         transform,
-        transition: glarePosition.opacity === 0 ? 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)' : 'transform 0.08s ease-out',
-        transformStyle: 'preserve-3d'
+        transition: glarePosition.opacity === 0 ? 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)' : 'transform 0.08s ease-out'
       }}
       className={`relative overflow-hidden ${className}`}
     >
@@ -63,7 +62,7 @@ export function Tilt3DCard({
           background: `radial-gradient(circle at ${glarePosition.x}% ${glarePosition.y}%, ${glareColor}, transparent 65%)`
         }}
       />
-      <div style={{ transform: 'translateZ(20px)', transformStyle: 'preserve-3d' }} className="relative z-20 h-full flex flex-col justify-between">
+      <div className="relative z-20 h-full flex flex-col justify-between">
         {children}
       </div>
     </div>

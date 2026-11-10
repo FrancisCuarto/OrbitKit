@@ -170,11 +170,9 @@ export function App() {
             </a>
           </div>
 
-          {/* Interactive 3D Floating Terminal Widget */}
-          <div className="pt-8 animate-float-3d">
-            <Tilt3DCard intensity={4} className="rounded-2xl">
-              <TerminalWidget lang={lang} />
-            </Tilt3DCard>
+          {/* Interactive Terminal Widget */}
+          <div className="pt-8 animate-float-3d hover:[animation-play-state:paused]">
+            <TerminalWidget lang={lang} />
           </div>
         </div>
       </section>
