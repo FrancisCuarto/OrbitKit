@@ -140,9 +140,12 @@ async function installFromGithubMain(): Promise<void> {
       `git clone --depth 1 --branch main https://github.com/FrancisCuarto/OrbitKit.git "${tmpRoot}/repo"`
     );
     const cliDir = path.join(tmpRoot, 'repo', 'packages', 'cli');
-    await execAsync('npm install --include=dev && npm run build && npm install -g .', {
-      cwd: cliDir
-    });
+    await execAsync(
+      'npm install --include=dev && npm run build && npm pack && npm install -g francisiv-orbitkit-*.tgz',
+      {
+        cwd: cliDir
+      }
+    );
     await syncLocalBinSymlinks();
   } finally {
     await fs.rm(tmpRoot, { recursive: true, force: true }).catch(() => {});
