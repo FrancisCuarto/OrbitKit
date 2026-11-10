@@ -25,6 +25,19 @@ npx @francisiv/orbitkit scan .
 
 ## Commands
 
+### `orbitkit ui` / `orbitkit gui`
+Launches the interactive OrbitKit GUI web dashboard in your default browser.
+- Visual dashboard for Godot 4 projects, AI Skills, MCP servers, and diagnostics.
+- 1-click install for curated AI skills (`godot4-syntax-guardian`, `gdscript-fsm-master`, etc.).
+- 1-click configuration for Godot MCP servers in `.mcp.json`.
+- Live system diagnostics and real-time execution log drawer.
+
+```bash
+orbitkit ui
+orbitkit gui --port 5000
+orbitkit ui --no-open
+```
+
 ### `orbitkit doctor`
 Performs comprehensive diagnostic checks of your local development environment:
 - Verifies Node.js runtime version.

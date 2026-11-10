@@ -89,7 +89,7 @@ export function DocsSection({ lang }: Props) {
                           {lang === 'es' ? '1. Instalar por NPM' : '1. Install via NPM'}
                         </span>
                         <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-mono">
-                          v0.5.0
+                          v0.6.1
                         </span>
                       </div>
                       <button
@@ -203,7 +203,11 @@ export function DocsSection({ lang }: Props) {
               <div className="space-y-4">
                 {[
                   {
-                    cmd: 'orbitkit  (or: orbitkit ui)',
+                    cmd: 'orbitkit gui  (or: orbitkit ui)',
+                    desc: 'Launches the interactive Web GUI Dashboard in your default browser (localhost:4567) with visual project explorer, 1-click AI Skills installer, MCP manager, and live diagnostics.'
+                  },
+                  {
+                    cmd: 'orbitkit  (or: orbitkit tui)',
                     desc: 'Launches the minimalist interactive Terminal User Interface (TUI) with automatic version checking, live search (/), and 1-key Skill/MCP installation.'
                   },
                   {

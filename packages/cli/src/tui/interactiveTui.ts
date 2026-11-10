@@ -12,6 +12,7 @@ import {
   performCliUninstall,
   VersionCheckResult
 } from '../core/selfUpdater.js';
+import { startGuiServer } from '../ui/server.js';
 
 type Screen = 'main' | 'skills' | 'mcp' | 'projects' | 'doctor' | 'search';
 
@@ -113,6 +114,21 @@ export async function startInteractiveTui(): Promise<void> {
   }
 
   const mainItems = [
+    {
+      label: 'Web GUI Dashboard',
+      hint: () => 'Launch interactive browser dashboard (http://localhost:4567)',
+      action: async () => {
+        setNotice('Launching OrbitKit Web GUI...', 'info');
+        render();
+        try {
+          const { url } = await startGuiServer({ port: 4567, dir: process.cwd(), openBrowser: true });
+          setNotice(`✓ GUI running at ${url} (opened in browser)`, 'ok');
+        } catch (err: any) {
+          setNotice(`✗ Failed to start GUI: ${err.message}`, 'err');
+        }
+        render();
+      }
+    },
     {
       label: 'Skills',
       hint: () => `Install Godot 4 & Blender AI skills (${CURATED_SKILLS.length})`,

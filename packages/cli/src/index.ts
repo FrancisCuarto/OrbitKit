@@ -14,4 +14,6 @@ export * from './core/notifier.js';
 export * from './core/background.js';
 export * from './core/applier.js';
 export * from './core/scheduler.js';
+export * from './ui/server.js';
+export * from './ui/html.js';
 export * from './tui/interactiveTui.js';

@@ -1,7 +1,7 @@
 {
   "name": "@francisiv/orbitkit",
-  "version": "0.6.0",
-  "description": "OrbitKit CLI - Interactive TUI & CLI to keep your Godot 4 and Blender projects updated with AI Skills, Addons and MCPs",
+  "version": "0.6.1",
+  "description": "OrbitKit CLI - Interactive Web GUI Dashboard, TUI & CLI to keep your Godot 4 and Blender projects updated with AI Skills, Addons and MCPs",
   "bin": {
     "orbitkit": "bin/devdock.js",
     "devdock": "bin/devdock.js"
@@ -33,7 +33,8 @@
     "build": "tsc",
     "build:catalog": "node ../../scripts/build-catalog.mjs",
     "dev": "tsc --watch",
-    "test": "vitest run"
+    "test": "vitest run",
+    "postinstall": "node bin/postinstall.js"
   },
   "dependencies": {
     "adm-zip": "^0.5.16",

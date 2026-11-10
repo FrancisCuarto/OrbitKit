@@ -9,6 +9,7 @@ import { CURATED_SKILLS, installSkill, checkSkillUpdates } from './core/skillsMa
 import { OFFICIAL_GODOT_MCP_SERVERS, installMcpServer, listConfiguredMcpServers } from './core/mcpManager.js';
 import { updateProject, updateAllProjects } from './core/updater.js';
 import { runSystemDiagnostics } from './core/doctor.js';
+import { startGuiServer } from './ui/server.js';
 import { startInteractiveTui } from './tui/interactiveTui.js';
 import { checkCliVersion, performCliSelfUpdate, performCliUninstall } from './core/selfUpdater.js';
 import { checkForUpdates, nextWithJitter } from './core/updateChecker.js';
@@ -55,10 +56,69 @@ export function createCli(): Command {
     }
   });
 
-  // Command: ui / tui
+  // Command: gui (alias: dashboard)
+  program
+    .command('gui')
+    .alias('dashboard')
+    .description('Launch the interactive OrbitKit GUI web dashboard in your browser')
+    .option('-p, --port <port>', 'Port to run the dashboard server on', '4567')
+    .option('-d, --dir <dir>', 'Directory to inspect or manage', '.')
+    .option('--no-open', 'Do not open the browser automatically')
+    .action(async (options) => {
+      const port = parseInt(options.port, 10) || 4567;
+      const targetDir = path.resolve(options.dir || '.');
+      const spinner = ora('Starting OrbitKit GUI Dashboard...').start();
+      try {
+        const { url, port: actualPort } = await startGuiServer({
+          port,
+          dir: targetDir,
+          openBrowser: options.open !== false
+        });
+        spinner.succeed(pc.green('OrbitKit GUI Dashboard is live!'));
+        console.log(pc.bold(pc.cyan(`\n  🚀 Local:   ${pc.underline(url)}`)));
+        console.log(pc.gray(`  📁 Target:  ${targetDir}`));
+        console.log(pc.gray(`  🔌 Port:    ${actualPort}`));
+        console.log(pc.yellow(`\nPress Ctrl+C to stop the GUI server.\n`));
+      } catch (err: any) {
+        spinner.fail(pc.red(`Failed to start GUI server: ${err.message}`));
+      }
+    });
+
+  // Command: ui (GUI by default, or TUI with --tui)
   program
     .command('ui')
-    .alias('tui')
+    .description('Launch interactive User Interface (Web GUI by default, or TUI with --tui)')
+    .option('--tui', 'Launch terminal text UI instead of web GUI')
+    .option('-p, --port <port>', 'Port to run the dashboard server on', '4567')
+    .option('-d, --dir <dir>', 'Directory to inspect or manage', '.')
+    .option('--no-open', 'Do not open the browser automatically')
+    .action(async (options) => {
+      if (options.tui) {
+        await startInteractiveTui();
+      } else {
+        const port = parseInt(options.port, 10) || 4567;
+        const targetDir = path.resolve(options.dir || '.');
+        const spinner = ora('Starting OrbitKit GUI Dashboard...').start();
+        try {
+          const { url, port: actualPort } = await startGuiServer({
+            port,
+            dir: targetDir,
+            openBrowser: options.open !== false
+          });
+          spinner.succeed(pc.green('OrbitKit GUI Dashboard is live!'));
+          console.log(pc.bold(pc.cyan(`\n  🚀 Local:   ${pc.underline(url)}`)));
+          console.log(pc.gray(`  📁 Target:  ${targetDir}`));
+          console.log(pc.gray(`  🔌 Port:    ${actualPort}`));
+          console.log(pc.yellow(`\nPress Ctrl+C to stop the GUI server.\n`));
+        } catch (err: any) {
+          spinner.fail(pc.red(`Failed to start GUI server: ${err.message}`));
+        }
+      }
+    });
+
+  // Command: tui
+  program
+    .command('tui')
     .description('Launch minimalist interactive Terminal User Interface (TUI)')
     .action(async () => {
       await startInteractiveTui();
@@ -127,27 +187,40 @@ export function createCli(): Command {
       const spinner = ora('Initializing DevDock in project...').start();
       try {
         const cwd = process.cwd();
-        await fs.access(path.join(cwd, 'project.godot'));
+        const godotFile = path.join(cwd, 'project.godot');
+        let createdProjectGodot = false;
+
+        try {
+          await fs.access(godotFile);
+        } catch {
+          // Auto-create a standard Godot 4 project.godot if not yet present
+          const projectName = path.basename(cwd);
+          const baseConfig = `; Engine configuration file.\n; Initialized by OrbitKit\nconfig_version=5\n\n[application]\n\nconfig/name="${projectName}"\nconfig/features=PackedStringArray("4.3", "Forward Plus")\n`;
+          await fs.writeFile(godotFile, baseConfig, 'utf8');
+          createdProjectGodot = true;
+        }
 
         // Setup directories
         await fs.mkdir(path.join(cwd, '.devdock'), { recursive: true });
         await fs.mkdir(path.join(cwd, '.agents', 'skills'), { recursive: true });
         await fs.mkdir(path.join(cwd, '.claude', 'skills'), { recursive: true });
 
-        // Install default gdscript-architect skill
-        await installSkill(cwd, 'gdscript-architect');
+        // Install default godot4-syntax-guardian skill
+        await installSkill(cwd, 'godot4-syntax-guardian');
 
         // Configure default godot-lsp MCP server
         await installMcpServer(cwd, 'godot-lsp');
 
         spinner.succeed(pc.green('DevDock initialized successfully!'));
-        console.log(pc.cyan('\n  ✓ .devdock/ directory created'));
-        console.log(pc.cyan('  ✓ Default AI Skill installed (.agents/skills/gdscript-architect)'));
+        if (createdProjectGodot) {
+          console.log(pc.cyan('  ✓ Created default project.godot (Godot 4)'));
+        }
+        console.log(pc.cyan('  ✓ .devdock/ directory created'));
+        console.log(pc.cyan('  ✓ Default AI Skill installed (.agents/skills/godot4-syntax-guardian)'));
         console.log(pc.cyan('  ✓ Godot LSP MCP configured in .mcp.json'));
         console.log(pc.gray('\nRun "devdock doctor" to verify your environment.\n'));
       } catch (err: any) {
         spinner.fail(pc.red('Failed to initialize: ' + err.message));
-        console.log(pc.yellow('Make sure you run "devdock init" inside a directory with a project.godot file.'));
       }
     });
 
@@ -157,20 +230,22 @@ export function createCli(): Command {
     .description('Scan directory for Godot projects and show installed skills, addons and MCPs')
     .action(async (dir = '.') => {
       const targetDir = path.resolve(dir);
-      const spinner = ora(`Scanning for Godot projects in ${targetDir}...`).start();
+      const spinner = ora(`Scanning for Godot projects in ${targetDir} and Godot Engine registry...`).start();
 
-      const projects = await scanForGodotProjects(targetDir);
+      const projects = await scanForGodotProjects(targetDir, { maxDepth: 6, includeGodotConfig: true });
       spinner.stop();
 
       if (projects.length === 0) {
-        console.log(pc.yellow(`No Godot projects found in ${targetDir}.`));
+        console.log(pc.yellow(`No Godot projects found in ${targetDir} or Godot Engine registry.`));
+        console.log(pc.gray('Tip: Run "orbitkit init" in a project directory to initialize OrbitKit.'));
         return;
       }
 
       console.log(pc.bold(pc.cyan(`\nFound ${projects.length} Godot project(s):\n`)));
 
       for (const p of projects) {
-        console.log(pc.bold(pc.white(`📁 ${p.name}`)) + pc.gray(` (${p.projectPath})`));
+        const sourceBadge = p.source === 'godot-registry' ? pc.yellow(' [Godot Engine]') : pc.green(' [Local]');
+        console.log(pc.bold(pc.white(`📁 ${p.name}`)) + sourceBadge + pc.gray(` (${p.projectPath})`));
         console.log(
           `   Addons: ${p.installedAddons.length ? pc.green(p.installedAddons.join(', ')) : pc.gray('none')}`
         );
