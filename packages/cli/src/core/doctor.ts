@@ -88,7 +88,7 @@ export async function runSystemDiagnostics(
         items.push({
           name: 'Blackbox Flight Recorder',
           status: 'warning',
-          message: `Last flight recorded a crash (${flight.incidents.length} incident(s)). Run "orbitkit record --last" to inspect.`
+          message: `Last flight recorded a crash (${flight.incidents.length} incident(s)). Run "vgskillframe record --last" to inspect.`
         });
       } else {
         items.push({
@@ -101,7 +101,7 @@ export async function runSystemDiagnostics(
       items.push({
         name: 'Blackbox Flight Recorder',
         status: 'ok',
-        message: 'Ready. Use "orbitkit record" to capture Godot errors and generate AI debug prompts.'
+        message: 'Ready. Use "vgskillframe record" to capture Godot errors and generate AI debug prompts.'
       });
     }
   } catch {
