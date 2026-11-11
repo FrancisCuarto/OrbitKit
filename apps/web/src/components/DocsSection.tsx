@@ -84,7 +84,7 @@ export function DocsSection({ lang }: Props) {
                       </span>
                     </div>
                     <span className="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-mono">
-                      v0.6.4
+                      v0.7.0
                     </span>
                   </div>
                   <code className="block p-3 rounded-lg bg-godot-950 font-mono text-xs sm:text-sm text-godot-300 border border-godot-border">
@@ -220,8 +220,12 @@ export function DocsSection({ lang }: Props) {
                     desc: 'Configures a Model Context Protocol server (e.g. ctx7 or godot-lsp) in .mcp.json.'
                   },
                   {
+                    cmd: 'orbitkit record [--last] [--prompt] [--copy]',
+                    desc: 'Blackbox Flight Recorder: captures Godot GDScript errors, recent input events, and scene tree hierarchy to synthesize AI-ready triage prompts for Claude Code, Cursor, and Antigravity.'
+                  },
+                  {
                     cmd: 'orbitkit doctor',
-                    desc: 'Runs full diagnostic self-checks: verifies Godot 4 binary in PATH, tests GDScript LSP port 6005, and validates current project context.'
+                    desc: 'Runs full diagnostic self-checks: verifies Godot 4 binary in PATH, tests GDScript LSP port 6005, inspects Blackbox crash telemetry, and validates current project context.'
                   }
                 ].map((item, idx) => (
                   <div

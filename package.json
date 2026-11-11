@@ -1,6 +1,6 @@
 {
   "name": "devdock-monorepo",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "private": true,
   "description": "OrbitKit (DevDock) — Interactive Web GUI, CLI, AI Skills, Model Context Protocol (MCP) Servers & Package Manager for Godot 4 and Blender 3D Developers",
   "homepage": "https://orbit-kit-nine.vercel.app",

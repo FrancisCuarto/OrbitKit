@@ -5,6 +5,7 @@ export * from './core/mcpManager.js';
 export * from './core/pluginManager.js';
 export * from './core/updater.js';
 export * from './core/doctor.js';
+export * from './core/blackbox.js';
 export * from './core/paths.js';
 export * from './core/config.js';
 export * from './core/catalog.js';

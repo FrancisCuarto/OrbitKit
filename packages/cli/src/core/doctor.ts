@@ -2,6 +2,7 @@ import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
 import net from 'node:net';
 import { inspectProject } from './scanner.js';
+import { loadLastFlight } from './blackbox.js';
 
 const execAsync = promisify(exec);
 
@@ -76,6 +77,34 @@ export async function runSystemDiagnostics(
       status: 'warning',
       message: 'Current directory is not a Godot project (no project.godot found).'
     });
+  }
+
+  // 5. Blackbox Flight Recorder & Crash Telemetry
+  try {
+    const flight = await loadLastFlight(currentDir);
+    if (flight) {
+      if (flight.status === 'crashed' || flight.incidents.length > 0) {
+        items.push({
+          name: 'Blackbox Flight Recorder',
+          status: 'warning',
+          message: `Last flight recorded a crash (${flight.incidents.length} incident(s)). Run "orbitkit record --last" to inspect.`
+        });
+      } else {
+        items.push({
+          name: 'Blackbox Flight Recorder',
+          status: 'ok',
+          message: `Last flight completed cleanly (${flight.sessionId}). Ready for telemetry capture.`
+        });
+      }
+    } else {
+      items.push({
+        name: 'Blackbox Flight Recorder',
+        status: 'ok',
+        message: 'Ready. Use "orbitkit record" to capture Godot errors and generate AI debug prompts.'
+      });
+    }
+  } catch {
+    // Ignore error
   }
 
   return items;

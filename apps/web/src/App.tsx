@@ -89,7 +89,7 @@ export function App() {
                 OrbitKit
               </span>
               <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-godot-card text-godot-300 border border-godot-border tabular-nums">
-                v0.6.4
+                v0.7.0
               </span>
             </div>
           </a>
@@ -167,7 +167,7 @@ export function App() {
           <div className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 px-3.5 py-1.5 rounded-lg bg-godot-card border border-godot-border text-xs font-mono text-slate-300">
             <span className="flex items-center text-emerald-400 font-semibold">
               <span className="w-2 h-2 rounded-full bg-emerald-400 mr-2" />
-              OrbitKit v0.6.4
+              OrbitKit v0.7.0
             </span>
             <span className="text-slate-600 select-none">•</span>
             <span className="text-slate-200">Godot 4.3+</span>
@@ -175,10 +175,12 @@ export function App() {
             <span className="text-slate-200">Blender 3D</span>
             <span className="text-slate-600 select-none">•</span>
             <span className="text-slate-200">Model Context Protocol</span>
+            <span className="text-slate-600 select-none">•</span>
+            <span className="text-slate-200">Blackbox Flight Recorder</span>
           </div>
 
           {/* Solid High-Contrast Headline (No Gradient Text) */}
-          <h1 className="text-4xl sm:text-6xl font-black tracking-[-0.03em] text-white leading-[1.08] max-w-4xl mx-auto [text-wrap:balance]">
+          <h1 className="headline-shadow text-4xl sm:text-6xl font-black tracking-[-0.03em] text-white leading-[1.08] max-w-4xl mx-auto [text-wrap:balance]">
             {t.hero.headline1}{' '}
             <span className="text-godot-300">
               {t.hero.headline2}
@@ -596,7 +598,7 @@ export function App() {
             <div className="space-y-2">
               <div className="inline-flex items-center space-x-2 text-emerald-400 text-xs font-mono font-semibold">
                 <RefreshCw className="w-3.5 h-3.5" />
-                <span>{lang === 'es' ? 'Auto-Actualizador (v0.6.4)' : 'Self-Updater (v0.6.4)'}</span>
+                <span>{lang === 'es' ? 'Auto-Actualizador (v0.7.0)' : 'Self-Updater (v0.7.0)'}</span>
               </div>
               <h3 className="text-lg font-extrabold text-white">
                 {lang === 'es' ? '¿Ya tenías instalado OrbitKit? Actualizar CLI' : 'Already installed? Upgrade CLI'}

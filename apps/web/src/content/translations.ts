@@ -24,7 +24,8 @@ export const TRANSLATIONS = {
       tabUninstallCli: 'Desinstalar CLI',
       tabScan: 'Escanear Proyectos',
       tabUpdate: 'Actualizar Proyectos',
-      tabMcp: 'Conectar MCP'
+      tabMcp: 'Conectar MCP',
+      tabRecord: 'Blackbox (Crashes)'
     },
     problem: {
       eyebrow: 'El Problema vs La Solución',
@@ -112,7 +113,8 @@ export const TRANSLATIONS = {
       tabUninstallCli: 'Uninstall CLI',
       tabScan: 'Scan Projects',
       tabUpdate: 'Update Projects',
-      tabMcp: 'Connect MCP'
+      tabMcp: 'Connect MCP',
+      tabRecord: 'Blackbox (Flight)'
     },
     problem: {
       eyebrow: 'The Problem vs The Solution',

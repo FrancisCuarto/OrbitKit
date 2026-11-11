@@ -86,6 +86,11 @@ export const CLI_COMMANDS_CATALOG = [
     description: 'Configura un servidor MCP en .mcp.json para asistentes de IA'
   },
   {
+    command: 'orbitkit record',
+    usage: 'orbitkit record [--last] [--prompt] [--copy] [--clear]',
+    description: 'Blackbox Flight Recorder — Captura telemetría de crashes de Godot y genera prompts de diagnóstico listos para IA (Claude, Cursor, Antigravity)'
+  },
+  {
     command: 'orbitkit --help',
     usage: 'orbitkit [command] --help',
     description: 'Muestra la ayuda completa con todas las opciones disponibles'
