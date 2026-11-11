@@ -218,6 +218,17 @@ OrbitKit/
 
 ---
 
+## 🤝 Contributing
+
+Contributions are welcome — new AI Skills, MCP servers, addons, docs and bug fixes!
+
+- 📝 Read the [Contributing Guide](.github/CONTRIBUTING.md)
+- 🐛 [Report a bug](https://github.com/FrancisCuarto/OrbitKit/issues/new?template=bug_report.yml)
+- ✨ [Request a feature](https://github.com/FrancisCuarto/OrbitKit/issues/new?template=feature_request.yml)
+- 💬 [Join the discussions](https://github.com/FrancisCuarto/OrbitKit/discussions)
+
+---
+
 ## 📄 License
 
 Distributed under the [MIT License](LICENSE).

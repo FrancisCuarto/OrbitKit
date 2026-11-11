@@ -1,0 +1,95 @@
+name: 🐛 Bug report
+description: Report something that isn't working as expected in OrbitKit
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Thanks for helping improve OrbitKit!** 🚀
+
+        - Please [search existing issues](https://github.com/FrancisCuarto/OrbitKit/issues?q=is%3Aissue) first to avoid duplicates.
+        - For security vulnerabilities, do **not** open a public issue — follow the [Security Policy](https://github.com/FrancisCuarto/OrbitKit/blob/main/.github/SECURITY.md) instead.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area is affected?
+      options:
+        - CLI (orbitkit / devdock)
+        - Web GUI dashboard (orbitkit ui)
+        - TUI interactive menu
+        - Godot Editor plugin (addons/orbitkit)
+        - AI Skill content (SKILL.md)
+        - MCP server integration (.mcp.json)
+        - Auto-updater / autoupdate
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: OrbitKit version
+      description: Output of `orbitkit --version`, or the version printed by the failing command.
+      placeholder: "e.g. 0.6.4"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: "e.g. Ubuntu 24.04, macOS 15, Windows 11"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: agent
+    attributes:
+      label: AI agent in use (if relevant)
+      options:
+        - Claude Code
+        - Cursor
+        - Windsurf
+        - Antigravity
+        - GitHub Copilot
+        - Other / multiple agents
+        - Not applicable
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug. Include the exact command you ran.
+      placeholder: "orbitkit scan . ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Command output / error logs
+      description: Paste the relevant terminal output. Redact any personal data, tokens or API keys first.
+      render: shell
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Install: `npm install -g @francisiv/orbitkit`
+        2. Run: `orbitkit ...`
+        3. See error...
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight
+      options:
+        - label: I searched the [existing issues](https://github.com/FrancisCuarto/OrbitKit/issues) for duplicates.
+        - label: I reproduced the problem with the latest version (`npx @francisiv/orbitkit@latest doctor`).
