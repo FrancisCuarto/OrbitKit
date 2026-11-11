@@ -152,14 +152,14 @@ async function syncLocalBinSymlinks(): Promise<void> {
 }
 
 async function installFromGithubMain(): Promise<void> {
-  const tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'orbitkit-upgrade-'));
+  const tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'vgskillframe-upgrade-'));
   try {
     await execAsync(
       `git clone --depth 1 --branch main https://github.com/FrancisCuarto/OrbitKit.git "${tmpRoot}/repo"`
     );
     const cliDir = path.join(tmpRoot, 'repo', 'packages', 'cli');
     await execAsync(
-      'npm install --include=dev && npm run build && npm pack && npm install -g francisiv-orbitkit-*.tgz',
+      'npm install --include=dev && npm run build && npm pack && npm install -g francisiv-*.tgz',
       {
         cwd: cliDir
       }

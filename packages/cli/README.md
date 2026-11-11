@@ -7,7 +7,7 @@
 
 **The Interactive Web GUI, TUI, Model Context Protocol (MCP) Bridge & Curated AI Coding Skills Ecosystem for Godot Engine 4.x and Blender 3D Game Developers**
 
-[![Website](https://img.shields.io/badge/Website-orbit--kit--nine.vercel.app-10b981?style=flat-square&logo=vercel&logoColor=white)](https://orbit-kit-nine.vercel.app)
+[![Website](https://img.shields.io/badge/Website-vgskillframe.vercel.app-10b981?style=flat-square&logo=vercel&logoColor=white)](https://vgskillframe.vercel.app)
 [![npm version](https://img.shields.io/npm/v/@francisiv/vgskillframe.svg?style=flat-square&color=478cbf&logo=npm)](https://www.npmjs.com/package/@francisiv/vgskillframe)
 [![Godot 4.x](https://img.shields.io/badge/Godot_Engine-4.x-478cbf?style=flat-square&logo=godotengine&logoColor=white)](https://godotengine.org)
 [![Blender 4.x](https://img.shields.io/badge/Blender_3D-4.x-e87d0d?style=flat-square&logo=blender&logoColor=white)](https://www.blender.org)
@@ -16,7 +16,7 @@
 
 **VGSkillFrame (`@francisiv/vgskillframe` / `vgskillframe` / `orbitkit` / `devdock`)** keeps all your local **Godot 4** and **Blender 3D** game projects continuously synchronized with anti-hallucination **GDScript 4 AI Skills**, **Model Context Protocol (MCP) servers** (`Context7`, `Godot LSP`, `Scene Inspector`, `GUT Runner`), and verified **Godot Editor Addons** — compatible out of the box with **Claude Code**, **Cursor**, **Windsurf**, **Antigravity**, and **GitHub Copilot**.
 
-[🌐 Live Website & Docs](https://orbit-kit-nine.vercel.app) • [📦 NPM Package](https://www.npmjs.com/package/@francisiv/vgskillframe) • [📚 Architecture Docs](https://github.com/FrancisCuarto/OrbitKit/tree/main/docs) • [🐛 Report Issue](https://github.com/FrancisCuarto/OrbitKit/issues)
+[🌐 Live Website & Docs](https://vgskillframe.vercel.app) • [📦 NPM Package](https://www.npmjs.com/package/@francisiv/vgskillframe) • [📚 Architecture Docs](https://github.com/FrancisCuarto/OrbitKit/tree/main/docs) • [🐛 Report Issue](https://github.com/FrancisCuarto/OrbitKit/issues)
 
 </div>
 
@@ -216,7 +216,7 @@ VGSkillFrame/
 
 **VGSkillFrame (`@francisiv/vgskillframe`)** (Videogame Skill Frame) es el ecosistema de **AI Skills**, servidores **Model Context Protocol (MCP)** y gestor de paquetes para desarrolladores de **Godot Engine 4** y **Blender 3D**. Evita que asistentes de IA (**Claude Code, Cursor, Windsurf, Antigravity**) alucinen sintaxis obsoleta de Godot 3 e integra documentación en tiempo real, panel web local (`vgskillframe ui`) y actualizaciones automáticas seguras.
 
-- **Web oficial y documentación interactiva:** [https://orbit-kit-nine.vercel.app](https://orbit-kit-nine.vercel.app)
+- **Web oficial y documentación interactiva:** [https://vgskillframe.vercel.app](https://vgskillframe.vercel.app)
 - **Instalación global:** `npm install -g @francisiv/vgskillframe`
 
 ---

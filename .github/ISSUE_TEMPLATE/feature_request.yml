@@ -1,5 +1,5 @@
 name: ✨ Feature request
-description: Suggest a new AI skill, MCP server, or OrbitKit improvement
+description: Suggest a new AI skill, MCP server, or VGSkillFrame improvement
 labels: ["enhancement"]
 body:
   - type: markdown
@@ -7,7 +7,7 @@ body:
       value: |
         **Thanks for the suggestion!** ✨
 
-        Please [search existing issues](https://github.com/FrancisCuarto/OrbitKit/issues?q=is%3Aissue) first to avoid duplicates.
+        Please [search existing issues](https://github.com/FrancisCuarto/VGSkillFrame/issues?q=is%3Aissue) first to avoid duplicates.
 
   - type: dropdown
     id: area
@@ -37,7 +37,7 @@ body:
     id: solution
     attributes:
       label: Describe your proposed solution
-      description: What should OrbitKit do instead? Screenshots, example GDScript, or links to relevant Godot/Blender docs help a lot.
+      description: What should VGSkillFrame do instead? Screenshots, example GDScript, or links to relevant Godot/Blender docs help a lot.
     validations:
       required: true
 

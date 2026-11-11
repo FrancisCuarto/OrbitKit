@@ -26,7 +26,7 @@ export const ECOSYSTEM_TOOLS: EcosystemTool[] = [
     brandColor: '#478cbf',
     connectedMcp: 'godot-engine-bridge',
     connectedSkill: 'godot4-syntax-guardian',
-    cliCommand: 'orbitkit mcp add godot-engine-bridge',
+    cliCommand: 'vgskillframe mcp add godot-engine-bridge',
     descEs:
       'Control directo del editor Godot 4, ejecución en vivo, lectura de consola de errores y validación estricta de sintaxis GDScript 4.3+.',
     descEn:
@@ -49,7 +49,7 @@ export const ECOSYSTEM_TOOLS: EcosystemTool[] = [
     brandColor: '#f5792a',
     connectedMcp: 'godot-scene-inspector',
     connectedSkill: 'godot-blender-pipeline',
-    cliCommand: 'orbitkit skill install godot-blender-pipeline',
+    cliCommand: 'vgskillframe skill install godot-blender-pipeline',
     descEs:
       'Sincroniza pipelines de importación .blend y glTF 2.0, sufijos de colisión (-col, -convcol), Skeleton3D BoneMap y materiales PBR en Godot 4.',
     descEn:
@@ -75,7 +75,7 @@ export const ECOSYSTEM_TOOLS: EcosystemTool[] = [
     brandColor: '#10b981',
     connectedMcp: 'ctx7',
     connectedSkill: 'ctx7-docs-fetcher',
-    cliCommand: 'orbitkit mcp add ctx7',
+    cliCommand: 'vgskillframe mcp add ctx7',
     descEs:
       'Inyecta documentación oficial actualizada y ejemplos verificados desde Upstash Context7 directo al prompt de tu IA para eliminar alucinaciones.',
     descEn:
@@ -101,7 +101,7 @@ export const ECOSYSTEM_TOOLS: EcosystemTool[] = [
     brandColor: '#d97757',
     connectedMcp: 'godot-lsp',
     connectedSkill: 'gdscript-fsm-master',
-    cliCommand: 'orbitkit init',
+    cliCommand: 'vgskillframe init',
     descEs:
       'Configura automáticamente .agents/skills/, .claude/skills/ y .mcp.json para que tus agentes programen arquitecturas limpias en Godot 4.',
     descEn:
@@ -125,7 +125,7 @@ export const ECOSYSTEM_TOOLS: EcosystemTool[] = [
     brandColor: '#38bdf8',
     connectedMcp: 'godot-lsp',
     connectedSkill: 'godot4-syntax-guardian',
-    cliCommand: 'orbitkit mcp add godot-lsp',
+    cliCommand: 'vgskillframe mcp add godot-lsp',
     descEs:
       'Conecta tu editor con el servidor de lenguaje nativo de Godot en el puerto 6005 para autocompletado tipado y diagnóstico instantáneo.',
     descEn:
@@ -151,7 +151,7 @@ export const ECOSYSTEM_TOOLS: EcosystemTool[] = [
     brandColor: '#a855f7',
     connectedMcp: 'godot-docs',
     connectedSkill: 'godot-shader-vfx',
-    cliCommand: 'orbitkit skill install godot-shader-vfx',
+    cliCommand: 'vgskillframe skill install godot-shader-vfx',
     descEs:
       'Domina shaders canvas_item y spatial en Vulkan/Forward+, distorsión UV, disolución procedural y optimización de GPU.',
     descEn:
@@ -178,7 +178,7 @@ export const ECOSYSTEM_TOOLS: EcosystemTool[] = [
     brandColor: '#f43f5e',
     connectedMcp: 'godot-gut-runner',
     connectedSkill: 'godot-save-system',
-    cliCommand: 'orbitkit mcp add godot-gut-runner',
+    cliCommand: 'vgskillframe mcp add godot-gut-runner',
     descEs:
       'Ejecuta suites de pruebas unitarias GUT en modo headless y transmite los resultados pass/fail en vivo al agente de IA.',
     descEn:
@@ -203,7 +203,7 @@ export const ECOSYSTEM_TOOLS: EcosystemTool[] = [
     brandColor: '#eab308',
     connectedMcp: 'godot-docs',
     connectedSkill: 'godot-multiplayer-enet',
-    cliCommand: 'orbitkit skill install godot-multiplayer-enet',
+    cliCommand: 'vgskillframe skill install godot-multiplayer-enet',
     descEs:
       'Arquitectura multijugador con ENetMultiplayerPeer, anotaciones @rpc seguras, MultiplayerSpawner y sincronización de estado.',
     descEn:

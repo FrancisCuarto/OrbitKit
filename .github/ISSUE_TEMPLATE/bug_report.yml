@@ -1,24 +1,24 @@
 name: 🐛 Bug report
-description: Report something that isn't working as expected in OrbitKit
+description: Report something that isn't working as expected in VGSkillFrame
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        **Thanks for helping improve OrbitKit!** 🚀
+        **Thanks for helping improve VGSkillFrame!** 🚀
 
-        - Please [search existing issues](https://github.com/FrancisCuarto/OrbitKit/issues?q=is%3Aissue) first to avoid duplicates.
-        - For security vulnerabilities, do **not** open a public issue — follow the [Security Policy](https://github.com/FrancisCuarto/OrbitKit/blob/main/.github/SECURITY.md) instead.
+        - Please [search existing issues](https://github.com/FrancisCuarto/VGSkillFrame/issues?q=is%3Aissue) first to avoid duplicates.
+        - For security vulnerabilities, do **not** open a public issue — follow the [Security Policy](https://github.com/FrancisCuarto/VGSkillFrame/blob/main/.github/SECURITY.md) instead.
 
   - type: dropdown
     id: area
     attributes:
       label: Which area is affected?
       options:
-        - CLI (orbitkit / devdock)
-        - Web GUI dashboard (orbitkit ui)
+        - CLI (vgskillframe / vgskill / orbitkit)
+        - Web GUI dashboard (vgskillframe ui)
         - TUI interactive menu
-        - Godot Editor plugin (addons/orbitkit)
+        - Godot Editor plugin (addons/vgskillframe)
         - AI Skill content (SKILL.md)
         - MCP server integration (.mcp.json)
         - Auto-updater / autoupdate
@@ -29,8 +29,8 @@ body:
   - type: input
     id: version
     attributes:
-      label: OrbitKit version
-      description: Output of `orbitkit --version`, or the version printed by the failing command.
+      label: VGSkillFrame version
+      description: Output of `vgskillframe --version`, or the version printed by the failing command.
       placeholder: "e.g. 0.6.4"
     validations:
       required: true
@@ -61,7 +61,7 @@ body:
     attributes:
       label: What happened?
       description: A clear description of the bug. Include the exact command you ran.
-      placeholder: "orbitkit scan . ..."
+      placeholder: "vgskillframe scan . ..."
     validations:
       required: true
 
@@ -77,8 +77,8 @@ body:
     attributes:
       label: Steps to reproduce
       placeholder: |
-        1. Install: `npm install -g @francisiv/orbitkit`
-        2. Run: `orbitkit ...`
+        1. Install: `npm install -g @francisiv/vgskillframe`
+        2. Run: `vgskillframe ...`
         3. See error...
 
   - type: textarea
@@ -91,5 +91,5 @@ body:
     attributes:
       label: Preflight
       options:
-        - label: I searched the [existing issues](https://github.com/FrancisCuarto/OrbitKit/issues) for duplicates.
-        - label: I reproduced the problem with the latest version (`npx @francisiv/orbitkit@latest doctor`).
+        - label: I searched the [existing issues](https://github.com/FrancisCuarto/VGSkillFrame/issues) for duplicates.
+        - label: I reproduced the problem with the latest version (`npx @francisiv/vgskillframe@latest doctor`).

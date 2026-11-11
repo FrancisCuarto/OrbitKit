@@ -426,7 +426,7 @@ export function createCli(): Command {
         console.log(`  Command: ${s.command} ${s.args.join(' ')}`);
         console.log(`  ${s.description}\n`);
       }
-      console.log(pc.gray('Add to current project using: devdock mcp add <server-id>\n'));
+      console.log(pc.gray('Add to current project using: vgskillframe mcp add <server-id>\n'));
     });
 
   mcpCmd
@@ -669,7 +669,7 @@ export function createCli(): Command {
         const flight = await loadLastFlight(targetDir);
         if (!flight) {
           console.log(pc.yellow(`\n⚠ No flight telemetry records found in ${path.join(targetDir, '.devdock/telemetry')}`));
-          console.log(pc.gray(`  Run your game with OrbitKit or use "orbitkit record --run" to start a recording session.\n`));
+          console.log(pc.gray(`  Run your game with VGSkillFrame or use "vgskillframe record --run" to start a recording session.\n`));
           return;
         }
 
@@ -703,7 +703,7 @@ export function createCli(): Command {
         }
 
         // Default --last view
-        console.log(pc.bold(pc.cyan(`\n✈ OrbitKit Blackbox Flight Recorder — Last Incident\n`)));
+        console.log(pc.bold(pc.cyan(`\n✈ VGSkillFrame Blackbox Flight Recorder — Last Incident\n`)));
         console.log(`  Session:      ${pc.bold(flight.sessionId)}`);
         console.log(`  Started:      ${flight.startedAt}`);
         console.log(`  Ended:        ${flight.endedAt || 'active'}`);
@@ -719,7 +719,7 @@ export function createCli(): Command {
               console.log(pc.gray(`    at ${inc.sourceFile}:${inc.sourceLine || 1}`));
             }
           }
-          console.log(pc.cyan(`\n  Tip: Run ${pc.bold('orbitkit record --prompt --copy')} to copy the AI diagnostic prompt.\n`));
+          console.log(pc.cyan(`\n  Tip: Run ${pc.bold('vgskillframe record --prompt --copy')} to copy the AI diagnostic prompt.\n`));
         } else {
           console.log(pc.green(`\n  ✓ No crashes or runtime errors recorded during this session.\n`));
         }
@@ -734,7 +734,7 @@ export function createCli(): Command {
       }
 
       // Live recording execution
-      console.log(pc.bold(pc.cyan(`\n✈ OrbitKit Blackbox Flight Recorder\n`)));
+      console.log(pc.bold(pc.cyan(`\n✈ VGSkillFrame Blackbox Flight Recorder\n`)));
       console.log(pc.gray(`  Target: ${targetDir}`));
 
       const spinner = ora('Detecting Godot Engine and starting flight recording...').start();
@@ -758,7 +758,7 @@ export function createCli(): Command {
         );
 
         if (record.incidents.length > 0) {
-          console.log(pc.cyan(`\n  Run ${pc.bold('orbitkit record --prompt --copy')} to generate an AI fix prompt.\n`));
+          console.log(pc.cyan(`\n  Run ${pc.bold('vgskillframe record --prompt --copy')} to generate an AI fix prompt.\n`));
         }
       } catch (err: any) {
         spinner.fail(pc.red(`Flight recording error: ${err.message}`));

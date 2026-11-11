@@ -435,7 +435,9 @@ func _build_ui() -> void:
 	var bb_snap_btn = Button.new()
 	bb_snap_btn.text = "Snapshot"
 	bb_snap_btn.pressed.connect(func():
-		var rec_path = "res://addons/orbitkit/services/flight_recorder.gd"
+		var rec_path = "res://addons/vgskillframe/services/flight_recorder.gd"
+		if not ResourceLoader.exists(rec_path):
+			rec_path = "res://addons/orbitkit/services/flight_recorder.gd"
 		if ResourceLoader.exists(rec_path):
 			var rec_script = load(rec_path)
 			var rec = rec_script.new()
@@ -781,7 +783,7 @@ func refresh_doctor() -> void:
 		{
 			"name": "Blackbox Telemetry",
 			"ok": true,
-			"msg": "Flight recorder ready (res://addons/orbitkit/services/flight_recorder.gd)"
+			"msg": "Flight recorder ready (res://addons/vgskillframe/services/flight_recorder.gd)"
 		}
 	]
 
@@ -849,7 +851,7 @@ func refresh_blackbox() -> void:
 func _generate_blackbox_ai_prompt() -> String:
 	var file_path = "res://.devdock/telemetry/last_flight.json"
 	if not FileAccess.file_exists(file_path):
-		return "# OrbitKit Diagnostic Report\\nNo telemetry record found."
+		return "# VGSkillFrame Diagnostic Report\\nNo telemetry record found."
 
 	var f = FileAccess.open(file_path, FileAccess.READ)
 	if not f:
@@ -866,7 +868,7 @@ func _generate_blackbox_ai_prompt() -> String:
 	var first_inc: Dictionary = incidents[0] if incidents.size() > 0 else {}
 
 	var prompt_lines: PackedStringArray = []
-	prompt_lines.append("# 🚨 OrbitKit Blackbox Diagnostic: Godot Runtime Crash Report")
+	prompt_lines.append("# 🚨 VGSkillFrame Blackbox Diagnostic: Godot Runtime Crash Report")
 	prompt_lines.append("")
 	prompt_lines.append("- **Session ID**: \`" + str(d.get("sessionId", "")) + "\`")
 	prompt_lines.append("- **Status**: \`" + str(d.get("status", "unknown")) + "\`")

@@ -88,16 +88,16 @@ Scope hints: `cli`, `web`, `api`, `skills`, `godot`, `updater`, `docs`.
 ## 📦 Monorepo Map
 
 ```text
-OrbitKit/
+VGSkillFrame/
 ├── packages/
-│   ├── cli/               # @francisiv/orbitkit (published to NPM)
+│   ├── cli/               # @francisiv/vgskillframe (published to NPM)
 │   ├── manifest-schema/   # Zod manifest schema & security verification
 │   └── shared-types/      # Shared TypeScript types & API contracts
 ├── apps/
 │   ├── web/               # Documentation & web portal (Vite + React)
 │   └── api/               # Central REST API (Express + Argon2id)
 ├── godot-plugin/
-│   └── addons/orbitkit/   # Native Godot 4 editor addon
+│   └── addons/vgskillframe/ # Native Godot 4 editor addon
 ├── skills/                # Curated AI skill sources (SKILL.md + manifest)
 └── docs/                  # In-depth architecture & API guides
 ```

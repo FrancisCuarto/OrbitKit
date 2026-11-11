@@ -20,4 +20,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://orbitkit.vercel.app/sitemap.xml
+Sitemap: https://vgskillframe.vercel.app/sitemap.xml
