@@ -1,0 +1,9 @@
+{
+  "id": "game-feel-kinesthetics",
+  "name": "Game Feel, Juice & Kinesthetics Master",
+  "version": "1.0.0",
+  "description": "Universal kinesthetics rules for game feel: coyote time, input buffering, trauma-decay screen shake, hit stop, squash & stretch.",
+  "tags": ["gamefeel", "kinesthetics", "gameplay", "universal"],
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

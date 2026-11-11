@@ -4,7 +4,7 @@ import { CURATED_SKILLS } from './skillsManager.js';
 import { OFFICIAL_GODOT_MCP_SERVERS } from './mcpManager.js';
 
 export const VGSKILLFRAME_PLUGIN_ID = 'vgskillframe';
-export const VGSKILLFRAME_PLUGIN_VERSION = '0.6.4';
+export const VGSKILLFRAME_PLUGIN_VERSION = '0.7.0';
 export const VGSKILLFRAME_PLUGIN_CFG_RES = 'res://addons/vgskillframe/plugin.cfg';
 
 export const ORBITKIT_PLUGIN_ID = VGSKILLFRAME_PLUGIN_ID;
@@ -28,7 +28,7 @@ export interface PluginStatus {
 const PLUGIN_CFG_CONTENT = `[plugin]
 
 name="VGskillframe"
-description="VGskillframe (Videogame Skill Frame) — Automated AI Skills, MCP Server Manager & Live Scene Viewer Bridge for Godot 4"
+description="VGskillframe (Videogame Skill Frame) — AI Skills, MCP Servers, Live Scene Viewer & Blackbox Flight Telemetry for Godot 4"
 author="VGskillframe"
 version="${VGSKILLFRAME_PLUGIN_VERSION}"
 script="plugin.gd"
@@ -168,6 +168,121 @@ func _collect_nodes(node: Node, root: Node, out_list: Array, depth: int) -> void
 		_collect_nodes(child, root, out_list, depth + 1)
 `;
 
+const FLIGHT_RECORDER_GD_CONTENT = `@tool
+extends Node
+
+const TELEMETRY_DIR = "res://.devdock/telemetry"
+const LAST_FLIGHT_PATH = "res://.devdock/telemetry/last_flight.json"
+const LOG_PATH = "res://.devdock/telemetry/flight_log.jsonl"
+
+var _max_recent_events: int = 30
+var _recent_events: Array = []
+var _session_id: String = ""
+var _started_at: String = ""
+
+func _ready() -> void:
+	_session_id = "flight_%d" % int(Time.get_unix_time_from_system() * 1000)
+	_started_at = Time.get_datetime_string_from_system(true)
+
+func log_event(event_type: String, action: String = "", details: Dictionary = {}) -> void:
+	var event = {
+		"timestamp": Time.get_datetime_string_from_system(true),
+		"type": event_type,
+		"action": action,
+		"details": details
+	}
+	_recent_events.append(event)
+	if _recent_events.size() > _max_recent_events:
+		_recent_events.pop_front()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not Engine.is_editor_hint():
+		if event is InputEventKey and event.is_pressed() and not event.is_echo():
+			var key_name = OS.get_keycode_string(event.key_label if event.key_label != 0 else event.physical_keycode)
+			log_event("input", key_name, {"type": "key", "pressed": true})
+		elif event is InputEventMouseButton and event.is_pressed():
+			log_event("input", "mouse_%d" % event.button_index, {"type": "mouse", "pos": [event.position.x, event.position.y]})
+		elif event is InputEventJoypadButton and event.is_pressed():
+			log_event("input", "joy_%d" % event.button_index, {"type": "joypad"})
+
+func capture_scene_snapshot(root_node: Node = null) -> Dictionary:
+	var root: Node = root_node
+	if not root:
+		var tree = get_tree()
+		if tree and tree.root:
+			root = tree.current_scene if tree.current_scene else tree.root
+
+	if not root:
+		return {}
+
+	var nodes_list: Array = []
+	_collect_nodes(root, root, nodes_list, 0)
+
+	var scene_path = ""
+	if "scene_file_path" in root:
+		scene_path = str(root.scene_file_path)
+
+	return {
+		"rootName": str(root.name),
+		"rootClass": root.get_class(),
+		"sceneFilePath": scene_path,
+		"nodeCount": nodes_list.size(),
+		"nodes": nodes_list,
+		"orphanNodesCount": Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
+	}
+
+func _collect_nodes(node: Node, root: Node, out_list: Array, depth: int) -> void:
+	if out_list.size() >= 250 or depth > 12:
+		return
+
+	var script_path = ""
+	var scr = node.get_script()
+	if scr and scr is Resource:
+		script_path = scr.resource_path
+
+	var rel_path = "." if node == root else str(root.get_path_to(node))
+	out_list.append({
+		"name": str(node.name),
+		"type": node.get_class(),
+		"path": rel_path,
+		"script": script_path,
+		"depth": depth
+	})
+
+	for child in node.get_children():
+		_collect_nodes(child, root, out_list, depth + 1)
+
+func dump_telemetry(reason: String = "manual", extra_incident: Dictionary = {}) -> Dictionary:
+	if not DirAccess.dir_exists_absolute(TELEMETRY_DIR):
+		DirAccess.make_dir_recursive_absolute(TELEMETRY_DIR)
+
+	var incidents: Array = []
+	if not extra_incident.is_empty():
+		incidents.append(extra_incident)
+
+	var snap = capture_scene_snapshot()
+	var ver_info = Engine.get_version_info()
+
+	var record = {
+		"sessionId": _session_id,
+		"startedAt": _started_at,
+		"endedAt": Time.get_datetime_string_from_system(true),
+		"status": "crashed" if reason == "crash" or not extra_incident.is_empty() else "ok",
+		"projectName": ProjectSettings.get_setting("application/config/name", "Godot Project"),
+		"godotVersion": "%s.%s.%s" % [str(ver_info.get("major", 4)), str(ver_info.get("minor", 0)), str(ver_info.get("patch", 0))],
+		"incidents": incidents,
+		"lastSnapshot": snap,
+		"recentEvents": _recent_events
+	}
+
+	var f = FileAccess.open(LAST_FLIGHT_PATH, FileAccess.WRITE)
+	if f:
+		f.store_string(JSON.stringify(record, "\\t"))
+		f.close()
+
+	return record
+`;
+
 const VGSKILLFRAME_PANEL_GD_CONTENT = `@tool
 extends Control
 
@@ -183,6 +298,7 @@ var _skills_list: VBoxContainer
 var _mcp_list: VBoxContainer
 var _viewer_summary: RichTextLabel
 var _doctor_list: VBoxContainer
+var _blackbox_summary: RichTextLabel
 var _footer_label: Label
 
 func set_editor_plugin(plugin: EditorPlugin, bridge: Node) -> void:
@@ -307,6 +423,47 @@ func _build_ui() -> void:
 	doctor_tab.add_child(doc_scroll)
 	_tabs.add_child(doctor_tab)
 
+	# Tab 5: Blackbox Flight Recorder
+	var blackbox_tab = VBoxContainer.new()
+	blackbox_tab.name = "Blackbox"
+	var bb_top = HBoxContainer.new()
+	var bb_lbl = Label.new()
+	bb_lbl.text = "Flight Telemetry & Crash Diagnostic"
+	bb_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	bb_top.add_child(bb_lbl)
+
+	var bb_snap_btn = Button.new()
+	bb_snap_btn.text = "Snapshot"
+	bb_snap_btn.pressed.connect(func():
+		var rec_path = "res://addons/orbitkit/services/flight_recorder.gd"
+		if ResourceLoader.exists(rec_path):
+			var rec_script = load(rec_path)
+			var rec = rec_script.new()
+			add_child(rec)
+			rec.dump_telemetry("snapshot")
+			rec.queue_free()
+			refresh_blackbox()
+			_set_footer("✓ Telemetry snapshot saved to res://.devdock/telemetry/last_flight.json")
+	)
+	bb_top.add_child(bb_snap_btn)
+
+	var bb_copy_btn = Button.new()
+	bb_copy_btn.text = "Copy AI Prompt"
+	bb_copy_btn.pressed.connect(func():
+		var prompt = _generate_blackbox_ai_prompt()
+		DisplayServer.clipboard_set(prompt)
+		_set_footer("✓ AI Debug Prompt copied to clipboard!")
+	)
+	bb_top.add_child(bb_copy_btn)
+	blackbox_tab.add_child(bb_top)
+
+	_blackbox_summary = RichTextLabel.new()
+	_blackbox_summary.bbcode_enabled = true
+	_blackbox_summary.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_blackbox_summary.selection_enabled = true
+	blackbox_tab.add_child(_blackbox_summary)
+	_tabs.add_child(blackbox_tab)
+
 	# Footer
 	_footer_label = Label.new()
 	_footer_label.text = "VGskillframe synced with project."
@@ -322,6 +479,7 @@ func refresh_all() -> void:
 	refresh_mcp()
 	refresh_viewer()
 	refresh_doctor()
+	refresh_blackbox()
 	_set_footer("Synced at " + Time.get_time_string_from_system())
 
 func _load_catalog() -> Dictionary:
@@ -619,6 +777,11 @@ func refresh_doctor() -> void:
 			"name": "Live Scene Bridge",
 			"ok": FileAccess.file_exists("res://.devdock/editor_state.json"),
 			"msg": "Exporting live node tree to .devdock/editor_state.json"
+		},
+		{
+			"name": "Blackbox Telemetry",
+			"ok": true,
+			"msg": "Flight recorder ready (res://addons/orbitkit/services/flight_recorder.gd)"
 		}
 	]
 
@@ -636,6 +799,87 @@ func refresh_doctor() -> void:
 		row.add_child(lbl)
 
 		_doctor_list.add_child(row)
+
+func refresh_blackbox() -> void:
+	if not _blackbox_summary:
+		return
+
+	var file_path = "res://.devdock/telemetry/last_flight.json"
+	if not FileAccess.file_exists(file_path):
+		_blackbox_summary.text = "[color=#94a3b8]No telemetry recording found.[/color]\\nRun your game or click [b]Snapshot[/b] to capture runtime telemetry and scene state."
+		return
+
+	var f = FileAccess.open(file_path, FileAccess.READ)
+	if not f:
+		_blackbox_summary.text = "[color=#ef4444]Could not open telemetry file.[/color]"
+		return
+
+	var json = JSON.new()
+	if json.parse(f.get_as_text()) != OK or not (json.data is Dictionary):
+		f.close()
+		_blackbox_summary.text = "[color=#ef4444]Failed to parse last_flight.json[/color]"
+		return
+	f.close()
+
+	var data: Dictionary = json.data
+	var status = str(data.get("status", "ok"))
+	var incidents: Array = data.get("incidents", [])
+	var status_color = "#22c55e" if status == "ok" and incidents.is_empty() else "#ef4444"
+
+	var lines: PackedStringArray = []
+	lines.append("[b]Status:[/b] [color=%s]%s[/color] | [b]Session:[/b] %s" % [status_color, status.to_upper(), str(data.get("sessionId", ""))])
+	lines.append("[b]Time:[/b] %s → %s" % [str(data.get("startedAt", "")), str(data.get("endedAt", "active"))])
+	lines.append("[b]Incidents Recorded:[/b] %d" % incidents.size())
+	lines.append("")
+
+	if incidents.size() > 0:
+		lines.append("[b][color=#f87171]Incident Details:[/color][/b]")
+		for inc in incidents:
+			if inc is Dictionary:
+				lines.append("• [b]%s[/b]: %s" % [str(inc.get("errorType", "ERROR")), str(inc.get("errorMessage", ""))])
+				if inc.has("sourceFile"):
+					lines.append("  [color=#38bdf8]%s:%s[/color]" % [str(inc.get("sourceFile", "")), str(inc.get("sourceLine", ""))])
+	else:
+		var snap = data.get("lastSnapshot", {})
+		if snap is Dictionary and snap.has("nodeCount"):
+			lines.append("[color=#94a3b8]Snapshot recorded cleanly with %d nodes in scene.[/color]" % int(snap.get("nodeCount", 0)))
+
+	_blackbox_summary.text = "\\n".join(lines)
+
+func _generate_blackbox_ai_prompt() -> String:
+	var file_path = "res://.devdock/telemetry/last_flight.json"
+	if not FileAccess.file_exists(file_path):
+		return "# OrbitKit Diagnostic Report\\nNo telemetry record found."
+
+	var f = FileAccess.open(file_path, FileAccess.READ)
+	if not f:
+		return ""
+	var raw = f.get_as_text()
+	f.close()
+
+	var json = JSON.new()
+	if json.parse(raw) != OK or not (json.data is Dictionary):
+		return ""
+
+	var d: Dictionary = json.data
+	var incidents: Array = d.get("incidents", [])
+	var first_inc: Dictionary = incidents[0] if incidents.size() > 0 else {}
+
+	var prompt_lines: PackedStringArray = []
+	prompt_lines.append("# 🚨 OrbitKit Blackbox Diagnostic: Godot Runtime Crash Report")
+	prompt_lines.append("")
+	prompt_lines.append("- **Session ID**: \`" + str(d.get("sessionId", "")) + "\`")
+	prompt_lines.append("- **Status**: \`" + str(d.get("status", "unknown")) + "\`")
+	prompt_lines.append("- **Godot Version**: \`" + str(d.get("godotVersion", "")) + "\`")
+	if not first_inc.is_empty():
+		prompt_lines.append("- **Error**: **" + str(first_inc.get("errorMessage", "")) + "**")
+		if first_inc.has("sourceFile"):
+			prompt_lines.append("- **Location**: \`" + str(first_inc.get("sourceFile", "")) + ":" + str(first_inc.get("sourceLine", "")) + "\`")
+	prompt_lines.append("")
+	prompt_lines.append("### 🤖 Instructions for AI Coding Agent")
+	prompt_lines.append("Please analyze this Godot crash report, examine node references for nullability or uninstantiated state, and provide the exact GDScript fix.")
+
+	return "\\n".join(prompt_lines)
 `;
 
 /**
@@ -796,6 +1040,7 @@ export async function installGodotPlugin(projectDir: string): Promise<PluginInst
   await fs.writeFile(path.join(pluginBaseDir, 'plugin.cfg'), PLUGIN_CFG_CONTENT, 'utf8');
   await fs.writeFile(path.join(pluginBaseDir, 'plugin.gd'), PLUGIN_GD_CONTENT, 'utf8');
   await fs.writeFile(path.join(servicesDir, 'editor_bridge.gd'), EDITOR_BRIDGE_GD_CONTENT, 'utf8');
+  await fs.writeFile(path.join(servicesDir, 'flight_recorder.gd'), FLIGHT_RECORDER_GD_CONTENT, 'utf8');
   await fs.writeFile(path.join(uiDir, 'vgskillframe_panel.gd'), VGSKILLFRAME_PANEL_GD_CONTENT, 'utf8');
   await fs.writeFile(path.join(uiDir, 'orbitkit_panel.gd'), ORBITKIT_PANEL_GD_CONTENT, 'utf8');
 

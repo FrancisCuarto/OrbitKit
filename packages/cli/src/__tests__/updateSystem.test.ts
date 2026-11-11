@@ -202,7 +202,7 @@ describe('OrbitKit Update System — Fase 0 & Fase 1', () => {
     const mockCatalog = makeMockCatalog({
       cli: {
         latest: '1.0.0',
-        minSupported: '0.7.0',
+        minSupported: '0.8.0',
         channel: 'stable'
       }
     });
@@ -230,7 +230,7 @@ describe('OrbitKit Update System — Fase 0 & Fase 1', () => {
     expect(report.newSkills.map((s) => s.id)).toEqual(['godot-dialogue-system']);
 
     // CLI flags
-    expect(report.cli?.current).toBe('0.6.4');
+    expect(report.cli?.current).toBe('0.7.0');
     expect(report.cli?.latest).toBe('1.0.0');
     expect(report.cli?.updateAvailable).toBe(true);
     expect(report.cli?.major).toBe(true);
@@ -394,7 +394,7 @@ describe('OrbitKit Update System — Fase 0 & Fase 1', () => {
     const catalogRaw = await fs.readFile(path.join(repoRoot, 'catalog.json'), 'utf8');
     const catalog = JSON.parse(catalogRaw) as Catalog;
     expect(catalog.schema).toBe(1);
-    expect(catalog.skills.length).toBe(10);
+    expect(catalog.skills.length).toBe(20);
 
     const guardian = catalog.skills.find((s) => s.id === 'godot4-syntax-guardian')!;
     expect(guardian).toBeDefined();

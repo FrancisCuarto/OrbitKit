@@ -8,14 +8,14 @@ interface Props {
 }
 
 interface CommandTab {
-  id: 'install' | 'gui' | 'upgrade-cli' | 'uninstall-cli' | 'scan' | 'update' | 'mcp';
-  labelKey: 'tabInstall' | 'tabGui' | 'tabUpgradeCli' | 'tabUninstallCli' | 'tabScan' | 'tabUpdate' | 'tabMcp';
+  id: 'install' | 'gui' | 'upgrade-cli' | 'uninstall-cli' | 'scan' | 'update' | 'mcp' | 'record';
+  labelKey: 'tabInstall' | 'tabGui' | 'tabUpgradeCli' | 'tabUninstallCli' | 'tabScan' | 'tabUpdate' | 'tabMcp' | 'tabRecord';
   command: string;
   output: string[];
 }
 
 export function TerminalWidget({ lang }: Props) {
-  const [activeTab, setActiveTab] = useState<'install' | 'gui' | 'upgrade-cli' | 'uninstall-cli' | 'scan' | 'update' | 'mcp'>('install');
+  const [activeTab, setActiveTab] = useState<'install' | 'gui' | 'upgrade-cli' | 'uninstall-cli' | 'scan' | 'update' | 'mcp' | 'record'>('install');
   const [copied, setCopied] = useState(false);
   const t = TRANSLATIONS[lang].hero;
 
@@ -25,7 +25,7 @@ export function TerminalWidget({ lang }: Props) {
       labelKey: 'tabInstall',
       command: 'npm install -g @francisiv/vgskillframe',
       output: [
-        '+ @francisiv/vgskillframe@0.6.4',
+        '+ @francisiv/vgskillframe@0.7.0',
         'added 6 packages in 1.1s',
         '✓ vgskillframe, vgskill, and orbitkit commands registered globally in PATH',
         '✓ Godot Editor Plugin auto-configured (addons/vgskillframe)',
@@ -42,7 +42,20 @@ export function TerminalWidget({ lang }: Props) {
         '✓ VGskillframe GUI Dashboard is live!',
         '  ➜ Local:   http://localhost:4567',
         '  ➜ Target:  /home/francis/game',
-        '✓ Connected: Godot Plugin active, 10 AI skills ready'
+        '✓ Connected: Godot Plugin active, 20 AI skills ready'
+      ]
+    },
+    {
+      id: 'record',
+      labelKey: 'tabRecord',
+      command: 'vgskillframe record --last --prompt',
+      output: [
+        '✈ VGskillframe Blackbox Flight Recorder — Incident inc_1794329000',
+        '  Status: CRASHED (Exit code 1) | Godot v4.3.stable',
+        '  SCRIPT ERROR: Invalid get index \'health\' (on base: \'Nil\').',
+        '    at: _on_hit (res://scenes/player/player.gd:42)',
+        '✓ Extracted GDScript source context & active scene tree snapshot',
+        '✓ Synthesized AI diagnostic prompt ready for Claude Code / Cursor'
       ]
     },
     {
@@ -51,8 +64,8 @@ export function TerminalWidget({ lang }: Props) {
       command: 'vgskillframe upgrade',
       output: [
         '🔍 Checking VGskillframe CLI version against NPM & GitHub...',
-        '  Installed version: v0.6.3  →  Latest version: v0.6.4',
-        '✓ VGskillframe actualizado correctamente: v0.6.3 → v0.6.4'
+        '  Installed version: v0.6.4  →  Latest version: v0.7.0',
+        '✓ VGskillframe actualizado correctamente: v0.6.4 → v0.7.0'
       ]
     },
     {
@@ -117,12 +130,12 @@ export function TerminalWidget({ lang }: Props) {
           <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
           <span className="ml-2 text-xs text-slate-400 font-sans font-medium flex items-center">
             <Terminal className="w-3.5 h-3.5 mr-1.5 text-godot-400" />
-            terminal — vgskillframe v0.6.4
+            terminal — vgskillframe v0.7.0
           </span>
         </div>
 
         {/* Expanded Hitbox Tab Pills */}
-        <div className="relative z-30 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2" role="tablist">
+        <div className="relative z-30 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-2" role="tablist">
           {TABS.map((tab) => {
             const active = activeTab === tab.id;
             return (
@@ -141,7 +154,7 @@ export function TerminalWidget({ lang }: Props) {
                 }}
                 className={`relative z-30 pointer-events-auto w-full min-h-[46px] px-3 py-2.5 rounded-xl text-xs font-sans font-semibold cursor-pointer select-none flex items-center justify-center text-center transition-colors duration-150 ${
                   active
-                    ? 'bg-godot-500 text-white shadow-md shadow-godot-500/25 border border-godot-400'
+                    ? 'bg-[#23689b] text-white border border-godot-400/50'
                     : 'bg-godot-card text-slate-200 hover:text-white hover:bg-godot-border border border-godot-border'
                 }`}
               >
@@ -155,7 +168,7 @@ export function TerminalWidget({ lang }: Props) {
       {/* Terminal Content Body */}
       <div className="p-4 sm:p-6 bg-godot-950/60 space-y-4">
         {/* Command line */}
-        <div className="flex items-center justify-between bg-godot-card/80 p-3.5 rounded-xl border border-godot-border">
+        <div className="flex items-center justify-between bg-godot-950 px-4 py-3 rounded-lg">
           <div className="flex items-center space-x-2 overflow-x-auto text-slate-200">
             <span className="text-godot-400 font-bold select-none">$</span>
             <span className="font-semibold text-white">{currentTabData.command}</span>
@@ -164,7 +177,7 @@ export function TerminalWidget({ lang }: Props) {
           <button
             type="button"
             onClick={handleCopy}
-            className="flex items-center px-4 py-2 ml-3 rounded-xl bg-godot-500/20 hover:bg-godot-500 text-godot-300 hover:text-white border border-godot-500/30 transition text-xs font-sans font-semibold cursor-pointer select-none whitespace-nowrap"
+            className="flex items-center px-3.5 py-1.5 ml-3 rounded-md bg-[#23689b] hover:bg-[#2d7bb6] text-white border border-godot-400/30 transition text-xs font-sans font-semibold cursor-pointer select-none whitespace-nowrap"
           >
             <span className="inline-flex mr-1.5 shrink-0">
               {copied ? (

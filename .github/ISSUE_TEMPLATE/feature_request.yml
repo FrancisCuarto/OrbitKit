@@ -1,0 +1,53 @@
+name: ✨ Feature request
+description: Suggest a new AI skill, MCP server, or OrbitKit improvement
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Thanks for the suggestion!** ✨
+
+        Please [search existing issues](https://github.com/FrancisCuarto/OrbitKit/issues?q=is%3Aissue) first to avoid duplicates.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area does your suggestion improve?
+      options:
+        - New AI Skill (Godot 4 / Blender)
+        - New MCP server integration
+        - CLI command / flags
+        - Web GUI dashboard
+        - TUI menu
+        - Godot Editor plugin
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the pain point — "I'm always frustrated when..." / "My AI agent keeps hallucinating..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe your proposed solution
+      description: What should OrbitKit do instead? Screenshots, example GDScript, or links to relevant Godot/Blender docs help a lot.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you have considered
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else — screenshots, `SKILL.md` drafts, related MCP servers, etc.

@@ -1,0 +1,9 @@
+{
+  "id": "game-programming-patterns",
+  "name": "Game Programming Patterns & Decoupled Architecture",
+  "version": "1.0.0",
+  "description": "Production patterns: Command Pattern (Undo/Replay/Rollback), Object Pooling, Type-Safe Event Bus, and Entity Component System (ECS) principles.",
+  "tags": ["architecture", "patterns", "optimization", "universal"],
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

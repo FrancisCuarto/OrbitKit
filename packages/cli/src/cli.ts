@@ -10,6 +10,12 @@ import { OFFICIAL_GODOT_MCP_SERVERS, installMcpServer, listConfiguredMcpServers 
 import { installGodotPlugin, uninstallGodotPlugin, getGodotPluginStatus } from './core/pluginManager.js';
 import { updateProject, updateAllProjects } from './core/updater.js';
 import { runSystemDiagnostics } from './core/doctor.js';
+import {
+  runFlightRecording,
+  loadLastFlight,
+  generateAiDebugPrompt,
+  clearTelemetry
+} from './core/blackbox.js';
 import { startGuiServer } from './ui/server.js';
 import { startInteractiveTui } from './tui/interactiveTui.js';
 import { checkCliVersion, performCliSelfUpdate, performCliUninstall } from './core/selfUpdater.js';
@@ -634,6 +640,128 @@ export function createCli(): Command {
       } else {
         console.log(pc.red(`✗ ${res.message}`));
         process.exitCode = 1;
+      }
+    });
+
+  // Command: record (aliases: blackbox, crash)
+  program
+    .command('record [dir]')
+    .alias('blackbox')
+    .alias('crash')
+    .description('Blackbox Flight Recorder — Capture Godot crash telemetry and generate AI-ready debug prompts')
+    .option('-l, --last', 'Inspect the last recorded flight and crash diagnostic')
+    .option('-p, --prompt', 'Generate an AI-ready Markdown debug prompt for Claude, Cursor, Antigravity')
+    .option('-c, --copy', 'Copy the generated AI debug prompt to clipboard')
+    .option('--json', 'Output raw flight recording data as JSON')
+    .option('--clear', 'Clear stored telemetry and crash logs')
+    .option('--godot <path>', 'Custom path to Godot executable')
+    .option('-r, --run', 'Launch Godot under Blackbox recording mode')
+    .action(async (dir = '.', options) => {
+      const targetDir = path.resolve(dir);
+
+      if (options.clear) {
+        const { deleted } = await clearTelemetry(targetDir);
+        console.log(pc.green(`✓ Cleared ${deleted} telemetry file(s) in ${path.join(targetDir, '.devdock/telemetry')}`));
+        return;
+      }
+
+      if (options.last || options.prompt || options.copy) {
+        const flight = await loadLastFlight(targetDir);
+        if (!flight) {
+          console.log(pc.yellow(`\n⚠ No flight telemetry records found in ${path.join(targetDir, '.devdock/telemetry')}`));
+          console.log(pc.gray(`  Run your game with OrbitKit or use "orbitkit record --run" to start a recording session.\n`));
+          return;
+        }
+
+        if (options.json) {
+          console.log(JSON.stringify(flight, null, 2));
+          return;
+        }
+
+        const firstIncident = flight.incidents && flight.incidents.length > 0 ? flight.incidents[0] : null;
+
+        if (options.prompt || options.copy) {
+          if (!firstIncident) {
+            console.log(pc.yellow(`\n⚠ Last flight (${flight.sessionId}) did not report any crash incidents.`));
+            console.log(pc.gray(`  Status: ${flight.status}`));
+            return;
+          }
+
+          const prompt = await generateAiDebugPrompt(firstIncident, {
+            projectDir: targetDir,
+            copyToClipboard: Boolean(options.copy)
+          });
+
+          if (options.prompt) {
+            console.log('\n' + prompt + '\n');
+          }
+
+          if (options.copy) {
+            console.log(pc.green(`\n✓ Copied AI Crash Prompt to clipboard! Paste it into Claude Code, Cursor, or Antigravity.\n`));
+          }
+          return;
+        }
+
+        // Default --last view
+        console.log(pc.bold(pc.cyan(`\n✈ OrbitKit Blackbox Flight Recorder — Last Incident\n`)));
+        console.log(`  Session:      ${pc.bold(flight.sessionId)}`);
+        console.log(`  Started:      ${flight.startedAt}`);
+        console.log(`  Ended:        ${flight.endedAt || 'active'}`);
+        const statusColor = flight.status === 'ok' ? pc.green : pc.red;
+        console.log(`  Status:       ${statusColor(flight.status.toUpperCase())} ${flight.exitCode !== undefined ? `(exit code: ${flight.exitCode})` : ''}`);
+        console.log(`  Incidents:    ${flight.incidents.length > 0 ? pc.red(flight.incidents.length) : pc.green('0')}`);
+
+        if (flight.incidents.length > 0) {
+          console.log(pc.bold(pc.red(`\n  Detected Incidents:`)));
+          for (const inc of flight.incidents) {
+            console.log(`  • ${pc.bold(inc.errorType)}: ${inc.errorMessage}`);
+            if (inc.sourceFile) {
+              console.log(pc.gray(`    at ${inc.sourceFile}:${inc.sourceLine || 1}`));
+            }
+          }
+          console.log(pc.cyan(`\n  Tip: Run ${pc.bold('orbitkit record --prompt --copy')} to copy the AI diagnostic prompt.\n`));
+        } else {
+          console.log(pc.green(`\n  ✓ No crashes or runtime errors recorded during this session.\n`));
+        }
+        return;
+      }
+
+      // If --json alone
+      if (options.json) {
+        const flight = await loadLastFlight(targetDir);
+        console.log(JSON.stringify(flight || {}, null, 2));
+        return;
+      }
+
+      // Live recording execution
+      console.log(pc.bold(pc.cyan(`\n✈ OrbitKit Blackbox Flight Recorder\n`)));
+      console.log(pc.gray(`  Target: ${targetDir}`));
+
+      const spinner = ora('Detecting Godot Engine and starting flight recording...').start();
+      try {
+        spinner.text = 'Running Godot with telemetry capture active... (Press Ctrl+C to stop)';
+        const record = await runFlightRecording(targetDir, {
+          godotPath: options.godot,
+          onLogLine: (line, isError) => {
+            if (isError || line.includes('ERROR') || line.includes('CRASH')) {
+              spinner.stop();
+              process.stderr.write(line);
+              spinner.start('Recording live flight telemetry...');
+            }
+          }
+        });
+
+        spinner.succeed(
+          record.status === 'ok'
+            ? pc.green(`Flight finished cleanly. Telemetry saved to .devdock/telemetry/last_flight.json`)
+            : pc.yellow(`Flight terminated with ${record.incidents.length} incident(s). Telemetry saved to .devdock/telemetry/last_flight.json`)
+        );
+
+        if (record.incidents.length > 0) {
+          console.log(pc.cyan(`\n  Run ${pc.bold('orbitkit record --prompt --copy')} to generate an AI fix prompt.\n`));
+        }
+      } catch (err: any) {
+        spinner.fail(pc.red(`Flight recording error: ${err.message}`));
       }
     });
 

@@ -1,0 +1,9 @@
+{
+  "id": "shader-math-artistry",
+  "name": "Universal Shader Math & Procedural VFX",
+  "version": "1.0.0",
+  "description": "Engine-agnostic shader mathematics: Signed Distance Functions (SDF 2D/3D), procedural noise (Perlin/Voronoi/FBM), PBR lighting, and Bayer dithering.",
+  "tags": ["shaders", "vfx", "math", "universal"],
+  "channel": "stable",
+  "updated_at": "2026-11-10T00:00:00.000Z"
+}

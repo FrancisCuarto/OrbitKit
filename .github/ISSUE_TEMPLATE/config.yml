@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation & Guides
+    url: https://orbit-kit-nine.vercel.app
+    about: Official website, CLI reference, skills and MCP documentation.
+  - name: 💬 Questions & Discussions
+    url: https://github.com/FrancisCuarto/OrbitKit/discussions
+    about: Ask questions and share how you use OrbitKit with Claude Code, Cursor, Windsurf or Antigravity.
+  - name: 🔒 Security & Privacy Policy
+    url: https://github.com/FrancisCuarto/OrbitKit/blob/main/.github/SECURITY.md
+    about: Read the security architecture and how to report vulnerabilities responsibly.

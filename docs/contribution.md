@@ -1,21 +1,15 @@
-# Contributing to DevDock
+# Contributing to OrbitKit
 
-We welcome community contributions to DevDock!
+First off, thanks for taking the time to contribute! 🚀
 
-## How to Submit a New Resource
+The **full contribution guide** — development setup, branching model, commit
+conventions, and how to submit new AI Skills, MCP servers, and addons — now
+lives in [`.github/CONTRIBUTING.md`](https://github.com/FrancisCuarto/OrbitKit/blob/main/.github/CONTRIBUTING.md).
 
-1. **Create a standard manifest (`manifest.json`)**:
-   Ensure it satisfies the DevDock schema specification, including:
-   - Valid kebab-case `id`
-   - Valid SemVer `version` (e.g. `1.0.0`)
-   - Permitted `destination` (e.g. `res://addons/your_addon/`)
-   - Accurate SHA-256 integrity checksum
+## Quick Links
 
-2. **Test your manifest locally**:
-   ```bash
-   pnpm --filter=@devdock/manifest-schema test
-   ```
-
-3. **Submit a Pull Request**:
-   - Open a PR on the DevDock repository with your manifest file.
-   - All community submissions undergo automated format checks and security review before inclusion into the catalog.
+- 📝 [Contributing Guide](https://github.com/FrancisCuarto/OrbitKit/blob/main/.github/CONTRIBUTING.md)
+- 🐛 [Report a bug](https://github.com/FrancisCuarto/OrbitKit/issues/new?template=bug_report.yml)
+- ✨ [Request a feature](https://github.com/FrancisCuarto/OrbitKit/issues/new?template=feature_request.yml)
+- 💬 [Join the discussions](https://github.com/FrancisCuarto/OrbitKit/discussions)
+- 🔒 [Security policy](security.md)
