@@ -1,5 +1,5 @@
 /**
- * Renders the standalone OrbitKit GUI Dashboard Single Page App
+ * Renders the standalone VGskillframe GUI Dashboard Single Page App
  */
 export function renderGuiHtml(): string {
   return `<!DOCTYPE html>
@@ -7,7 +7,7 @@ export function renderGuiHtml(): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OrbitKit — GUI Dashboard</title>
+  <title>VGskillframe — GUI Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -682,7 +682,7 @@ export function renderGuiHtml(): string {
       </div>
       <div>
         <div style="display:flex; align-items:center; gap:0.5rem;">
-          <span class="brand-title">OrbitKit GUI</span>
+          <span class="brand-title">VGskillframe GUI</span>
           <span class="badge-version">v0.1.0</span>
         </div>
       </div>
@@ -744,12 +744,12 @@ export function renderGuiHtml(): string {
       <section id="tab-dashboard" class="view-section active">
         <div class="section-header">
           <div>
-            <h1 class="section-title">Panel de Control OrbitKit</h1>
+            <h1 class="section-title">Panel de Control VGskillframe</h1>
             <p class="section-desc">Monitorea y gestiona tus proyectos Godot 4, AI Skills y servidores MCP en tiempo real.</p>
           </div>
           <div>
             <button class="btn btn-primary" onclick="initProject()">
-              🚀 Inicializar OrbitKit en este proyecto
+              🚀 Inicializar VGskillframe en este proyecto
             </button>
           </div>
         </div>
@@ -856,7 +856,7 @@ export function renderGuiHtml(): string {
       <section id="tab-doctor" class="view-section">
         <div class="section-header">
           <div>
-            <h1 class="section-title">🩺 Diagnóstico del Entorno (OrbitKit Doctor)</h1>
+            <h1 class="section-title">🩺 Diagnóstico del Entorno (VGskillframe Doctor)</h1>
             <p class="section-desc">Verifica Node.js, el binario de Godot 4 en PATH, y el puerto LSP 6005 para telemetría con agentes de IA.</p>
           </div>
           <button class="btn btn-primary" onclick="triggerDoctor()">
@@ -874,7 +874,7 @@ export function renderGuiHtml(): string {
         <div class="section-header">
           <div>
             <h1 class="section-title">⌨️ Referencia de Comandos CLI</h1>
-            <p class="section-desc">Todos los comandos disponibles al instalar <code>@francisiv/orbitkit</code> (alias <code>devdock</code>).</p>
+            <p class="section-desc">Todos los comandos disponibles al instalar <code>@francisiv/vgskillframe</code> (alias <code>vgskill</code>, <code>orbitkit</code>).</p>
           </div>
         </div>
 
@@ -910,7 +910,7 @@ export function renderGuiHtml(): string {
     </div>
     <div id="console-logs" class="console-logs">
       <div class="log-line">
-        <span class="log-time">[OrbitKit GUI]</span>
+        <span class="log-time">[VGskillframe GUI]</span>
         <span class="log-info">Dashboard conectado exitosamente. Listo para gestionar proyectos Godot.</span>
       </div>
     </div>
@@ -1101,7 +1101,7 @@ export function renderGuiHtml(): string {
         badge.textContent = 'Sin project.godot detectado';
         cardContent.innerHTML = \`
           <p>La carpeta actual (<code>\${escapeHtml(appState.activeProjectDir)}</code>) no contiene un archivo <code>project.godot</code>.</p>
-          <p style="margin-top:0.5rem;">Haz clic en <strong>"Inicializar OrbitKit"</strong> para configurar este directorio para Godot y asistentes de IA.</p>
+          <p style="margin-top:0.5rem;">Haz clic en <strong>"Inicializar VGskillframe"</strong> para configurar este directorio para Godot y asistentes de IA.</p>
         \`;
         return;
       }
@@ -1128,7 +1128,7 @@ export function renderGuiHtml(): string {
         container.innerHTML = \`
           <div class="card" style="grid-column: 1 / -1; text-align:center; padding: 2.5rem;">
             <p style="font-size:1.1rem; font-weight:700; color:#fff;">No se encontraron proyectos Godot</p>
-            <p style="color:var(--text-muted); margin-top:0.5rem;">Introduce otra ruta arriba o ejecuta <code>orbitkit init</code> en tu proyecto actual.</p>
+            <p style="color:var(--text-muted); margin-top:0.5rem;">Introduce otra ruta arriba o ejecuta <code>vgskillframe init</code> en tu proyecto actual.</p>
           </div>
         \`;
         return;
@@ -1420,7 +1420,7 @@ export function renderGuiHtml(): string {
     }
 
     async function initProject() {
-      log(\`Inicializando OrbitKit en \${appState.activeProjectDir}...\`, 'info');
+      log(\`Inicializando VGskillframe en \${appState.activeProjectDir}...\`, 'info');
       try {
         const res = await fetch('/api/init', {
           method: 'POST',

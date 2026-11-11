@@ -1,18 +1,18 @@
-# OrbitKit System Architecture
+# VGskillframe (Videogame Skill Frame) System Architecture
 
-OrbitKit is an end-to-end tooling and catalog ecosystem tailored for Godot 4 game developers and AI coding agents.
+VGskillframe is an end-to-end tooling and catalog ecosystem tailored for Godot 4 game developers and AI coding agents.
 
 ```
        ┌────────────────────────────────────────────────────────┐
        │                NPM / Public Registry                   │
-       │              @francisiv/orbitkit (CLI)                 │
+       │            @francisiv/vgskillframe (CLI)               │
        └──────────────────────────┬─────────────────────────────┘
                                   │
                   ┌───────────────┴───────────────┐
                   ▼                               ▼
        ┌───────────────────────┐       ┌───────────────────────┐
        │   Developer Machine   │       │   Web Documentation   │
-       │   `orbitkit / devdock`│       │   (Vite + React)      │
+       │  `vgskillframe / ui`  │       │   (Vite + React)      │
        └──────────┬────────────┘       └───────────────────────┘
                   │
         ┌─────────┴─────────┐
@@ -32,12 +32,12 @@ OrbitKit is an end-to-end tooling and catalog ecosystem tailored for Godot 4 gam
 
 | Path | Name | Description |
 |---|---|---|
-| `packages/cli` | `@francisiv/orbitkit` | Standalone CLI tool. Scans Godot projects, manages AI skills and MCP servers. |
+| `packages/cli` | `@francisiv/vgskillframe` | Standalone CLI tool. Scans Godot projects, manages AI skills and MCP servers. Binary: `vgskillframe` (aliases: `vgskill`, `orbitkit`, `devdock`). |
 | `packages/manifest-schema` | `@devdock/manifest-schema` | Zod schema validator, SHA-256 checksum verifier, Zip Slip attack defender. |
 | `packages/shared-types` | `@devdock/shared-types` | TypeScript interfaces for resources, manifests, versions, and API contracts. |
 | `apps/web` | `@devdock/web` | Documentation portal, Engram-inspired aesthetics with Godot palette. |
 | `apps/api` | `@devdock/api` | Central registry REST API with Argon2id auth and rate limiting. |
-| `godot-plugin/addons/devdock` | `devdock` Godot Addon | Native Godot 4 editor plugin for package management inside the engine. |
+| `godot-plugin/addons/vgskillframe` | `vgskillframe` Godot Addon | Native Godot 4 editor plugin for package management inside the engine. |
 | `catalog.json` | Versioned Catalog | Root catalog with SHA-256 checksums for deterministic skill archives (`skills/*.zip`). |
 
 ---

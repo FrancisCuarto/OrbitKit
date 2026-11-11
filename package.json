@@ -1,14 +1,16 @@
 {
-  "name": "devdock-monorepo",
+  "name": "vgskillframe-monorepo",
   "version": "0.6.4",
   "private": true,
-  "description": "OrbitKit (DevDock) — Interactive Web GUI, CLI, AI Skills, Model Context Protocol (MCP) Servers & Package Manager for Godot 4 and Blender 3D Developers",
+  "description": "VGskillframe (Videogame Skill Frame) — Interactive Web GUI, CLI, AI Skills, Model Context Protocol (MCP) Servers & Package Manager for Godot 4 and Blender 3D Developers",
   "homepage": "https://orbit-kit-nine.vercel.app",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FrancisCuarto/OrbitKit.git"
   },
   "keywords": [
+    "vgskillframe",
+    "videogame-skill-frame",
     "godot",
     "godot4",
     "godot-engine",

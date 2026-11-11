@@ -71,9 +71,9 @@ export function DocsSection({ lang }: Props) {
           {activeTab === 'cli' && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-white">OrbitKit / DevDock CLI Reference</h3>
+                <h3 className="text-xl font-bold text-white">VGskillframe (Videogame Skill Frame) CLI Reference</h3>
                 <p className="text-slate-400 text-xs sm:text-sm mt-1">
-                  The primary command-line tool for managing Godot 4 projects, AI agent skills, and environment health. Both <code className="text-godot-300 font-mono text-xs">orbitkit</code> and <code className="text-godot-300 font-mono text-xs">devdock</code> binary aliases are supported.
+                  The primary command-line tool for managing Godot 4 projects, AI agent skills, and environment health. Binary aliases <code className="text-godot-300 font-mono text-xs">vgskillframe</code>, <code className="text-godot-300 font-mono text-xs">vgskill</code>, and <code className="text-godot-300 font-mono text-xs">orbitkit</code> are supported.
                 </p>
               </div>
 
@@ -94,7 +94,7 @@ export function DocsSection({ lang }: Props) {
                       </div>
                       <button
                         type="button"
-                        onClick={() => handleCopy('npm install -g @francisiv/orbitkit', 'quick_npm')}
+                        onClick={() => handleCopy('npm install -g @francisiv/vgskillframe', 'quick_npm')}
                         className="flex items-center px-2.5 py-1 rounded-lg bg-godot-card border border-godot-border text-xs text-slate-300 hover:text-white transition"
                       >
                         <span className="inline-flex mr-1 shrink-0">
@@ -108,13 +108,13 @@ export function DocsSection({ lang }: Props) {
                       </button>
                     </div>
                     <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-godot-300 border border-godot-border/60">
-                      npm install -g @francisiv/orbitkit
+                      npm install -g @francisiv/vgskillframe
                     </code>
                   </div>
                   <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400 pt-1">
-                    <span>{lang === 'es' ? '💡 Abre la interfaz:' : '💡 Open TUI:'}</span>
+                    <span>{lang === 'es' ? '💡 Abre la interfaz:' : '💡 Open GUI/TUI:'}</span>
                     <code className="text-slate-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
-                      orbitkit
+                      vgskillframe ui
                     </code>
                   </div>
                 </div>
@@ -131,7 +131,7 @@ export function DocsSection({ lang }: Props) {
                       </div>
                       <button
                         type="button"
-                        onClick={() => handleCopy('orbitkit upgrade', 'upgrade_npm')}
+                        onClick={() => handleCopy('vgskillframe upgrade', 'upgrade_npm')}
                         className="flex items-center px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white border border-emerald-500/30 text-xs transition"
                       >
                         <span className="inline-flex mr-1 shrink-0">
@@ -145,7 +145,7 @@ export function DocsSection({ lang }: Props) {
                       </button>
                     </div>
                     <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-emerald-300 border border-emerald-500/30">
-                      orbitkit upgrade
+                      vgskillframe upgrade
                     </code>
                   </div>
                   <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 pt-1">
@@ -155,7 +155,7 @@ export function DocsSection({ lang }: Props) {
                         : 'Only check version:'}
                     </span>
                     <code className="text-emerald-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
-                      orbitkit upgrade --check
+                      vgskillframe upgrade --check
                     </code>
                   </div>
                 </div>
@@ -172,7 +172,7 @@ export function DocsSection({ lang }: Props) {
                       </div>
                       <button
                         type="button"
-                        onClick={() => handleCopy('orbitkit uninstall', 'uninstall_cli')}
+                        onClick={() => handleCopy('vgskillframe uninstall', 'uninstall_cli')}
                         className="flex items-center px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/30 text-xs transition"
                       >
                         <span className="inline-flex mr-1 shrink-0">
@@ -186,7 +186,7 @@ export function DocsSection({ lang }: Props) {
                       </button>
                     </div>
                     <code className="block p-3 rounded-xl bg-black/60 font-mono text-xs sm:text-sm text-rose-300 border border-rose-500/30">
-                      orbitkit uninstall
+                      vgskillframe uninstall
                     </code>
                   </div>
                   <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 pt-1">
@@ -194,7 +194,7 @@ export function DocsSection({ lang }: Props) {
                       {lang === 'es' ? 'O directo con NPM:' : 'Or directly via NPM:'}
                     </span>
                     <code className="text-rose-300 bg-godot-card px-2 py-0.5 rounded border border-godot-border font-mono text-[11px]">
-                      npm uninstall -g @francisiv/orbitkit
+                      npm uninstall -g @francisiv/vgskillframe
                     </code>
                   </div>
                 </div>
@@ -203,63 +203,63 @@ export function DocsSection({ lang }: Props) {
               <div className="space-y-4">
                 {[
                   {
-                    cmd: 'orbitkit gui  (or: orbitkit ui)',
+                    cmd: 'vgskillframe gui  (or: vgskillframe ui)',
                     desc: 'Launches the interactive Web GUI Dashboard in your default browser (localhost:4567) with visual project explorer, 1-click AI Skills installer, MCP manager, and live diagnostics.'
                   },
                   {
-                    cmd: 'orbitkit  (or: orbitkit tui)',
+                    cmd: 'vgskillframe  (or: vgskillframe tui)',
                     desc: 'Launches the minimalist interactive Terminal User Interface (TUI) with automatic version checking, live search (/), and 1-key Skill/MCP installation.'
                   },
                   {
-                    cmd: 'orbitkit upgrade [--check]',
-                    desc: 'Checks your installed CLI version against NPM & GitHub and automatically upgrades @francisiv/orbitkit globally (pass --check to only compare versions).'
+                    cmd: 'vgskillframe upgrade [--check]',
+                    desc: 'Checks your installed CLI version against NPM & GitHub and automatically upgrades @francisiv/vgskillframe globally (pass --check to only compare versions).'
                   },
                   {
-                    cmd: 'orbitkit uninstall [--project]',
-                    desc: 'Cleanly uninstalls the global @francisiv/orbitkit CLI binary and symlinks from your system (pass --project to also remove .devdock/ from current project).'
+                    cmd: 'vgskillframe uninstall [--project]',
+                    desc: 'Cleanly uninstalls the global @francisiv/vgskillframe CLI binary and symlinks from your system (pass --project to also remove .devdock/ from current project).'
                   },
                   {
-                    cmd: 'orbitkit scan [directory]',
+                    cmd: 'vgskillframe scan [directory]',
                     desc: 'Recursively locates all Godot projects (containing project.godot) on your system. Reports installed addons, AI skills, and MCP configuration status.'
                   },
                   {
-                    cmd: 'orbitkit check [--json] [--force]',
+                    cmd: 'vgskillframe check [--json] [--force]',
                     desc: 'Queries the versioned remote catalog (with ETag cache & offline fallback) to detect newly published AI skills, outdated project skills, and CLI updates.'
                   },
                   {
-                    cmd: 'orbitkit watch [--interval <min>] [--auto-update]',
+                    cmd: 'vgskillframe watch [--interval <min>] [--auto-update]',
                     desc: 'Runs a continuous watcher with jitter and exponential backoff that automatically notifies and applies verified patch/minor skill updates.'
                   },
                   {
-                    cmd: 'orbitkit autoupdate enable | disable',
+                    cmd: 'vgskillframe autoupdate enable | disable',
                     desc: 'Configures OS-native background update checks via systemd user timers (Linux), LaunchAgents (macOS), or schtasks (Windows) with zero daemon overhead.'
                   },
                   {
-                    cmd: 'orbitkit update [--all]',
+                    cmd: 'vgskillframe update [--all]',
                     desc: 'Safely applies skill and MCP updates with SHA-256 checksum verification, atomic extraction, automatic pre-update backups (.devdock/backups/), and rollback on failure.'
                   },
                   {
-                    cmd: 'orbitkit init',
-                    desc: 'Initializes DevDock inside a new or existing Godot project. Creates .devdock/, installs godot4-syntax-guardian skill, and configures godot-lsp MCP.'
+                    cmd: 'vgskillframe init',
+                    desc: 'Initializes VGskillframe inside a new or existing Godot project. Creates .devdock/, installs godot4-syntax-guardian skill, and configures godot-lsp MCP.'
                   },
                   {
-                    cmd: 'orbitkit skill list',
+                    cmd: 'vgskillframe skill list',
                     desc: 'Displays the catalog of verified AI Skills tailored specifically for Godot 4.'
                   },
                   {
-                    cmd: 'orbitkit skill install <skill-id>',
+                    cmd: 'vgskillframe skill install <skill-id>',
                     desc: 'Installs or updates an AI Skill directly into .agents/skills/ and .claude/skills/ in your project.'
                   },
                   {
-                    cmd: 'orbitkit mcp list',
+                    cmd: 'vgskillframe mcp list',
                     desc: 'Lists available Model Context Protocol servers (godot-engine-bridge, godot-lsp, godot-docs, godot-scene-inspector, godot-gut-runner, ctx7).'
                   },
                   {
-                    cmd: 'orbitkit mcp add <server-id>',
+                    cmd: 'vgskillframe mcp add <server-id>',
                     desc: 'Configures a Model Context Protocol server (e.g. ctx7 or godot-lsp) in the project (.mcp.json).'
                   },
                   {
-                    cmd: 'orbitkit doctor',
+                    cmd: 'vgskillframe doctor',
                     desc: 'Runs full diagnostic self-checks: verifies Godot 4 binary in PATH, tests GDScript LSP port 6005, and validates current project context.'
                   }
                 ].map((item, idx) => (
@@ -542,10 +542,10 @@ export function DocsSection({ lang }: Props) {
 
                     <button
                       type="button"
-                      onClick={() => handleCopy(`orbitkit skill install ${s.id}`, s.id)}
+                      onClick={() => handleCopy(`vgskillframe skill install ${s.id}`, s.id)}
                       className="px-3 py-1.5 rounded-lg bg-godot-500/20 hover:bg-godot-500 text-godot-300 hover:text-white border border-godot-500/30 transition text-xs font-mono whitespace-nowrap"
                     >
-                      <span>{copiedId === s.id ? (lang === 'es' ? '¡Copiado!' : 'Copied Command!') : `orbitkit skill install ${s.id}`}</span>
+                      <span>{copiedId === s.id ? (lang === 'es' ? '¡Copiado!' : 'Copied Command!') : `vgskillframe skill install ${s.id}`}</span>
                     </button>
                   </div>
                 ))}

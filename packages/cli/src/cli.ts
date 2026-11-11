@@ -35,8 +35,8 @@ export function createCli(): Command {
   const cliVersion = readCliPackageVersion();
 
   program
-    .name('orbitkit')
-    .description('OrbitKit CLI — Automated AI Skills, MCP Servers and Addon Manager for Godot Projects')
+    .name('vgskillframe')
+    .description('VGskillframe CLI — Automated AI Skills, MCP Servers and Addon Manager for Godot Projects')
     .version(cliVersion)
     .action(async () => {
       if (process.stdout.isTTY) {
@@ -61,21 +61,21 @@ export function createCli(): Command {
   program
     .command('gui')
     .alias('dashboard')
-    .description('Launch the interactive OrbitKit GUI web dashboard in your browser')
+    .description('Launch the interactive VGskillframe GUI web dashboard in your browser')
     .option('-p, --port <port>', 'Port to run the dashboard server on', '4567')
     .option('-d, --dir <dir>', 'Directory to inspect or manage', '.')
     .option('--no-open', 'Do not open the browser automatically')
     .action(async (options) => {
       const port = parseInt(options.port, 10) || 4567;
       const targetDir = path.resolve(options.dir || '.');
-      const spinner = ora('Starting OrbitKit GUI Dashboard...').start();
+      const spinner = ora('Starting VGskillframe GUI Dashboard...').start();
       try {
         const { url, port: actualPort } = await startGuiServer({
           port,
           dir: targetDir,
           openBrowser: options.open !== false
         });
-        spinner.succeed(pc.green('OrbitKit GUI Dashboard is live!'));
+        spinner.succeed(pc.green('VGskillframe GUI Dashboard is live!'));
         console.log(pc.bold(pc.cyan(`\n  🚀 Local:   ${pc.underline(url)}`)));
         console.log(pc.gray(`  📁 Target:  ${targetDir}`));
         console.log(pc.gray(`  🔌 Port:    ${actualPort}`));
@@ -99,14 +99,14 @@ export function createCli(): Command {
       } else {
         const port = parseInt(options.port, 10) || 4567;
         const targetDir = path.resolve(options.dir || '.');
-        const spinner = ora('Starting OrbitKit GUI Dashboard...').start();
+        const spinner = ora('Starting VGskillframe GUI Dashboard...').start();
         try {
           const { url, port: actualPort } = await startGuiServer({
             port,
             dir: targetDir,
             openBrowser: options.open !== false
           });
-          spinner.succeed(pc.green('OrbitKit GUI Dashboard is live!'));
+          spinner.succeed(pc.green('VGskillframe GUI Dashboard is live!'));
           console.log(pc.bold(pc.cyan(`\n  🚀 Local:   ${pc.underline(url)}`)));
           console.log(pc.gray(`  📁 Target:  ${targetDir}`));
           console.log(pc.gray(`  🔌 Port:    ${actualPort}`));
@@ -129,14 +129,14 @@ export function createCli(): Command {
   program
     .command('upgrade')
     .alias('self-update')
-    .description('Check for the latest OrbitKit CLI version and upgrade globally')
+    .description('Check for the latest VGskillframe CLI version and upgrade globally')
     .option('-c, --check', 'Only check if a newer version is available without installing')
     .action(async (options) => {
-      const spinner = ora('Checking OrbitKit CLI version against NPM & GitHub...').start();
+      const spinner = ora('Checking VGskillframe CLI version against NPM & GitHub...').start();
       const check = await checkCliVersion();
       spinner.stop();
 
-      console.log(pc.bold(pc.cyan('\nOrbitKit Version Check:')));
+      console.log(pc.bold(pc.cyan('\nVGskillframe Version Check:')));
       console.log(`  Installed version: ${pc.white('v' + check.currentVersion)}`);
       console.log(
         `  Latest version:    ${
@@ -146,7 +146,7 @@ export function createCli(): Command {
 
       if (options.check || !check.updateAvailable) {
         if (check.updateAvailable) {
-          console.log(pc.yellow(`\nRun ${pc.bold('orbitkit upgrade')} to install v${check.latestVersion}.\n`));
+          console.log(pc.yellow(`\nRun ${pc.bold('vgskillframe upgrade')} to install v${check.latestVersion}.\n`));
         } else {
           await performCliSelfUpdate({ force: false });
           console.log(pc.green(`\n✓ Ya tienes la última versión instalada (v${check.currentVersion}).\n`));
@@ -154,7 +154,7 @@ export function createCli(): Command {
         return;
       }
 
-      const updateSpinner = ora(`Actualizando OrbitKit CLI (v${check.currentVersion} → v${check.latestVersion})...`).start();
+      const updateSpinner = ora(`Actualizando VGskillframe CLI (v${check.currentVersion} → v${check.latestVersion})...`).start();
       const res = await performCliSelfUpdate({ force: true });
       if (res.success) {
         updateSpinner.succeed(pc.green(res.message));
@@ -168,10 +168,10 @@ export function createCli(): Command {
   program
     .command('uninstall')
     .alias('remove')
-    .description('Uninstall OrbitKit CLI globally from your system')
+    .description('Uninstall VGskillframe CLI globally from your system')
     .option('-p, --project', 'Also remove .devdock/ configuration from the current project')
     .action(async (options) => {
-      const spinner = ora('Desinstalando OrbitKit CLI globalmente...').start();
+      const spinner = ora('Desinstalando VGskillframe CLI globalmente...').start();
       const res = await performCliUninstall({ cleanProject: Boolean(options.project) });
       if (res.success) {
         spinner.succeed(pc.green(res.message));
@@ -183,9 +183,9 @@ export function createCli(): Command {
   // Command: init
   program
     .command('init')
-    .description('Initialize DevDock in the current Godot project')
+    .description('Initialize VGskillframe in the current Godot project')
     .action(async () => {
-      const spinner = ora('Initializing DevDock in project...').start();
+      const spinner = ora('Initializing VGskillframe in project...').start();
       try {
         const cwd = process.cwd();
         const godotFile = path.join(cwd, 'project.godot');
@@ -196,7 +196,7 @@ export function createCli(): Command {
         } catch {
           // Auto-create a standard Godot 4 project.godot if not yet present
           const projectName = path.basename(cwd);
-          const baseConfig = `; Engine configuration file.\n; Initialized by OrbitKit\nconfig_version=5\n\n[application]\n\nconfig/name="${projectName}"\nconfig/features=PackedStringArray("4.3", "Forward Plus")\n`;
+          const baseConfig = `; Engine configuration file.\n; Initialized by VGskillframe\nconfig_version=5\n\n[application]\n\nconfig/name="${projectName}"\nconfig/features=PackedStringArray("4.3", "Forward Plus")\n`;
           await fs.writeFile(godotFile, baseConfig, 'utf8');
           createdProjectGodot = true;
         }
@@ -206,7 +206,7 @@ export function createCli(): Command {
         await fs.mkdir(path.join(cwd, '.agents', 'skills'), { recursive: true });
         await fs.mkdir(path.join(cwd, '.claude', 'skills'), { recursive: true });
 
-        // Install & enable Godot 4 Editor plugin in addons/orbitkit & project.godot
+        // Install & enable Godot 4 Editor plugin in addons/vgskillframe & project.godot
         await installGodotPlugin(cwd);
 
         // Install default godot4-syntax-guardian skill
@@ -215,15 +215,15 @@ export function createCli(): Command {
         // Configure default godot-lsp MCP server
         await installMcpServer(cwd, 'godot-lsp');
 
-        spinner.succeed(pc.green('OrbitKit initialized successfully!'));
+        spinner.succeed(pc.green('VGskillframe initialized successfully!'));
         if (createdProjectGodot) {
           console.log(pc.cyan('  ✓ Created default project.godot (Godot 4)'));
         }
-        console.log(pc.cyan('  ✓ Godot Editor Plugin installed & enabled (addons/orbitkit/plugin.cfg)'));
+        console.log(pc.cyan('  ✓ Godot Editor Plugin installed & enabled (addons/vgskillframe/plugin.cfg)'));
         console.log(pc.cyan('  ✓ .devdock/ directory & catalog created'));
         console.log(pc.cyan('  ✓ Default AI Skill installed (.agents/skills/godot4-syntax-guardian)'));
         console.log(pc.cyan('  ✓ Godot LSP MCP configured in .mcp.json'));
-        console.log(pc.gray('\nOpen your project in Godot Editor — the OrbitKit dock is already enabled!\n'));
+        console.log(pc.gray('\nOpen your project in Godot Editor — the VGskillframe dock is already enabled!\n'));
       } catch (err: any) {
         spinner.fail(pc.red('Failed to initialize: ' + err.message));
       }
@@ -242,7 +242,7 @@ export function createCli(): Command {
 
       if (projects.length === 0) {
         console.log(pc.yellow(`No Godot projects found in ${targetDir} or Godot Engine registry.`));
-        console.log(pc.gray('Tip: Run "orbitkit init" in a project directory to initialize OrbitKit.'));
+        console.log(pc.gray('Tip: Run "vgskillframe init" in a project directory to initialize VGskillframe.'));
         return;
       }
 
@@ -251,9 +251,10 @@ export function createCli(): Command {
       for (const p of projects) {
         const sourceBadge = p.source === 'godot-registry' ? pc.yellow(' [Godot Engine]') : pc.green(' [Local]');
         console.log(pc.bold(pc.white(`📁 ${p.name}`)) + sourceBadge + pc.gray(` (${p.projectPath})`));
+        const plugActive = p.hasVGskillframePlugin || p.hasOrbitKitPlugin;
         console.log(
-          `   OrbitKit Plugin: ${
-            p.hasOrbitKitPlugin ? pc.green('Active (res://addons/orbitkit/plugin.cfg)') : pc.yellow('not installed')
+          `   VGskillframe Plugin: ${
+            plugActive ? pc.green('Active (res://addons/vgskillframe/plugin.cfg)') : pc.yellow('not installed')
           }`
         );
         console.log(
@@ -272,17 +273,17 @@ export function createCli(): Command {
   // Command: update
   program
     .command('update [target]')
-    .description('Check & update OrbitKit CLI, AI Skills, MCPs, and Addons to the latest versions')
+    .description('Check & update VGskillframe CLI, AI Skills, MCPs, and Addons to the latest versions')
     .option('-a, --all', 'Update all detected Godot projects in the directory tree')
-    .option('-c, --cli', 'Only check and update the global OrbitKit CLI binary')
+    .option('-c, --cli', 'Only check and update the global VGskillframe CLI binary')
     .action(async (target = '.', options) => {
       // 1. Always check if the CLI itself has a newer release
       const verCheck = await checkCliVersion();
       if (verCheck.updateAvailable || options.cli) {
         const cliSpin = ora(
           verCheck.updateAvailable
-            ? `New OrbitKit CLI found (v${verCheck.currentVersion} → v${verCheck.latestVersion}). Updating CLI...`
-            : `Verifying OrbitKit CLI v${verCheck.currentVersion}...`
+            ? `New VGskillframe CLI found (v${verCheck.currentVersion} → v${verCheck.latestVersion}). Updating CLI...`
+            : `Verifying VGskillframe CLI v${verCheck.currentVersion}...`
         ).start();
         const selfRes = await performCliSelfUpdate({ force: verCheck.updateAvailable });
         if (selfRes.success) {
@@ -292,7 +293,7 @@ export function createCli(): Command {
         }
         if (options.cli) return;
       } else {
-        console.log(pc.gray(`✓ OrbitKit CLI v${verCheck.currentVersion} is up to date.`));
+        console.log(pc.gray(`✓ VGskillframe CLI v${verCheck.currentVersion} is up to date.`));
       }
       if (options.all) {
         const spinner = ora('Scanning and updating all Godot projects...').start();
@@ -339,13 +340,13 @@ export function createCli(): Command {
   // Command group: plugin
   const pluginCmd = program
     .command('plugin')
-    .description('Manage the OrbitKit Godot 4 Editor plugin (addons/orbitkit)');
+    .description('Manage the VGskillframe Godot 4 Editor plugin (addons/vgskillframe)');
 
   pluginCmd
     .command('install [dir]')
-    .description('Install and automatically enable the OrbitKit plugin in a Godot project')
+    .description('Install and automatically enable the VGskillframe plugin in a Godot project')
     .action(async (dir = '.') => {
-      const spinner = ora('Installing OrbitKit Godot Editor plugin...').start();
+      const spinner = ora('Installing VGskillframe Godot Editor plugin...').start();
       const res = await installGodotPlugin(dir);
       if (res.success) {
         spinner.succeed(pc.green(res.message));
@@ -357,9 +358,9 @@ export function createCli(): Command {
   pluginCmd
     .command('remove [dir]')
     .alias('uninstall')
-    .description('Remove the OrbitKit plugin from a Godot project and disable it in project.godot')
+    .description('Remove the VGskillframe plugin from a Godot project and disable it in project.godot')
     .action(async (dir = '.') => {
-      const spinner = ora('Removing OrbitKit Godot Editor plugin...').start();
+      const spinner = ora('Removing VGskillframe Godot Editor plugin...').start();
       const res = await uninstallGodotPlugin(dir);
       if (res.success) {
         spinner.succeed(pc.green(res.message));
@@ -370,12 +371,12 @@ export function createCli(): Command {
 
   pluginCmd
     .command('status [dir]')
-    .description('Check whether the OrbitKit Godot Editor plugin is installed and enabled')
+    .description('Check whether the VGskillframe Godot Editor plugin is installed and enabled')
     .action(async (dir = '.') => {
       const status = await getGodotPluginStatus(dir);
-      console.log(pc.bold(pc.cyan('\nOrbitKit Godot Plugin Status:')));
-      console.log(`  Installed in addons/orbitkit: ${status.installed ? pc.green('Yes (v' + status.version + ')') : pc.yellow('No')}`);
-      console.log(`  Enabled in project.godot:     ${status.enabled ? pc.green('Yes') : pc.yellow('No')}\n`);
+      console.log(pc.bold(pc.cyan('\nVGskillframe Godot Plugin Status:')));
+      console.log(`  Installed in addons/vgskillframe: ${status.installed ? pc.green('Yes (v' + status.version + ')') : pc.yellow('No')}`);
+      console.log(`  Enabled in project.godot:        ${status.enabled ? pc.green('Yes') : pc.yellow('No')}\n`);
     });
 
   // Command group: skill
@@ -446,7 +447,7 @@ export function createCli(): Command {
     .action(async (dir = '.', options) => {
       const targetDir = path.resolve(dir);
       const isJson = Boolean(options.json);
-      const spinner = !isJson && !options.quiet ? ora('Consultando catálogo de OrbitKit...').start() : null;
+      const spinner = !isJson && !options.quiet ? ora('Consultando catálogo de VGskillframe...').start() : null;
 
       const report = await checkForUpdates(targetDir, {
         force: Boolean(options.force)
@@ -475,7 +476,7 @@ export function createCli(): Command {
       const catalogLabel = report.catalogGeneratedAt
         ? `catálogo ${report.catalogGeneratedAt}`
         : 'sin catálogo';
-      console.log(pc.bold(pc.cyan(`\nOrbitKit Check · ${catalogLabel}\n`)));
+      console.log(pc.bold(pc.cyan(`\nVGskillframe Check · ${catalogLabel}\n`)));
 
       if (report.offline) {
         if (report.fromCache && report.catalogGeneratedAt) {
@@ -496,7 +497,7 @@ export function createCli(): Command {
         if (report.cli.belowMin) {
           console.log(
             pc.red(
-              `  ⚠ Tu OrbitKit v${report.cli.current} es anterior al mínimo soportado. Actualiza para continuar.`
+              `  ⚠ Tu VGskillframe v${report.cli.current} es anterior al mínimo soportado. Actualiza para continuar.`
             )
           );
         }
@@ -531,7 +532,7 @@ export function createCli(): Command {
         report.outdatedSkills.length > 0;
 
       if (hasUpdates) {
-        console.log(pc.cyan(`\n  Ejecuta \`orbitkit update --all\` para aplicar.\n`));
+        console.log(pc.cyan(`\n  Ejecuta \`vgskillframe update --all\` para aplicar.\n`));
       } else if (!report.offline || report.fromCache) {
         console.log(pc.green('\n  ✓ Todo en órbita. Sin novedades.\n'));
       }
@@ -556,7 +557,7 @@ export function createCli(): Command {
 
       console.log(
         pc.cyan(
-          `👁 OrbitKit Watch iniciado en ${targetDir} (intervalo base: ${intervalMinutes} min, jitter activo)...`
+          `👁 VGskillframe Watch iniciado en ${targetDir} (intervalo base: ${intervalMinutes} min, jitter activo)...`
         )
       );
 
@@ -625,7 +626,7 @@ export function createCli(): Command {
 
   autoupdateCmd
     .command('disable')
-    .description('Disable and remove OS scheduler units for OrbitKit')
+    .description('Disable and remove OS scheduler units for VGskillframe')
     .action(async () => {
       const res = await disableScheduler();
       if (res.success) {
@@ -641,11 +642,11 @@ export function createCli(): Command {
     .command('doctor')
     .description('Diagnose Godot, GDScript LSP, and AI assistant environment')
     .action(async () => {
-      const spinner = ora('Running DevDock diagnostics...').start();
+      const spinner = ora('Running VGskillframe diagnostics...').start();
       const items = await runSystemDiagnostics(process.cwd());
       spinner.stop();
 
-      console.log(pc.bold(pc.cyan('\nDevDock Health Diagnostics:\n')));
+      console.log(pc.bold(pc.cyan('\nVGskillframe Health Diagnostics:\n')));
       for (const item of items) {
         const icon =
           item.status === 'ok'

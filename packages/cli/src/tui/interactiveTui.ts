@@ -44,7 +44,7 @@ async function installEverythingInProject(projectPath: string): Promise<{
   let mcpsCount = 0;
   const errors: string[] = [];
 
-  // 1. Install and enable the Godot 4 Editor plugin (addons/orbitkit/plugin.cfg) in project.godot
+  // 1. Install and enable the Godot 4 Editor plugin (addons/vgskillframe/plugin.cfg) in project.godot
   try {
     const plugRes = await installGodotPlugin(projectPath);
     pluginInstalled = plugRes.success;
@@ -132,7 +132,7 @@ export async function startInteractiveTui(): Promise<void> {
   }
 
   async function runSelfUpgrade() {
-    setNotice('Comprobando última versión de OrbitKit en NPM y GitHub...', 'info');
+    setNotice('Comprobando última versión de VGskillframe en NPM y GitHub...', 'info');
     render();
     const check = await checkCliVersion();
     versionStatus = check;
@@ -167,7 +167,7 @@ export async function startInteractiveTui(): Promise<void> {
       label: 'Web GUI Dashboard',
       hint: () => 'Launch interactive browser dashboard (http://localhost:4567)',
       action: async () => {
-        setNotice('Launching OrbitKit Web GUI...', 'info');
+        setNotice('Launching VGskillframe Web GUI...', 'info');
         render();
         try {
           const { url } = await startGuiServer({ port: 4567, dir: activeProjectDir, openBrowser: true });
@@ -241,10 +241,10 @@ export async function startInteractiveTui(): Promise<void> {
     },
     {
       label: 'Uninstall CLI',
-      hint: () => 'Remove OrbitKit CLI globally from this system',
+      hint: () => 'Remove VGskillframe CLI globally from this system',
       action: async () => {
         confirmingUninstall = true;
-        setNotice('⚠ Confirm uninstall OrbitKit CLI? Press [y] to confirm or any other key to cancel.', 'warn');
+        setNotice('⚠ Confirm uninstall VGskillframe CLI? Press [y] to confirm or any other key to cancel.', 'warn');
       }
     }
   ];
@@ -290,7 +290,7 @@ export async function startInteractiveTui(): Promise<void> {
       : `${C.green}✓ v${versionStatus.currentVersion}${RESET}`;
 
     const shortTarget = activeProjectDir.replace(os.homedir(), '~');
-    lines.push(`  ${C.accent}●${RESET} ${C.white}orbitkit${RESET}  ${verBadge}  ${C.muted}${shortTarget}${RESET}`);
+    lines.push(`  ${C.accent}●${RESET} ${C.white}vgskillframe${RESET}  ${verBadge}  ${C.muted}${shortTarget}${RESET}`);
     lines.push(`  ${C.dim}${'─'.repeat(58)}${RESET}`);
     lines.push('');
 
@@ -338,7 +338,7 @@ export async function startInteractiveTui(): Promise<void> {
         projects.forEach((p, idx) => {
           const active = idx === cursor;
           const prefix = active ? `${C.accent}▸${RESET}` : ' ';
-          const plugTag = p.hasOrbitKitPlugin ? `${C.green}plugin ✓${RESET}` : `${C.amber}no-plugin${RESET}`;
+          const plugTag = (p.hasVGskillframePlugin || p.hasOrbitKitPlugin) ? `${C.green}plugin ✓${RESET}` : `${C.amber}no-plugin${RESET}`;
           const mcpTag = p.hasMcpConfig ? `${C.green}mcp ✓${RESET}` : `${C.muted}no-mcp${RESET}`;
           const isCurrentTarget = p.projectPath === activeProjectDir ? ` ${C.cyan}[activo]${RESET}` : '';
           lines.push(
@@ -419,7 +419,7 @@ export async function startInteractiveTui(): Promise<void> {
     if (confirmingUninstall) {
       confirmingUninstall = false;
       if (key.name === 'y') {
-        setNotice('Uninstalling OrbitKit CLI globally...', 'warn');
+        setNotice('Uninstalling VGskillframe CLI globally...', 'warn');
         render();
         const res = await performCliUninstall();
         if (res.success) {
@@ -606,7 +606,7 @@ export async function startInteractiveTui(): Promise<void> {
           }
           if (errors.length === 0) {
             setNotice(
-              `✓ Todo instalado en "${proj.name}" (Plugin Godot ${pluginInstalled ? 'activo en addons/orbitkit' : ''} + ${skillsCount} AI Skills + ${mcpsCount} MCPs).`,
+              `✓ Todo instalado en "${proj.name}" (Plugin Godot ${pluginInstalled ? 'activo en addons/vgskillframe' : ''} + ${skillsCount} AI Skills + ${mcpsCount} MCPs).`,
               'ok'
             );
           } else {

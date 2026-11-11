@@ -106,20 +106,20 @@ export async function enableScheduler(opts?: SchedulerOptions): Promise<Schedule
     const systemdDir = path.join(home, '.config', 'systemd', 'user');
     await fs.mkdir(systemdDir, { recursive: true });
 
-    const servicePath = path.join(systemdDir, 'orbitkit-check.service');
-    const timerPath = path.join(systemdDir, 'orbitkit-check.timer');
+    const servicePath = path.join(systemdDir, 'vgskillframe-check.service');
+    const timerPath = path.join(systemdDir, 'vgskillframe-check.timer');
 
     const serviceContent = `[Unit]
-Description=OrbitKit Catalog Update Check
+Description=VGskillframe Catalog Update Check
 After=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/env orbitkit check --quiet --notify
+ExecStart=/usr/bin/env vgskillframe check --quiet --notify
 `;
 
     const timerContent = `[Unit]
-Description=Periodic OrbitKit Update Check (${every})
+Description=Periodic VGskillframe Update Check (${every})
 
 [Timer]
 OnBootSec=5min
@@ -135,7 +135,7 @@ WantedBy=timers.target
     await fs.writeFile(timerPath, timerContent, 'utf8');
 
     try {
-      await runCmd('systemctl --user daemon-reload && systemctl --user enable --now orbitkit-check.timer');
+      await runCmd('systemctl --user daemon-reload && systemctl --user enable --now vgskillframe-check.timer');
     } catch {
       // Allow artifact creation to succeed even in headless/container environments without user dbus
     }
@@ -151,18 +151,18 @@ WantedBy=timers.target
   if (platform === 'darwin') {
     const launchAgentsDir = path.join(home, 'Library', 'LaunchAgents');
     await fs.mkdir(launchAgentsDir, { recursive: true });
-    const plistPath = path.join(launchAgentsDir, 'dev.orbitkit.check.plist');
+    const plistPath = path.join(launchAgentsDir, 'dev.vgskillframe.check.plist');
 
     const plistContent = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>dev.orbitkit.check</string>
+  <string>dev.vgskillframe.check</string>
   <key>ProgramArguments</key>
   <array>
     <string>/usr/bin/env</string>
-    <string>orbitkit</string>
+    <string>vgskillframe</string>
     <string>check</string>
     <string>--quiet</string>
     <string>--notify</string>
@@ -193,7 +193,7 @@ WantedBy=timers.target
 
   if (platform === 'win32') {
     const hours = Math.max(1, Math.round(seconds / 3600));
-    const cmd = `schtasks /create /tn OrbitKitCheck /sc hourly /mo ${hours} /tr "orbitkit check --quiet --notify" /f`;
+    const cmd = `schtasks /create /tn VGskillframeCheck /sc hourly /mo ${hours} /tr "vgskillframe check --quiet --notify" /f`;
     try {
       await runCmd(cmd);
     } catch {
@@ -203,7 +203,7 @@ WantedBy=timers.target
     return {
       success: true,
       platform,
-      artifacts: ['OrbitKitCheck'],
+      artifacts: ['VGskillframeCheck'],
       message: `Scheduler activado en Windows (schtasks cada ${hours}h).`
     };
   }
@@ -226,17 +226,21 @@ export async function disableScheduler(opts?: SchedulerOptions): Promise<Schedul
 
   if (platform === 'linux') {
     const systemdDir = path.join(home, '.config', 'systemd', 'user');
-    const servicePath = path.join(systemdDir, 'orbitkit-check.service');
-    const timerPath = path.join(systemdDir, 'orbitkit-check.timer');
+    const servicePath = path.join(systemdDir, 'vgskillframe-check.service');
+    const timerPath = path.join(systemdDir, 'vgskillframe-check.timer');
+    const legacyServicePath = path.join(systemdDir, 'orbitkit-check.service');
+    const legacyTimerPath = path.join(systemdDir, 'orbitkit-check.timer');
 
     try {
-      await runCmd('systemctl --user disable --now orbitkit-check.timer');
+      await runCmd('systemctl --user disable --now vgskillframe-check.timer orbitkit-check.timer');
     } catch {
       // Ignore
     }
 
     await fs.rm(servicePath, { force: true }).catch(() => {});
     await fs.rm(timerPath, { force: true }).catch(() => {});
+    await fs.rm(legacyServicePath, { force: true }).catch(() => {});
+    await fs.rm(legacyTimerPath, { force: true }).catch(() => {});
 
     return {
       success: true,
@@ -247,13 +251,15 @@ export async function disableScheduler(opts?: SchedulerOptions): Promise<Schedul
   }
 
   if (platform === 'darwin') {
-    const plistPath = path.join(home, 'Library', 'LaunchAgents', 'dev.orbitkit.check.plist');
+    const plistPath = path.join(home, 'Library', 'LaunchAgents', 'dev.vgskillframe.check.plist');
+    const legacyPlistPath = path.join(home, 'Library', 'LaunchAgents', 'dev.orbitkit.check.plist');
     try {
-      await runCmd(`launchctl unload -w "${plistPath}"`);
+      await runCmd(`launchctl unload -w "${plistPath}" "${legacyPlistPath}" 2>/dev/null || true`);
     } catch {
       // Ignore
     }
     await fs.rm(plistPath, { force: true }).catch(() => {});
+    await fs.rm(legacyPlistPath, { force: true }).catch(() => {});
 
     return {
       success: true,
@@ -265,6 +271,7 @@ export async function disableScheduler(opts?: SchedulerOptions): Promise<Schedul
 
   if (platform === 'win32') {
     try {
+      await runCmd('schtasks /delete /tn VGskillframeCheck /f');
       await runCmd('schtasks /delete /tn OrbitKitCheck /f');
     } catch {
       // Ignore
@@ -272,8 +279,8 @@ export async function disableScheduler(opts?: SchedulerOptions): Promise<Schedul
     return {
       success: true,
       platform,
-      artifacts: ['OrbitKitCheck'],
-      message: 'Scheduler desactivado en Windows (tarea OrbitKitCheck eliminada).'
+      artifacts: ['VGskillframeCheck'],
+      message: 'Scheduler desactivado en Windows (tarea VGskillframeCheck eliminada).'
     };
   }
 

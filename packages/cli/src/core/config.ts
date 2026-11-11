@@ -22,7 +22,7 @@ export function isAllowedRemoteUrl(rawUrl: string): boolean {
   }
 }
 
-export const OrbitKitConfigSchema = z.object({
+export const VGskillframeConfigSchema = z.object({
   catalogUrl: z
     .string()
     .url()
@@ -55,13 +55,16 @@ export const OrbitKitConfigSchema = z.object({
   channel: z.enum(['stable', 'beta']).default('stable')
 });
 
-export type OrbitKitConfig = z.infer<typeof OrbitKitConfigSchema>;
+export const OrbitKitConfigSchema = VGskillframeConfigSchema;
+export type VGskillframeConfig = z.infer<typeof VGskillframeConfigSchema>;
+export type OrbitKitConfig = VGskillframeConfig;
 
-export const DEFAULT_CONFIG: OrbitKitConfig = OrbitKitConfigSchema.parse({});
+export const DEFAULT_CONFIG: VGskillframeConfig = VGskillframeConfigSchema.parse({});
 
 export function getConfigFilePath(): string {
-  if (process.env.ORBITKIT_CONFIG) {
-    return path.resolve(process.env.ORBITKIT_CONFIG);
+  const envCfg = process.env.VGSKILLFRAME_CONFIG || process.env.ORBITKIT_CONFIG;
+  if (envCfg) {
+    return path.resolve(envCfg);
   }
   return path.join(configDir(), 'config.json');
 }
@@ -120,14 +123,17 @@ export async function readConfig(
   }
 
   if (projectDir) {
-    const projectCfg = await readJsonSafe(path.join(projectDir, '.orbitkitrc.json'));
+    const vgProjectCfg = await readJsonSafe(path.join(projectDir, '.vgskillframerc.json'));
+    const legacyProjectCfg = await readJsonSafe(path.join(projectDir, '.orbitkitrc.json'));
+    const projectCfg = vgProjectCfg || legacyProjectCfg;
     if (projectCfg) {
       merged = mergeConfigObjects(merged, projectCfg);
     }
   }
 
-  if (process.env.ORBITKIT_CATALOG_URL) {
-    merged.catalogUrl = process.env.ORBITKIT_CATALOG_URL;
+  const catalogUrlOverride = process.env.VGSKILLFRAME_CATALOG_URL || process.env.ORBITKIT_CATALOG_URL;
+  if (catalogUrlOverride) {
+    merged.catalogUrl = catalogUrlOverride;
   }
 
   const parsed = OrbitKitConfigSchema.safeParse(merged);

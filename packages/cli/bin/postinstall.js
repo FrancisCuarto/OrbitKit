@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * OrbitKit (DevDock) Postinstall Hook
+ * VGskillframe (Videogame Skill Frame) Postinstall Hook
  * Displays available CLI commands and quickstart instructions upon installation.
  */
 
@@ -24,60 +24,60 @@ try {
   const line = '━'.repeat(68);
 
   console.log('\n' + c.cyan(line));
-  console.log(`  ${c.bold(c.cyan('🚀 ¡OrbitKit (DevDock) instalado con éxito!'))}`);
-  console.log(`  ${c.gray('Ecosistema de AI Skills, Servidores MCP y Addons para Godot 4')}`);
+  console.log(`  ${c.bold(c.cyan('🚀 ¡VGskillframe (Videogame Skill Frame) instalado con éxito!'))}`);
+  console.log(`  ${c.gray('Ecosistema de AI Skills, Servidores MCP y Addons para Godot 4 y Blender')}`);
   console.log(c.cyan(line));
 
   console.log(`\n${c.bold('📋 Comandos que podés usar:')}\n`);
 
   const commands = [
     {
-      cmd: 'orbitkit ui',
-      alias: '(o orbitkit gui)',
+      cmd: 'vgskillframe ui',
+      alias: '(o vgskillframe gui)',
       desc: 'Abre la interfaz gráfica interactiva en tu navegador web'
     },
     {
-      cmd: 'orbitkit doctor',
+      cmd: 'vgskillframe doctor',
       alias: '',
       desc: 'Diagnostica Godot 4, GDScript LSP (puerto 6005) y Node.js'
     },
     {
-      cmd: 'orbitkit scan [dir]',
+      cmd: 'vgskillframe scan [dir]',
       alias: '',
       desc: 'Escanea proyectos Godot y detecta addons, skills y MCPs'
     },
     {
-      cmd: 'orbitkit init',
+      cmd: 'vgskillframe init',
       alias: '',
-      desc: 'Inicializa OrbitKit en el proyecto Godot actual'
+      desc: 'Inicializa VGskillframe en el proyecto Godot actual'
     },
     {
-      cmd: 'orbitkit update [--all]',
+      cmd: 'vgskillframe update [--all]',
       alias: '',
       desc: 'Actualiza AI skills y MCPs a las últimas versiones'
     },
     {
-      cmd: 'orbitkit skill list',
+      cmd: 'vgskillframe skill list',
       alias: '',
       desc: 'Lista todos los AI Skills curados para Godot 4'
     },
     {
-      cmd: 'orbitkit skill install <id>',
+      cmd: 'vgskillframe skill install <id>',
       alias: '',
       desc: 'Instala un AI skill en .agents/skills y .claude/skills'
     },
     {
-      cmd: 'orbitkit mcp list',
+      cmd: 'vgskillframe mcp list',
       alias: '',
       desc: 'Lista los servidores MCP oficiales para Godot 4'
     },
     {
-      cmd: 'orbitkit mcp add <id>',
+      cmd: 'vgskillframe mcp add <id>',
       alias: '',
       desc: 'Configura un servidor MCP en .mcp.json para asistentes de IA'
     },
     {
-      cmd: 'orbitkit --help',
+      cmd: 'vgskillframe --help',
       alias: '',
       desc: 'Muestra la ayuda completa con todas las opciones disponibles'
     }
@@ -92,11 +92,11 @@ try {
   }
 
   console.log('\n' + c.bold(c.yellow('⚡ Primeros pasos recomendados:')));
-  console.log(`  1. Iniciar la Interfaz Gráfica:  ${c.bold(c.cyan('orbitkit ui'))}`);
-  console.log(`  2. Diagnosticar tu entorno:      ${c.bold(c.cyan('orbitkit doctor'))}`);
-  console.log(`  3. Explorar proyectos Godot:     ${c.bold(c.cyan('orbitkit scan .'))}`);
+  console.log(`  1. Iniciar la Interfaz Gráfica:  ${c.bold(c.cyan('vgskillframe ui'))}`);
+  console.log(`  2. Diagnosticar tu entorno:      ${c.bold(c.cyan('vgskillframe doctor'))}`);
+  console.log(`  3. Explorar proyectos Godot:     ${c.bold(c.cyan('vgskillframe scan .'))}`);
 
-  console.log(`\n  ${c.gray('Nota: También podés usar el alias')} ${c.bold(c.magenta('devdock'))} ${c.gray('en lugar de')} ${c.bold(c.magenta('orbitkit'))}.\n`);
+  console.log(`\n  ${c.gray('Nota: También podés usar los alias')} ${c.bold(c.magenta('vgskill'))}, ${c.bold(c.magenta('orbitkit'))} ${c.gray('y')} ${c.bold(c.magenta('devdock'))}.\n`);
 } catch {
   // Exit cleanly without halting installation if stdout fails
 }

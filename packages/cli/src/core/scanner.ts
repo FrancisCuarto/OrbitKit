@@ -10,6 +10,7 @@ export interface DiscoveredProject {
   installedAddons: string[];
   installedSkills: string[];
   hasMcpConfig: boolean;
+  hasVGskillframePlugin: boolean;
   hasOrbitKitPlugin: boolean;
   registryRecordCount: number;
   source?: 'local' | 'godot-registry';
@@ -375,14 +376,20 @@ export async function inspectProject(projectDir: string): Promise<DiscoveredProj
     }
   }
 
-  // 4. Detect OrbitKit Godot Editor plugin (installed in addons/orbitkit & enabled in project.godot)
-  let hasOrbitKitPlugin = false;
+  // 4. Detect VGskillframe / OrbitKit Godot Editor plugin (installed in addons/vgskillframe or addons/orbitkit & enabled in project.godot)
+  let hasPlugin = false;
   try {
-    await fs.access(path.join(projectDir, 'addons', 'orbitkit', 'plugin.cfg'));
     const configContent = await fs.readFile(actualConfigPath, 'utf8');
-    hasOrbitKitPlugin = configContent.includes('res://addons/orbitkit/plugin.cfg');
+    const hasVgCfg = await fs.access(path.join(projectDir, 'addons', 'vgskillframe', 'plugin.cfg')).then(() => true).catch(() => false);
+    const hasOrbitCfg = await fs.access(path.join(projectDir, 'addons', 'orbitkit', 'plugin.cfg')).then(() => true).catch(() => false);
+    
+    if (hasVgCfg && configContent.includes('res://addons/vgskillframe/plugin.cfg')) {
+      hasPlugin = true;
+    } else if (hasOrbitCfg && configContent.includes('res://addons/orbitkit/plugin.cfg')) {
+      hasPlugin = true;
+    }
   } catch {
-    hasOrbitKitPlugin = false;
+    hasPlugin = false;
   }
 
   // 5. Detect DevDock local registry
@@ -404,7 +411,8 @@ export async function inspectProject(projectDir: string): Promise<DiscoveredProj
     installedAddons,
     installedSkills,
     hasMcpConfig,
-    hasOrbitKitPlugin,
+    hasVGskillframePlugin: hasPlugin,
+    hasOrbitKitPlugin: hasPlugin,
     registryRecordCount
   };
 }

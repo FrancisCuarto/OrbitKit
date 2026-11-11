@@ -1,21 +1,23 @@
-# OrbitKit (DevDock) — Godot 4 AI Skills & MCP Ecosystem
+# VGskillframe (Videogame Skill Frame) — Godot 4 AI Skills & MCP Ecosystem
 
-> OrbitKit (`@francisiv/orbitkit`) is an open-source CLI and ecosystem that keeps Godot 4.x game projects updated with curated AI coding skills, Model Context Protocol (MCP) servers (including Upstash Context7 `ctx7` and GDScript LSP), and Blender 3D asset pipelines.
+> VGskillframe (`@francisiv/vgskillframe`, meaning "Videogame Skill Frame") is an open-source CLI and ecosystem that keeps Godot 4.x game projects updated with curated AI coding skills, Model Context Protocol (MCP) servers (including Upstash Context7 `ctx7` and GDScript LSP), and Blender 3D asset pipelines.
 
 ## Quick Installation
-- Install globally via NPM: `npm install -g @francisiv/orbitkit`
-- Run interactive TUI in terminal: `orbitkit` or `orbitkit ui`
-- Zero-install execution: `npx @francisiv/orbitkit doctor`
-- Binary aliases: `orbitkit` and `devdock`
+- Install globally via NPM: `npm install -g @francisiv/vgskillframe`
+- Run interactive Web GUI: `vgskillframe ui` (or `vgskillframe gui`)
+- Run interactive TUI in terminal: `vgskillframe` or `vgskillframe tui`
+- Zero-install execution: `npx @francisiv/vgskillframe doctor`
+- Binary aliases: `vgskillframe`, `vgskill`, `orbitkit`, and `devdock`
 
 ## Core CLI Commands
-- `orbitkit` / `orbitkit ui`: Launch interactive retro Terminal User Interface (TUI) with live search (`s`), project scanner, and 1-key skill/MCP installer.
-- `orbitkit init`: Initialize OrbitKit in a Godot 4 project (`project.godot`).
-- `orbitkit scan [dir]`: Recursively scan directories for Godot projects and inspect installed skills, addons, and MCPs.
-- `orbitkit update [--all]`: Synchronize and update AI skills and addons across one or all local Godot projects.
-- `orbitkit skill list` / `orbitkit skill install <id>`: Install Godot 4 AI skills into `.agents/skills/` and `.claude/skills/`.
-- `orbitkit mcp list` / `orbitkit mcp add <id>`: Configure MCP servers in `.mcp.json`.
-- `orbitkit doctor`: Diagnose Node.js runtime, Godot 4 binary in PATH, and GDScript LSP port 6005.
+- `vgskillframe ui`: Launch interactive Web GUI Dashboard in your browser.
+- `vgskillframe` / `vgskillframe tui`: Launch minimalist retro Terminal User Interface (TUI) with live search, project scanner, and 1-key skill/MCP installer.
+- `vgskillframe init`: Initialize VGskillframe in a Godot 4 project (`project.godot`).
+- `vgskillframe scan [dir]`: Recursively scan directories for Godot projects and inspect installed skills, addons, and MCPs.
+- `vgskillframe update [--all]`: Synchronize and update AI skills and addons across one or all local Godot projects.
+- `vgskillframe skill list` / `vgskillframe skill install <id>`: Install Godot 4 AI skills into `.agents/skills/` and `.claude/skills/`.
+- `vgskillframe mcp list` / `vgskillframe mcp add <id>`: Configure MCP servers in `.mcp.json`.
+- `vgskillframe doctor`: Diagnose Node.js runtime, Godot 4 binary in PATH, and GDScript LSP port 6005.
 
 ## Curated Godot 4 AI Skills
 - `godot4-syntax-guardian`: Anti-hallucination guard enforcing Godot 4.3+ syntax (`TileMapLayer`, `FileAccess`, typed Callables, `move_and_slide()`).
@@ -37,5 +39,5 @@
 - `godot-gut-runner`: Automated GUT unit test runner (`npx -y @devdock/mcp-godot-gut`).
 
 ## Links
-- NPM Package: https://www.npmjs.com/package/@francisiv/orbitkit
+- NPM Package: https://www.npmjs.com/package/@francisiv/vgskillframe
 - GitHub Repository: https://github.com/FrancisCuarto/OrbitKit

@@ -17,7 +17,7 @@ Each skill is installed directly into `.agents/skills/<skill-id>/SKILL.md` (and 
   - Enforces static typing across variables and function return signatures.
 
 ```bash
-orbitkit skill install godot4-syntax-guardian
+vgskillframe skill install godot4-syntax-guardian
 ```
 
 ---
@@ -31,7 +31,7 @@ orbitkit skill install godot4-syntax-guardian
   - Decouples state switching using typed transition signals instead of deeply nested if-else ladders.
 
 ```bash
-orbitkit skill install gdscript-fsm-master
+vgskillframe skill install gdscript-fsm-master
 ```
 
 ---
@@ -46,7 +46,7 @@ orbitkit skill install gdscript-fsm-master
   - Integrates `MultiplayerSpawner` and `MultiplayerSynchronizer` nodes.
 
 ```bash
-orbitkit skill install godot-multiplayer-enet
+vgskillframe skill install godot-multiplayer-enet
 ```
 
 ---
@@ -61,7 +61,7 @@ orbitkit skill install godot-multiplayer-enet
   - Mobile GPU performance optimizations (minimizing branching inside `fragment()`).
 
 ```bash
-orbitkit skill install godot-shader-vfx
+vgskillframe skill install godot-shader-vfx
 ```
 
 ---
@@ -75,7 +75,7 @@ orbitkit skill install godot-shader-vfx
   - `AStar2D` and `AStar3D` navigation graphs for dynamic obstacle recalculation.
 
 ```bash
-orbitkit skill install godot-procedural-generation
+vgskillframe skill install godot-procedural-generation
 ```
 
 ---
@@ -90,7 +90,7 @@ orbitkit skill install godot-procedural-generation
   - Dynamic UI styling with `add_theme_color_override` or centralized `.tres` Theme resources.
 
 ```bash
-orbitkit skill install godot-responsive-ui
+vgskillframe skill install godot-responsive-ui
 ```
 
 ---
@@ -104,7 +104,7 @@ orbitkit skill install godot-responsive-ui
   - Implements atomic writes (`save.tmp` -> rename) to prevent file corruption during unexpected power cuts or game crashes.
 
 ```bash
-orbitkit skill install godot-save-system
+vgskillframe skill install godot-save-system
 ```
 
 ---
@@ -117,5 +117,5 @@ orbitkit skill install godot-save-system
   - Guarantees fresh, version-locked reference code to completely eliminate API hallucinations.
 
 ```bash
-orbitkit skill install ctx7-docs-fetcher
+vgskillframe skill install ctx7-docs-fetcher
 ```

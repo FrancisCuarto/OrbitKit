@@ -3,9 +3,13 @@ import path from 'node:path';
 import { CURATED_SKILLS } from './skillsManager.js';
 import { OFFICIAL_GODOT_MCP_SERVERS } from './mcpManager.js';
 
-export const ORBITKIT_PLUGIN_ID = 'orbitkit';
-export const ORBITKIT_PLUGIN_VERSION = '0.6.4';
-export const ORBITKIT_PLUGIN_CFG_RES = 'res://addons/orbitkit/plugin.cfg';
+export const VGSKILLFRAME_PLUGIN_ID = 'vgskillframe';
+export const VGSKILLFRAME_PLUGIN_VERSION = '0.6.4';
+export const VGSKILLFRAME_PLUGIN_CFG_RES = 'res://addons/vgskillframe/plugin.cfg';
+
+export const ORBITKIT_PLUGIN_ID = VGSKILLFRAME_PLUGIN_ID;
+export const ORBITKIT_PLUGIN_VERSION = VGSKILLFRAME_PLUGIN_VERSION;
+export const ORBITKIT_PLUGIN_CFG_RES = VGSKILLFRAME_PLUGIN_CFG_RES;
 
 export interface PluginInstallResult {
   success: boolean;
@@ -23,29 +27,29 @@ export interface PluginStatus {
 
 const PLUGIN_CFG_CONTENT = `[plugin]
 
-name="OrbitKit"
-description="OrbitKit — Automated AI Skills, MCP Server Manager & Live Scene Viewer Bridge for Godot 4"
-author="OrbitKit"
-version="${ORBITKIT_PLUGIN_VERSION}"
+name="VGskillframe"
+description="VGskillframe (Videogame Skill Frame) — Automated AI Skills, MCP Server Manager & Live Scene Viewer Bridge for Godot 4"
+author="VGskillframe"
+version="${VGSKILLFRAME_PLUGIN_VERSION}"
 script="plugin.gd"
 `;
 
 const PLUGIN_GD_CONTENT = `@tool
 extends EditorPlugin
 
-const OrbitKitPanelScript = preload("res://addons/orbitkit/ui/orbitkit_panel.gd")
-const OrbitKitBridgeScript = preload("res://addons/orbitkit/services/editor_bridge.gd")
+const VGskillframePanelScript = preload("res://addons/vgskillframe/ui/vgskillframe_panel.gd")
+const VGskillframeBridgeScript = preload("res://addons/vgskillframe/services/editor_bridge.gd")
 
 var _dock_instance: Control
 var _bridge: Node
 
 func _enter_tree() -> void:
-	_bridge = OrbitKitBridgeScript.new()
-	_bridge.name = "OrbitKitEditorBridge"
+	_bridge = VGskillframeBridgeScript.new()
+	_bridge.name = "VGskillframeEditorBridge"
 	add_child(_bridge)
 
-	_dock_instance = OrbitKitPanelScript.new()
-	_dock_instance.name = "OrbitKit"
+	_dock_instance = VGskillframePanelScript.new()
+	_dock_instance.name = "VGskillframe"
 	if _dock_instance.has_method("set_editor_plugin"):
 		_dock_instance.call("set_editor_plugin", self, _bridge)
 
@@ -57,7 +61,7 @@ func _enter_tree() -> void:
 	if _bridge and _bridge.has_method("export_editor_state"):
 		_bridge.call_deferred("export_editor_state", get_editor_interface())
 
-	print("[OrbitKit] Godot Editor plugin v${ORBITKIT_PLUGIN_VERSION} active.")
+	print("[VGskillframe] Godot Editor plugin v${VGSKILLFRAME_PLUGIN_VERSION} active.")
 
 func _exit_tree() -> void:
 	if scene_changed.is_connected(_on_scene_changed):
@@ -74,7 +78,7 @@ func _exit_tree() -> void:
 		_bridge.queue_free()
 		_bridge = null
 
-	print("[OrbitKit] Plugin unloaded.")
+	print("[VGskillframe] Plugin unloaded.")
 
 func _on_scene_changed(_scene_root: Node) -> void:
 	if _bridge and _bridge.has_method("export_editor_state"):
@@ -89,7 +93,7 @@ func _on_scene_saved(_filepath: String) -> void:
 		_dock_instance.refresh_viewer()
 
 func _get_plugin_name() -> String:
-	return "OrbitKit"
+	return "VGskillframe"
 `;
 
 const EDITOR_BRIDGE_GD_CONTENT = `@tool
@@ -123,8 +127,8 @@ func export_editor_state(editor_interface: Object) -> Dictionary:
 
 	var ver_info = Engine.get_version_info()
 	var state: Dictionary = {
-		"plugin": "OrbitKit",
-		"plugin_version": "${ORBITKIT_PLUGIN_VERSION}",
+		"plugin": "VGskillframe",
+		"plugin_version": "${VGSKILLFRAME_PLUGIN_VERSION}",
 		"updated_at": Time.get_datetime_string_from_system(true),
 		"project_name": ProjectSettings.get_setting("application/config/name", "Godot Project"),
 		"godot_version": "%s.%s.%s" % [
@@ -164,7 +168,7 @@ func _collect_nodes(node: Node, root: Node, out_list: Array, depth: int) -> void
 		_collect_nodes(child, root, out_list, depth + 1)
 `;
 
-const ORBITKIT_PANEL_GD_CONTENT = `@tool
+const VGSKILLFRAME_PANEL_GD_CONTENT = `@tool
 extends Control
 
 const CATALOG_PATH = "res://.devdock/catalog.json"
@@ -202,13 +206,13 @@ func _build_ui() -> void:
 	# Header
 	var header = HBoxContainer.new()
 	var title = Label.new()
-	title.text = "● OrbitKit"
+	title.text = "● VGskillframe"
 	title.add_theme_font_size_override("font_size", 16)
 	title.add_theme_color_override("font_color", Color(0.28, 0.55, 0.75))
 	header.add_child(title)
 
 	var ver_lbl = Label.new()
-	ver_lbl.text = " v${ORBITKIT_PLUGIN_VERSION}"
+	ver_lbl.text = " v${VGSKILLFRAME_PLUGIN_VERSION}"
 	ver_lbl.add_theme_color_override("font_color", Color(0.55, 0.62, 0.7))
 	header.add_child(ver_lbl)
 
@@ -305,7 +309,7 @@ func _build_ui() -> void:
 
 	# Footer
 	_footer_label = Label.new()
-	_footer_label.text = "OrbitKit synced with project."
+	_footer_label.text = "VGskillframe synced with project."
 	_footer_label.add_theme_color_override("font_color", Color(0.55, 0.62, 0.7))
 	main_vbox.add_child(_footer_label)
 
@@ -597,9 +601,9 @@ func refresh_doctor() -> void:
 			"msg": "Godot %s.%s.%s" % [str(ver.get("major", 4)), str(ver.get("minor", 0)), str(ver.get("patch", 0))]
 		},
 		{
-			"name": "OrbitKit Editor Plugin",
+			"name": "VGskillframe Editor Plugin",
 			"ok": true,
-			"msg": "Active (res://addons/orbitkit/plugin.cfg)"
+			"msg": "Active (res://addons/vgskillframe/plugin.cfg)"
 		},
 		{
 			"name": "AI Skills Installed",
@@ -721,29 +725,37 @@ export async function disablePluginInProjectGodot(
   }
 }
 
+const ORBITKIT_PANEL_GD_CONTENT = VGSKILLFRAME_PANEL_GD_CONTENT;
+
 /**
- * Checks whether the OrbitKit Godot Editor plugin is installed and enabled in a project
+ * Checks whether the VGskillframe (or legacy OrbitKit) Godot Editor plugin is installed and enabled in a project
  */
 export async function getGodotPluginStatus(projectDir: string): Promise<PluginStatus> {
-  const pluginCfgPath = path.join(projectDir, 'addons', ORBITKIT_PLUGIN_ID, 'plugin.cfg');
+  const vgPluginCfgPath = path.join(projectDir, 'addons', VGSKILLFRAME_PLUGIN_ID, 'plugin.cfg');
+  const legacyPluginCfgPath = path.join(projectDir, 'addons', 'orbitkit', 'plugin.cfg');
   const projectGodotPath = path.join(projectDir, 'project.godot');
 
   let installed = false;
   let version: string | null = null;
   let enabled = false;
 
-  try {
-    const cfgRaw = await fs.readFile(pluginCfgPath, 'utf8');
-    installed = true;
-    const verMatch = cfgRaw.match(/version="([^"]+)"/);
-    if (verMatch) version = verMatch[1];
-  } catch {
-    installed = false;
+  for (const cfgPath of [vgPluginCfgPath, legacyPluginCfgPath]) {
+    try {
+      const cfgRaw = await fs.readFile(cfgPath, 'utf8');
+      installed = true;
+      const verMatch = cfgRaw.match(/version="([^"]+)"/);
+      if (verMatch) version = verMatch[1];
+      break;
+    } catch {
+      // Continue check
+    }
   }
 
   try {
     const projRaw = await fs.readFile(projectGodotPath, 'utf8');
-    enabled = projRaw.includes(ORBITKIT_PLUGIN_CFG_RES);
+    enabled =
+      projRaw.includes(VGSKILLFRAME_PLUGIN_CFG_RES) ||
+      projRaw.includes('res://addons/orbitkit/plugin.cfg');
   } catch {
     enabled = false;
   }
@@ -752,20 +764,20 @@ export async function getGodotPluginStatus(projectDir: string): Promise<PluginSt
 }
 
 /**
- * Installs the OrbitKit Godot 4 plugin into <projectDir>/addons/orbitkit,
+ * Installs the VGskillframe Godot 4 plugin into <projectDir>/addons/vgskillframe,
  * syncs the local catalog in .devdock/catalog.json, and enables the plugin in project.godot.
  */
 export async function installGodotPlugin(projectDir: string): Promise<PluginInstallResult> {
   const resolvedDir = path.resolve(projectDir);
   const projectGodotPath = path.join(resolvedDir, 'project.godot');
-  const pluginBaseDir = path.join(resolvedDir, 'addons', ORBITKIT_PLUGIN_ID);
+  const pluginBaseDir = path.join(resolvedDir, 'addons', VGSKILLFRAME_PLUGIN_ID);
 
   try {
     await fs.access(projectGodotPath);
   } catch {
     return {
       success: false,
-      version: ORBITKIT_PLUGIN_VERSION,
+      version: VGSKILLFRAME_PLUGIN_VERSION,
       enabledInProject: false,
       pluginPath: pluginBaseDir,
       message: `No project.godot found in ${resolvedDir}`
@@ -784,11 +796,12 @@ export async function installGodotPlugin(projectDir: string): Promise<PluginInst
   await fs.writeFile(path.join(pluginBaseDir, 'plugin.cfg'), PLUGIN_CFG_CONTENT, 'utf8');
   await fs.writeFile(path.join(pluginBaseDir, 'plugin.gd'), PLUGIN_GD_CONTENT, 'utf8');
   await fs.writeFile(path.join(servicesDir, 'editor_bridge.gd'), EDITOR_BRIDGE_GD_CONTENT, 'utf8');
+  await fs.writeFile(path.join(uiDir, 'vgskillframe_panel.gd'), VGSKILLFRAME_PANEL_GD_CONTENT, 'utf8');
   await fs.writeFile(path.join(uiDir, 'orbitkit_panel.gd'), ORBITKIT_PANEL_GD_CONTENT, 'utf8');
 
   // Write curated catalog to .devdock/catalog.json so the Godot Editor plugin works offline
   const catalogData = {
-    version: ORBITKIT_PLUGIN_VERSION,
+    version: VGSKILLFRAME_PLUGIN_VERSION,
     updatedAt: new Date().toISOString(),
     skills: CURATED_SKILLS,
     mcpServers: OFFICIAL_GODOT_MCP_SERVERS
@@ -802,38 +815,45 @@ export async function installGodotPlugin(projectDir: string): Promise<PluginInst
   // Enable automatically in project.godot
   const enabledInProject = await enablePluginInProjectGodot(
     projectGodotPath,
-    ORBITKIT_PLUGIN_CFG_RES
+    VGSKILLFRAME_PLUGIN_CFG_RES
   );
 
   return {
     success: true,
-    version: ORBITKIT_PLUGIN_VERSION,
+    version: VGSKILLFRAME_PLUGIN_VERSION,
     enabledInProject,
     pluginPath: pluginBaseDir,
-    message: `OrbitKit Godot plugin (v${ORBITKIT_PLUGIN_VERSION}) installed in addons/orbitkit and enabled in project.godot`
+    message: `VGskillframe Godot plugin (v${VGSKILLFRAME_PLUGIN_VERSION}) installed in addons/vgskillframe and enabled in project.godot`
   };
 }
 
 /**
- * Uninstalls the OrbitKit Godot plugin from a project and disables it in project.godot
+ * Uninstalls the VGskillframe (and legacy OrbitKit) Godot plugin from a project and disables it in project.godot
  */
 export async function uninstallGodotPlugin(
   projectDir: string
 ): Promise<{ success: boolean; message: string }> {
   const resolvedDir = path.resolve(projectDir);
-  const pluginBaseDir = path.join(resolvedDir, 'addons', ORBITKIT_PLUGIN_ID);
+  const vgPluginBaseDir = path.join(resolvedDir, 'addons', VGSKILLFRAME_PLUGIN_ID);
+  const legacyPluginBaseDir = path.join(resolvedDir, 'addons', 'orbitkit');
   const projectGodotPath = path.join(resolvedDir, 'project.godot');
 
-  await disablePluginInProjectGodot(projectGodotPath, ORBITKIT_PLUGIN_CFG_RES);
+  await disablePluginInProjectGodot(projectGodotPath, VGSKILLFRAME_PLUGIN_CFG_RES);
+  await disablePluginInProjectGodot(projectGodotPath, 'res://addons/orbitkit/plugin.cfg');
 
   try {
-    await fs.rm(pluginBaseDir, { recursive: true, force: true });
+    await fs.rm(vgPluginBaseDir, { recursive: true, force: true });
+  } catch {
+    // Ignore if already removed
+  }
+  try {
+    await fs.rm(legacyPluginBaseDir, { recursive: true, force: true });
   } catch {
     // Ignore if already removed
   }
 
   return {
     success: true,
-    message: `Removed addons/orbitkit and disabled plugin in project.godot`
+    message: `Removed addons/vgskillframe and disabled plugin in project.godot`
   };
 }

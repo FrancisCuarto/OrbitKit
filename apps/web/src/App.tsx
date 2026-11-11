@@ -38,13 +38,13 @@ export function App() {
   const t = TRANSLATIONS[lang];
 
   const handleCopyUpgrade = () => {
-    void safeCopyToClipboard('orbitkit upgrade');
+    void safeCopyToClipboard('vgskillframe upgrade');
     setCopiedUpgrade(true);
     setTimeout(() => setCopiedUpgrade(false), 2000);
   };
 
   const handleCopyUninstall = () => {
-    void safeCopyToClipboard('orbitkit uninstall');
+    void safeCopyToClipboard('vgskillframe uninstall');
     setCopiedUninstall(true);
     setTimeout(() => setCopiedUninstall(false), 2000);
   };
@@ -72,7 +72,7 @@ export function App() {
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-extrabold text-xl tracking-tight text-white group-hover:text-godot-400 transition">
-                  OrbitKit
+                  VGskillframe
                 </span>
                 <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-godot-500/20 text-godot-300 border border-godot-500/30">
                   CLI v0.6.4
@@ -280,28 +280,28 @@ export function App() {
               color: 'text-godot-400 bg-godot-500/10',
               title: t.features.card1.title,
               desc: t.features.card1.desc,
-              code: 'orbitkit scan .'
+              code: 'vgskillframe scan .'
             },
             {
               icon: Layers,
               color: 'text-purple-400 bg-purple-500/10',
               title: t.features.card2.title,
               desc: t.features.card2.desc,
-              code: 'orbitkit mcp add ctx7'
+              code: 'vgskillframe mcp add ctx7'
             },
             {
               icon: Bot,
               color: 'text-sky-400 bg-sky-500/10',
               title: t.features.card3.title,
               desc: t.features.card3.desc,
-              code: 'orbitkit skill install godot4-syntax-guardian'
+              code: 'vgskillframe skill install godot4-syntax-guardian'
             },
             {
               icon: RefreshCw,
               color: 'text-emerald-400 bg-emerald-500/10',
               title: t.features.card4.title,
               desc: t.features.card4.desc,
-              code: 'orbitkit update --all'
+              code: 'vgskillframe update --all'
             },
             {
               icon: ShieldCheck,
@@ -315,7 +315,7 @@ export function App() {
               color: 'text-rose-400 bg-rose-500/10',
               title: t.features.card6.title,
               desc: t.features.card6.desc,
-              code: 'orbitkit doctor'
+              code: 'vgskillframe doctor'
             }
           ].map((card, idx) => {
             const Icon = card.icon;
@@ -364,13 +364,13 @@ export function App() {
               step: '01',
               title: t.how.step1Title,
               desc: t.how.step1Desc,
-              tag: 'npm i -g @francisiv/orbitkit'
+              tag: 'npm i -g @francisiv/vgskillframe'
             },
             {
               step: '02',
               title: t.how.step2Title,
               desc: t.how.step2Desc,
-              tag: 'orbitkit scan .'
+              tag: 'vgskillframe scan .'
             },
             {
               step: '03',
@@ -418,8 +418,8 @@ export function App() {
               </h3>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 {lang === 'es'
-                  ? 'Comprueba tu versión contra NPM y GitHub y actualiza el CLI en un paso (o presiona "u" dentro de orbitkit):'
-                  : 'Checks your version against NPM and GitHub and upgrades the CLI in one step (or press "u" inside orbitkit):'}
+                  ? 'Comprueba tu versión contra NPM y GitHub y actualiza el CLI en un paso (o presiona "u" dentro de vgskillframe):'
+                  : 'Checks your version against NPM and GitHub and upgrades the CLI in one step (or press "u" inside vgskillframe):'}
               </p>
             </div>
 
@@ -427,7 +427,7 @@ export function App() {
               <div className="flex items-center space-x-2 px-2">
                 <span className="text-emerald-400 font-bold select-none">$</span>
                 <code className="text-emerald-300 font-semibold whitespace-nowrap">
-                  orbitkit upgrade
+                  vgskillframe upgrade
                 </code>
               </div>
               <button
@@ -460,8 +460,8 @@ export function App() {
               </div>
               <h3 className="text-lg sm:text-xl font-extrabold text-white">
                 {lang === 'es'
-                  ? '¿Quieres desinstalar OrbitKit CLI?'
-                  : 'Want to uninstall OrbitKit CLI?'}
+                  ? '¿Quieres desinstalar VGskillframe CLI?'
+                  : 'Want to uninstall VGskillframe CLI?'}
               </h3>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 {lang === 'es'
@@ -474,7 +474,7 @@ export function App() {
               <div className="flex items-center space-x-2 px-2">
                 <span className="text-rose-400 font-bold select-none">$</span>
                 <code className="text-rose-300 font-semibold whitespace-nowrap">
-                  orbitkit uninstall
+                  vgskillframe uninstall
                 </code>
               </div>
               <button
@@ -509,7 +509,7 @@ export function App() {
       <footer className="relative z-10 border-t border-godot-border/80 py-10 bg-godot-950/90 backdrop-blur-md text-xs text-slate-500 mt-auto">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-2">
-            <span className="font-bold text-white">OrbitKit (DevDock)</span>
+            <span className="font-bold text-white">VGskillframe (Videogame Skill Frame)</span>
             <span>— Open Ecosystem for Godot Engine, Blender & AI Coding Assistants</span>
           </div>
           <div className="flex items-center space-x-6 text-slate-400">

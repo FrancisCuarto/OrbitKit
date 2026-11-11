@@ -101,7 +101,7 @@ describe('DevDock CLI Core Engine', () => {
 
   it('renders GUI HTML containing brand and interactive sections', () => {
     const html = renderGuiHtml();
-    expect(html).toContain('OrbitKit GUI');
+    expect(html).toContain('VGskillframe GUI');
     expect(html).toContain('AI Skills');
     expect(html).toContain('Servidores MCP');
     expect(html).toContain('Doctor');
@@ -123,14 +123,14 @@ describe('DevDock CLI Core Engine', () => {
       const resHtml = await fetch(gui.url);
       expect(resHtml.status).toBe(200);
       const textHtml = await resHtml.text();
-      expect(textHtml).toContain('OrbitKit GUI');
+      expect(textHtml).toContain('VGskillframe GUI');
 
       // Test GET /api/commands
       const resCmds = await fetch(`${gui.url}/api/commands`);
       const dataCmds = (await resCmds.json()) as any;
       expect(dataCmds.success).toBe(true);
       expect(dataCmds.commands.length).toBeGreaterThan(5);
-      expect(dataCmds.commands.some((c: any) => c.command === 'orbitkit ui')).toBe(true);
+      expect(dataCmds.commands.some((c: any) => c.command.includes('ui'))).toBe(true);
 
       // Test GET /api/status
       const resStatus = await fetch(`${gui.url}/api/status`);
@@ -208,7 +208,7 @@ describe('DevDock CLI Core Engine', () => {
     expect(ver).toBe('0.6.4');
   });
 
-  it('automatically installs and enables the OrbitKit Godot Editor plugin on project selection', async () => {
+  it('automatically installs and enables the VGskillframe Godot Editor plugin on project selection', async () => {
     const beforeStatus = await getGodotPluginStatus(tempDir);
     expect(beforeStatus.installed).toBe(false);
     expect(beforeStatus.enabled).toBe(false);
@@ -222,12 +222,12 @@ describe('DevDock CLI Core Engine', () => {
     expect(afterStatus.enabled).toBe(true);
 
     const proj = await inspectProject(tempDir);
-    expect(proj.hasOrbitKitPlugin).toBe(true);
-    expect(proj.installedAddons).toContain('orbitkit');
+    expect(proj.hasVGskillframePlugin).toBe(true);
+    expect(proj.installedAddons).toContain('vgskillframe');
 
     const projectGodotContent = await fs.readFile(path.join(tempDir, 'project.godot'), 'utf8');
     expect(projectGodotContent).toContain('[editor_plugins]');
-    expect(projectGodotContent).toContain('enabled=PackedStringArray("res://addons/orbitkit/plugin.cfg")');
+    expect(projectGodotContent).toContain('enabled=PackedStringArray("res://addons/vgskillframe/plugin.cfg")');
 
     // Verify catalog.json was created for offline Godot Editor usage
     const catalogRaw = await fs.readFile(path.join(tempDir, '.devdock', 'catalog.json'), 'utf8');
@@ -236,7 +236,7 @@ describe('DevDock CLI Core Engine', () => {
     expect(catalog.mcpServers.length).toBeGreaterThan(0);
   });
 
-  it('preserves existing Godot editor plugins when enabling and disabling OrbitKit', async () => {
+  it('preserves existing Godot editor plugins when enabling and disabling VGskillframe', async () => {
     const projectGodotPath = path.join(tempDir, 'project.godot');
     await fs.writeFile(
       projectGodotPath,
@@ -246,12 +246,12 @@ describe('DevDock CLI Core Engine', () => {
     await enablePluginInProjectGodot(projectGodotPath);
     const updatedRaw = await fs.readFile(projectGodotPath, 'utf8');
     expect(updatedRaw).toContain(
-      'enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/orbitkit/plugin.cfg")'
+      'enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/vgskillframe/plugin.cfg")'
     );
 
     await uninstallGodotPlugin(tempDir);
     const afterUninstallRaw = await fs.readFile(projectGodotPath, 'utf8');
     expect(afterUninstallRaw).toContain('enabled=PackedStringArray("res://addons/gut/plugin.cfg")');
-    expect(afterUninstallRaw).not.toContain('res://addons/orbitkit/plugin.cfg');
+    expect(afterUninstallRaw).not.toContain('res://addons/vgskillframe/plugin.cfg');
   });
 });

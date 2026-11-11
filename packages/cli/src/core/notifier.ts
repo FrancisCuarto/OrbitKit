@@ -50,8 +50,8 @@ export function formatPassiveBanner(report: UpdateReport): string | null {
 
   if (totalCount === 0) return null;
 
-  const label = totalCount === 1 ? '1 novedad en OrbitKit' : `${totalCount} novedades en OrbitKit`;
-  return `${pc.yellow('⬆')}  ${pc.bold(label)} (${parts.join(', ')}) · ${pc.cyan('orbitkit update --all')}`;
+  const label = totalCount === 1 ? '1 novedad en VGskillframe' : `${totalCount} novedades en VGskillframe`;
+  return `${pc.yellow('⬆')}  ${pc.bold(label)} (${parts.join(', ')}) · ${pc.cyan('vgskillframe update --all')}`;
 }
 
 function sendDesktopNotification(title: string, body: string): void {
@@ -185,8 +185,8 @@ export async function notify(
   }
 
   if (opts?.desktop && banner) {
-    const plainSummary = `${unnotified.length} actualización(es) disponibles en OrbitKit.`;
-    sendDesktopNotification('OrbitKit Updates', plainSummary);
+    const plainSummary = `${unnotified.length} actualización(es) disponibles en VGskillframe.`;
+    sendDesktopNotification('VGskillframe Updates', plainSummary);
   }
 
   return { notified: unnotified };

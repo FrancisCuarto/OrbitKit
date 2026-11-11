@@ -33,7 +33,11 @@ export async function runCheckWorker(cwd = process.cwd()): Promise<void> {
   });
 }
 
-if (process.env.ORBITKIT_WORKER === '1' || process.argv[1]?.endsWith('checkWorker.js')) {
+if (
+  process.env.VGSKILLFRAME_WORKER === '1' ||
+  process.env.ORBITKIT_WORKER === '1' ||
+  process.argv[1]?.endsWith('checkWorker.js')
+) {
   runCheckWorker().catch(() => {
     process.exitCode = 0;
   });

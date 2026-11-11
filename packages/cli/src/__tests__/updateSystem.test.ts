@@ -95,9 +95,9 @@ describe('OrbitKit Update System — Fase 0 & Fase 1', () => {
   });
 
   it('resolves XDG paths (configDir, stateDir, cacheDir)', () => {
-    expect(configDir()).toBe(path.join(tempRoot, 'xdg-config', 'orbitkit'));
-    expect(stateDir()).toBe(path.join(tempRoot, 'xdg-state', 'orbitkit'));
-    expect(cacheDir()).toBe(path.join(tempRoot, 'xdg-cache', 'orbitkit'));
+    expect(configDir()).toBe(path.join(tempRoot, 'xdg-config', 'vgskillframe'));
+    expect(stateDir()).toBe(path.join(tempRoot, 'xdg-state', 'vgskillframe'));
+    expect(cacheDir()).toBe(path.join(tempRoot, 'xdg-cache', 'vgskillframe'));
   });
 
   it('state: writes atomically without leaving .tmp files and sets 0600 mode', async () => {
@@ -380,7 +380,7 @@ describe('OrbitKit Update System — Fase 0 & Fase 1', () => {
     });
 
     const program = createCli();
-    await program.parseAsync(['node', 'orbitkit', 'check', projectDir, '--json', '--force']);
+    await program.parseAsync(['node', 'vgskillframe', 'check', projectDir, '--json', '--force']);
 
     logSpy.mockRestore();
     expect(logs.length).toBe(1);
@@ -503,13 +503,13 @@ describe('OrbitKit Update System — Fase 0 & Fase 1', () => {
     expect(linux2.success).toBe(true);
 
     const systemdUnits = await fs.readdir(path.join(homeDir, '.config', 'systemd', 'user'));
-    expect(systemdUnits.sort()).toEqual(['orbitkit-check.service', 'orbitkit-check.timer']);
+    expect(systemdUnits.sort()).toEqual(['vgskillframe-check.service', 'vgskillframe-check.timer']);
 
     const serviceContent = await fs.readFile(
-      path.join(homeDir, '.config', 'systemd', 'user', 'orbitkit-check.service'),
+      path.join(homeDir, '.config', 'systemd', 'user', 'vgskillframe-check.service'),
       'utf8'
     );
-    expect(serviceContent).toContain('orbitkit check --quiet --notify');
+    expect(serviceContent).toContain('vgskillframe check --quiet --notify');
 
     await disableScheduler({ platform: 'linux', homeDir, execRunner });
     const afterDisable = await fs.readdir(path.join(homeDir, '.config', 'systemd', 'user'));
@@ -521,7 +521,7 @@ describe('OrbitKit Update System — Fase 0 & Fase 1', () => {
     expect(mac1.success).toBe(true);
     expect(mac2.success).toBe(true);
     const agents = await fs.readdir(path.join(homeDir, 'Library', 'LaunchAgents'));
-    expect(agents).toEqual(['dev.orbitkit.check.plist']);
+    expect(agents).toEqual(['dev.vgskillframe.check.plist']);
 
     // Windows
     const win = await enableScheduler({ platform: 'win32', homeDir, every: '6h', execRunner });

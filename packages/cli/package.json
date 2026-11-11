@@ -1,12 +1,14 @@
 {
-  "name": "@francisiv/orbitkit",
+  "name": "@francisiv/vgskillframe",
   "version": "0.6.4",
-  "description": "OrbitKit CLI — Interactive Web GUI Dashboard, TUI, Godot 4 & Blender 3D AI Skills, Model Context Protocol (MCP) Servers & Addon Manager for Claude Code, Cursor, Windsurf and Antigravity",
+  "description": "VGskillframe (Videogame Skill Frame) CLI — Interactive Web GUI Dashboard, TUI, Godot 4 & Blender 3D AI Skills, Model Context Protocol (MCP) Servers & Addon Manager for Claude Code, Cursor, Windsurf and Antigravity",
   "homepage": "https://orbit-kit-nine.vercel.app",
   "bugs": {
     "url": "https://github.com/FrancisCuarto/OrbitKit/issues"
   },
   "bin": {
+    "vgskillframe": "bin/devdock.js",
+    "vgskill": "bin/devdock.js",
     "orbitkit": "bin/devdock.js",
     "devdock": "bin/devdock.js"
   },
@@ -19,6 +21,8 @@
     "directory": "packages/cli"
   },
   "keywords": [
+    "vgskillframe",
+    "videogame-skill-frame",
     "godot",
     "godot4",
     "godot-engine",

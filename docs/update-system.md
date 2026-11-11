@@ -1,7 +1,7 @@
-# OrbitKit — Sistema de chequeo y auto-actualización continua
+# VGskillframe — Sistema de chequeo y auto-actualización continua
 
 > **Tipo:** Implementation brief / handoff
-> **Objetivo:** que OrbitKit detecte skills nuevas, actualice las instaladas y avise cuando hay una versión nueva (de skills o del CLI), de forma continua y sin intervención manual.
+> **Objetivo:** que VGskillframe detecte skills nuevas, actualice las instaladas y avise cuando hay una versión nueva (de skills o del CLI), de forma continua y sin intervención manual.
 > **Branch sugerida:** `feature/auto-update-system` (desde `develop`, PR a `develop`).
 
 ---
@@ -12,7 +12,7 @@ Monorepo pnpm + TypeScript ESM (`module: NodeNext`), Node 20+.
 
 | Ruta | Contenido |
 |---|---|
-| `packages/cli` | CLI `@francisiv/orbitkit` (commander + ora + picocolors + zod + adm-zip) |
+| `packages/cli` | CLI `@francisiv/vgskillframe` (commander + ora + picocolors + zod + adm-zip) |
 | `packages/manifest-schema` | Zod schemas, verificación SHA-256, defensa Zip Slip |
 | `packages/shared-types` | Tipos compartidos |
 | `apps/api` | Express + Mongoose. Ya tiene `Resource` y `ResourceVersion` con `verified` |
@@ -48,9 +48,9 @@ Monorepo pnpm + TypeScript ESM (`module: NodeNext`), Node 20+.
 2. Motor de diff: skills nuevas, skills desactualizadas, versión del CLI.
 3. Estado persistente con caché + ETag + dedupe de notificaciones.
 4. Trigger pasivo en cada invocación del CLI (background, no bloqueante).
-5. Comando `orbitkit check [--json] [--force]`.
-6. Comando `orbitkit watch` (daemon foreground).
-7. `orbitkit autoupdate enable|disable` (systemd / launchd / schtasks).
+5. Comando `vgskillframe check [--json] [--force]`.
+6. Comando `vgskillframe watch` (daemon foreground).
+7. `vgskillframe autoupdate enable|disable` (systemd / launchd / schtasks).
 8. Notificaciones: terminal, escritorio, archivo marcador para el plugin Godot.
 9. Aplicación segura de updates: checksum, backup, escritura atómica, rollback, política major.
 
@@ -87,8 +87,8 @@ Monorepo pnpm + TypeScript ESM (`module: NodeNext`), Node 20+.
 | # | Disparador | Cuándo | Coste |
 |---|---|---|---|
 | A | Hook pasivo en cada comando | Al usar el CLI, si `now >= nextCheckAt` | 1 request con ETag, en child process detached |
-| B | `orbitkit watch` | Daemon foreground, intervalo con jitter | Proceso vivo |
-| C | `orbitkit autoupdate enable` | systemd/launchd/schtasks cada N horas | 0 procesos residentes |
+| B | `vgskillframe watch` | Daemon foreground, intervalo con jitter | Proceso vivo |
+| C | `vgskillframe autoupdate enable` | systemd/launchd/schtasks cada N horas | 0 procesos residentes |
 | D | Plugin Godot | Timer 30 min leyendo `.devdock/update-available.json` | Sin red |
 
 **Regla de oro:** el chequeo pasivo **nunca** bloquea ni retrasa el comando. Se lanza un proceso hijo detached, y el banner se pinta desde la caché.
@@ -503,15 +503,15 @@ Orden seguro:
 
 ### 8.8 `core/scheduler.ts`
 
-`orbitkit autoupdate enable --every 6h`:
+`vgskillframe autoupdate enable --every 6h`:
 
 | SO | Artefacto | Activación |
 |---|---|---|
 | Linux | `~/.config/systemd/user/orbitkit-check.{service,timer}` | `systemctl --user daemon-reload && systemctl --user enable --now orbitkit-check.timer` |
 | macOS | `~/Library/LaunchAgents/dev.orbitkit.check.plist` | `launchctl load -w …` |
-| Windows | `schtasks /create /tn OrbitKitCheck /sc hourly /tr "orbitkit check --quiet --notify" /f` | idem |
+| Windows | `schtasks /create /tn OrbitKitCheck /sc hourly /tr "vgskillframe check --quiet --notify" /f` | idem |
 
-El comando del scheduler debe ser `orbitkit check --quiet --notify` (no `update`). Nunca auto-instalar desde el scheduler salvo config explícita.
+El comando del scheduler debe ser `vgskillframe check --quiet --notify` (no `update`). Nunca auto-instalar desde el scheduler salvo config explícita.
 
 `disable` elimina el artefacto y hace `systemctl --user disable --now` / `launchctl unload` / `schtasks /delete`.
 
@@ -561,7 +561,7 @@ Variables de entorno:
 
 ## 10. UX y mensajes
 
-`orbitkit check`:
+`vgskillframe check`:
 
 ```
 OrbitKit Check · catálogo 2026-11-10T12:00Z
@@ -572,13 +572,13 @@ OrbitKit Check · catálogo 2026-11-10T12:00Z
     + godot-inventory-ui     v1.0.0
     ↑ godot4-syntax-guardian v1.3.0 → v1.4.0
 
-  Ejecuta `orbitkit update --all` para aplicar.
+  Ejecuta `vgskillframe update --all` para aplicar.
 ```
 
 Banner pasivo (máx. 1 línea + 1 de acción):
 
 ```
-⬆  3 novedades en OrbitKit (2 skills nuevas, CLI v0.6.0) · orbitkit update --all
+⬆  3 novedades en OrbitKit (2 skills nuevas, CLI v0.6.0) · vgskillframe update --all
 ```
 
 `check --json` → `UpdateReport` serializado, sin banner ni spinner (para CI/plugin).
@@ -616,7 +616,7 @@ Inyectar `fetch` vía parámetro o `vi.stubGlobal('fetch', …)`. Usar `mkdtemp`
 | `env: CI` | `shouldBackgroundCheck()` false |
 | `docs/version` | `getCurrentCliVersion()` coincide con `package.json` y con `.version()` |
 
-Comando: `pnpm --filter @francisiv/orbitkit test`.
+Comando: `pnpm --filter @francisiv/vgskillframe test`.
 
 ---
 
@@ -676,7 +676,7 @@ Si `source?.url` existe → descarga + verifica + extrae; si no → usa bundled.
 
 ### Fase 1 — núcleo
 - [x] `paths.ts`, `config.ts`, `catalog.ts`, `state.ts`, `updateChecker.ts`
-- [x] `orbitkit check [--json] [--force]`
+- [x] `vgskillframe check [--json] [--force]`
 - [x] Tests de catálogo, diff, estado, offline
 
 ### Fase 2 — notificaciones
@@ -688,8 +688,8 @@ Si `source?.url` existe → descarga + verifica + extrae; si no → usa bundled.
 - [x] Tests de dedupe y env vars
 
 ### Fase 3 — continuo
-- [x] `orbitkit watch --interval --auto-update --notify`
-- [x] `orbitkit autoupdate enable|disable` (3 SO)
+- [x] `vgskillframe watch --interval --auto-update --notify`
+- [x] `vgskillframe autoupdate enable|disable` (3 SO)
 - [x] Lock de instancia (`~/.orbitkit/check.lock`)
 - [x] Backoff + jitter
 - [x] Tests con timers falsos
@@ -709,15 +709,15 @@ Si `source?.url` existe → descarga + verifica + extrae; si no → usa bundled.
 
 ## 15. Criterios de aceptación
 
-1. `orbitkit check` funciona offline (usa caché) y online, sin lanzar excepciones.
+1. `vgskillframe check` funciona offline (usa caché) y online, sin lanzar excepciones.
 2. Una skill publicada solo en `catalog.json` aparece como **nueva** sin publicar nueva versión del CLI.
 3. Un comando cualquiera del CLI no tarda más de +50 ms por el chequeo pasivo (verificar con `time`).
-4. El banner aparece **una sola vez** por versión; tras `orbitkit update`, desaparece.
+4. El banner aparece **una sola vez** por versión; tras `vgskillframe update`, desaparece.
 5. `ORBITKIT_NO_UPDATE_CHECK=1` y `CI=true` desactivan todo.
 6. `check --json` es parseable y no imprime spinner ni colores.
 7. `applyUpdates` no aplica majors, no instala sin checksum y deja backup verificable.
 8. `autoupdate enable` es idempotente en Linux, macOS y Windows (al menos el artefacto correcto).
-9. `pnpm --filter @francisiv/orbitkit build` y `test` pasan sin warnings nuevos.
+9. `pnpm --filter @francisiv/vgskillframe build` y `test` pasan sin warnings nuevos.
 10. `getCurrentCliVersion()` == `package.json.version` == `.version()` del programa.
 
 ---
@@ -729,7 +729,7 @@ Si `source?.url` existe → descarga + verifica + extrae; si no → usa bundled.
 - Commander 13: `program.hook('postAction', …)` corre después de la acción; si el proceso llama `process.exit()` en algún comando, el hook no corre. Revisar `uninstall`/`upgrade` y usar `process.exitCode` en su lugar.
 - El child worker debe ser un archivo compilado real (`dist/core/checkWorker.js`); `tsc` preserva la estructura, así que `new URL('./checkWorker.js', import.meta.url)` resuelve bien en `dist`.
 - `bin/devdock.js` importa `../dist/cli.js`: cualquier entrada nueva debe compilarse ahí, no en `bin/`.
-- Mantener `CURATED_SKILLS` como fallback evita romper `orbitkit init` en máquinas sin red.
+- Mantener `CURATED_SKILLS` como fallback evita romper `vgskillframe init` en máquinas sin red.
 - Si el catálogo trae un `schema` desconocido: ignorarlo, avisar y **no** actualizar nada.
 - No tocar `apps/web` en este PR salvo la sección de docs si se agrega el comando.
 - Actualizar la versión a `0.6.0` (minor) en `packages/cli/package.json` y en el `.version()` del CLI.

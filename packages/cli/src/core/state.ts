@@ -3,7 +3,7 @@ import path from 'node:path';
 import { stateDir } from './paths.js';
 import type { Catalog } from './catalog.js';
 
-export interface OrbitKitState {
+export interface VGskillframeState {
   schemaVersion: 1;
   etag?: string;
   lastCheckAt?: number;
@@ -12,6 +12,8 @@ export interface OrbitKitState {
   catalog?: Catalog;
   notified: Record<string, string>; // "skill:<id>@<ver>" | "cli@<ver>" -> ISO
 }
+
+export type OrbitKitState = VGskillframeState;
 
 const STATE_FILE = () => path.join(stateDir(), 'state.json');
 

@@ -61,13 +61,15 @@ async function fetchJsonWithTimeout(url: string, timeoutMs = 3000): Promise<any 
 export async function checkCliVersion(): Promise<VersionCheckResult> {
   const currentVersion = await getCurrentCliVersion();
 
-  const [npmData, githubData] = await Promise.all([
+  const [npmVgData, npmOrbitData, githubData] = await Promise.all([
+    fetchJsonWithTimeout(`https://registry.npmjs.org/@francisiv/vgskillframe/latest?t=${Date.now()}`),
     fetchJsonWithTimeout(`https://registry.npmjs.org/@francisiv/orbitkit/latest?t=${Date.now()}`),
     fetchJsonWithTimeout(
       `https://raw.githubusercontent.com/FrancisCuarto/OrbitKit/main/packages/cli/package.json?t=${Date.now()}`
     )
   ]);
 
+  const npmData = npmVgData?.version ? npmVgData : npmOrbitData;
   const npmVersion: string | null = npmData?.version || null;
   const githubVersion: string | null = githubData?.version || null;
 
@@ -105,7 +107,16 @@ async function syncLocalBinSymlinks(): Promise<void> {
   try {
     const { stdout: npmBinOut } = await execAsync('npm prefix -g');
     const globalPrefix = npmBinOut.trim();
-    const globalTarget = path.join(
+    const vgTarget = path.join(
+      globalPrefix,
+      'lib',
+      'node_modules',
+      '@francisiv',
+      'vgskillframe',
+      'bin',
+      'devdock.js'
+    );
+    const legacyTarget = path.join(
       globalPrefix,
       'lib',
       'node_modules',
@@ -114,9 +125,16 @@ async function syncLocalBinSymlinks(): Promise<void> {
       'bin',
       'devdock.js'
     );
-    await fs.access(globalTarget);
+    
+    let globalTarget = vgTarget;
+    try {
+      await fs.access(vgTarget);
+    } catch {
+      globalTarget = legacyTarget;
+      await fs.access(legacyTarget);
+    }
 
-    for (const binName of ['orbitkit', 'devdock']) {
+    for (const binName of ['vgskillframe', 'vgskill', 'orbitkit', 'devdock']) {
       const localBin = path.join(process.env.HOME || '', '.local', 'bin', binName);
       try {
         const stat = await fs.lstat(localBin);
@@ -182,7 +200,11 @@ export async function performCliSelfUpdate(options?: {
 
   try {
     if (availableOnNpm) {
-      await execAsync(`npm install -g @francisiv/orbitkit@${targetVersion} --prefer-online`);
+      try {
+        await execAsync(`npm install -g @francisiv/vgskillframe@${targetVersion} --prefer-online`);
+      } catch {
+        await execAsync(`npm install -g @francisiv/orbitkit@${targetVersion} --prefer-online`);
+      }
       await syncLocalBinSymlinks();
     } else {
       // Latest version is on GitHub main (not yet propagated to NPM registry)
@@ -194,7 +216,7 @@ export async function performCliSelfUpdate(options?: {
       alreadyUpToDate: false,
       previousVersion,
       installedVersion: targetVersion,
-      message: `OrbitKit actualizado correctamente: v${previousVersion} → v${targetVersion}`
+      message: `VGskillframe actualizado correctamente: v${previousVersion} → v${targetVersion}`
     };
   } catch (err: any) {
     // If NPM failed with ETARGET or cache issue, fallback to GitHub main
@@ -205,7 +227,7 @@ export async function performCliSelfUpdate(options?: {
         alreadyUpToDate: false,
         previousVersion,
         installedVersion: targetVersion,
-        message: `OrbitKit actualizado desde GitHub (main): v${previousVersion} → v${targetVersion}`
+        message: `VGskillframe actualizado desde GitHub (main): v${previousVersion} → v${targetVersion}`
       };
     } catch (fallbackErr: any) {
       return {
@@ -234,7 +256,7 @@ export async function performCliUninstall(options?: {
     }
 
     // 2. Remove custom ~/.local/bin symlinks if present
-    for (const binName of ['orbitkit', 'devdock']) {
+    for (const binName of ['vgskillframe', 'vgskill', 'orbitkit', 'devdock']) {
       const localBin = path.join(process.env.HOME || '', '.local', 'bin', binName);
       try {
         const stat = await fs.lstat(localBin);
@@ -247,18 +269,18 @@ export async function performCliUninstall(options?: {
     }
 
     // 3. Uninstall global npm package(s)
-    await execAsync('npm uninstall -g @francisiv/orbitkit @devdock/cli').catch(async () => {
-      await execAsync('npm uninstall -g @francisiv/orbitkit');
+    await execAsync('npm uninstall -g @francisiv/vgskillframe @francisiv/orbitkit @devdock/cli').catch(async () => {
+      await execAsync('npm uninstall -g @francisiv/vgskillframe @francisiv/orbitkit');
     });
 
     return {
       success: true,
-      message: 'OrbitKit CLI (@francisiv/orbitkit) fue desinstalado globalmente del sistema.'
+      message: 'VGskillframe CLI (@francisiv/vgskillframe) fue desinstalado globalmente del sistema.'
     };
   } catch (err: any) {
     return {
       success: false,
-      message: `Error al desinstalar OrbitKit CLI: ${err.message || String(err)}`
+      message: `Error al desinstalar VGskillframe CLI: ${err.message || String(err)}`
     };
   }
 }

@@ -8,8 +8,8 @@ import { notify } from './notifier.js';
 const WORKER = fileURLToPath(new URL('./checkWorker.js', import.meta.url));
 
 export function shouldBackgroundCheck(): boolean {
-  if (process.env.ORBITKIT_NO_UPDATE_CHECK) return false;
-  if (process.env.ORBITKIT_WORKER) return false;
+  if (process.env.VGSKILLFRAME_NO_UPDATE_CHECK || process.env.ORBITKIT_NO_UPDATE_CHECK) return false;
+  if (process.env.VGSKILLFRAME_WORKER || process.env.ORBITKIT_WORKER) return false;
   if (process.env.CI) return false;
   if (!process.stdout.isTTY) return false;
   return true;
@@ -20,7 +20,7 @@ export function scheduleBackgroundCheck(): void {
     const child = spawn(process.execPath, [WORKER, '--quiet'], {
       detached: true,
       stdio: 'ignore',
-      env: { ...process.env, ORBITKIT_WORKER: '1' }
+      env: { ...process.env, VGSKILLFRAME_WORKER: '1', ORBITKIT_WORKER: '1' }
     });
     child.on('error', () => {});
     child.unref();
@@ -35,7 +35,13 @@ export function scheduleBackgroundCheck(): void {
  */
 export async function printCachedBanner(projectDir = process.cwd()): Promise<void> {
   try {
-    if (process.env.ORBITKIT_NO_UPDATE_CHECK || process.env.CI) return;
+    if (
+      process.env.VGSKILLFRAME_NO_UPDATE_CHECK ||
+      process.env.ORBITKIT_NO_UPDATE_CHECK ||
+      process.env.CI
+    ) {
+      return;
+    }
     if (process.argv.includes('--json')) return;
 
     const state = await readState();

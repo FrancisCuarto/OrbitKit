@@ -30,7 +30,7 @@ export async function updateProject(
   let backupDir: string | undefined;
   let pluginInstalled = false;
 
-  // 0. Ensure OrbitKit Godot Editor plugin is installed & enabled in project.godot
+  // 0. Ensure VGskillframe Godot Editor plugin is installed & enabled in project.godot
   try {
     const plugRes = await installGodotPlugin(projectDir);
     pluginInstalled = plugRes.success;

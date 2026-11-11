@@ -25,69 +25,69 @@ export interface GuiServerInstance {
 
 export const CLI_COMMANDS_CATALOG = [
   {
-    command: 'orbitkit ui',
-    alias: 'orbitkit gui',
-    usage: 'orbitkit ui [-p <port>] [-d <dir>] [--no-open]',
+    command: 'vgskillframe ui',
+    alias: 'vgskillframe gui (o orbitkit ui)',
+    usage: 'vgskillframe ui [-p <port>] [-d <dir>] [--no-open]',
     description: 'Abre la interfaz gráfica interactiva (GUI Dashboard) en tu navegador web'
   },
   {
-    command: 'orbitkit doctor',
-    usage: 'orbitkit doctor',
+    command: 'vgskillframe doctor',
+    usage: 'vgskillframe doctor',
     description: 'Diagnostica Godot 4, GDScript LSP (puerto 6005) y Node.js'
   },
   {
-    command: 'orbitkit scan [dir]',
-    usage: 'orbitkit scan [ruta-del-directorio]',
+    command: 'vgskillframe scan [dir]',
+    usage: 'vgskillframe scan [ruta-del-directorio]',
     description: 'Escanea proyectos Godot y detecta addons, skills y MCPs instalados'
   },
   {
-    command: 'orbitkit init',
-    usage: 'orbitkit init',
-    description: 'Inicializa OrbitKit en el proyecto Godot actual con configuración base'
+    command: 'vgskillframe init',
+    usage: 'vgskillframe init',
+    description: 'Inicializa VGskillframe en el proyecto Godot actual con configuración base'
   },
   {
-    command: 'orbitkit check',
-    usage: 'orbitkit check [--json] [--force] [--notify]',
+    command: 'vgskillframe check',
+    usage: 'vgskillframe check [--json] [--force] [--notify]',
     description: 'Consulta el catálogo remoto con ETag/caché para detectar skills nuevas, desactualizadas y versión del CLI'
   },
   {
-    command: 'orbitkit watch',
-    usage: 'orbitkit watch [--interval <min>] [--auto-update] [--notify]',
+    command: 'vgskillframe watch',
+    usage: 'vgskillframe watch [--interval <min>] [--auto-update] [--notify]',
     description: 'Ejecuta un watcher continuo con jitter y backoff exponencial para mantener el proyecto al día'
   },
   {
-    command: 'orbitkit autoupdate',
-    usage: 'orbitkit autoupdate enable|disable [--every 6h]',
+    command: 'vgskillframe autoupdate',
+    usage: 'vgskillframe autoupdate enable|disable [--every 6h]',
     description: 'Configura chequeos periódicos nativos del sistema operativo (systemd, launchd, schtasks)'
   },
   {
-    command: 'orbitkit update',
-    usage: 'orbitkit update [--all]',
+    command: 'vgskillframe update',
+    usage: 'vgskillframe update [--all]',
     description: 'Actualiza AI skills y MCPs a las últimas versiones verificadas con backup y rollback automático'
   },
   {
-    command: 'orbitkit skill list',
-    usage: 'orbitkit skill list',
+    command: 'vgskillframe skill list',
+    usage: 'vgskillframe skill list',
     description: 'Lista los AI Skills curados para Godot 4 (reglas anti-alucinación, FSM, etc.)'
   },
   {
-    command: 'orbitkit skill install <id>',
-    usage: 'orbitkit skill install <skill-id>',
+    command: 'vgskillframe skill install <id>',
+    usage: 'vgskillframe skill install <skill-id>',
     description: 'Instala un AI skill en .agents/skills y .claude/skills'
   },
   {
-    command: 'orbitkit mcp list',
-    usage: 'orbitkit mcp list',
+    command: 'vgskillframe mcp list',
+    usage: 'vgskillframe mcp list',
     description: 'Lista los servidores MCP oficiales para Godot 4'
   },
   {
-    command: 'orbitkit mcp add <id>',
-    usage: 'orbitkit mcp add <server-id>',
+    command: 'vgskillframe mcp add <id>',
+    usage: 'vgskillframe mcp add <server-id>',
     description: 'Configura un servidor MCP en .mcp.json para asistentes de IA'
   },
   {
-    command: 'orbitkit --help',
-    usage: 'orbitkit [command] --help',
+    command: 'vgskillframe --help',
+    usage: 'vgskillframe [command] --help',
     description: 'Muestra la ayuda completa con todas las opciones disponibles'
   }
 ];
@@ -290,7 +290,7 @@ export async function startGuiServer(options: GuiServerOptions = {}): Promise<Gu
           await fs.access(godotFile);
         } catch {
           const projectName = path.basename(target);
-          const baseConfig = `; Engine configuration file.\n; Initialized by OrbitKit\nconfig_version=5\n\n[application]\n\nconfig/name="${projectName}"\nconfig/features=PackedStringArray("4.3", "Forward Plus")\n`;
+          const baseConfig = `; Engine configuration file.\n; Initialized by VGskillframe\nconfig_version=5\n\n[application]\n\nconfig/name="${projectName}"\nconfig/features=PackedStringArray("4.3", "Forward Plus")\n`;
           await fs.writeFile(godotFile, baseConfig, 'utf8');
         }
 
@@ -299,7 +299,7 @@ export async function startGuiServer(options: GuiServerOptions = {}): Promise<Gu
         await fs.mkdir(path.join(target, '.agents', 'skills'), { recursive: true });
         await fs.mkdir(path.join(target, '.claude', 'skills'), { recursive: true });
 
-        // Install & enable Godot 4 Editor plugin (addons/orbitkit/plugin.cfg)
+        // Install & enable Godot 4 Editor plugin (addons/vgskillframe/plugin.cfg)
         await installGodotPlugin(target);
 
         // Install all curated AI skills & official MCP servers
@@ -317,7 +317,7 @@ export async function startGuiServer(options: GuiServerOptions = {}): Promise<Gu
 
         return sendJson(res, 200, {
           success: true,
-          message: `OrbitKit instalado en ${target} (Plugin Godot + ${installedSkillsCount} AI Skills + ${installedMcpsCount} MCP Servers)`
+          message: `VGskillframe instalado en ${target} (Plugin Godot + ${installedSkillsCount} AI Skills + ${installedMcpsCount} MCP Servers)`
         });
       }
 

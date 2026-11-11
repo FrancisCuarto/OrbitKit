@@ -14,15 +14,15 @@ const SEO_METADATA: Record<
   }
 > = {
   es: {
-    title: 'OrbitKit (DevDock) — AI Skills, MCP Servers & Pipeline Blender 3D para Godot 4',
+    title: 'VGskillframe (Videogame Skill Frame) — AI Skills, MCP Servers & Pipeline Blender 3D para Godot 4',
     description:
-      'Mantén todos tus proyectos de Godot 4 y Blender 3D actualizados con las últimas AI Skills (SKILL.md), servidores Model Context Protocol (MCP) como Context7 (ctx7) y addons con un solo comando: npm i -g @francisiv/orbitkit.',
+      'Mantén todos tus proyectos de Godot 4 y Blender 3D actualizados con las últimas AI Skills (SKILL.md), servidores Model Context Protocol (MCP) como Context7 (ctx7) y addons con un solo comando: npm i -g @francisiv/vgskillframe.',
     ogLocale: 'es_ES'
   },
   en: {
-    title: 'OrbitKit (DevDock) — Automated AI Skills, MCP Servers & Blender Pipeline for Godot 4',
+    title: 'VGskillframe (Videogame Skill Frame) — Automated AI Skills, MCP Servers & Blender Pipeline for Godot 4',
     description:
-      'Keep all your Godot 4 and Blender 3D projects synchronized with curated AI Skills (SKILL.md), Model Context Protocol (MCP) servers like Context7 (ctx7), and addons with a single CLI command: npm i -g @francisiv/orbitkit.',
+      'Keep all your Godot 4 and Blender 3D projects synchronized with curated AI Skills (SKILL.md), Model Context Protocol (MCP) servers like Context7 (ctx7), and addons with a single CLI command: npm i -g @francisiv/vgskillframe.',
     ogLocale: 'en_US'
   }
 };
