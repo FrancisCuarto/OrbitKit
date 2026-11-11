@@ -42,7 +42,7 @@ export function createCli(): Command {
 
   program
     .name('vgskillframe')
-    .description('VGskillframe CLI — Automated AI Skills, MCP Servers and Addon Manager for Godot Projects')
+    .description('VGSkillFrame CLI — Automated AI Skills, MCP Servers and Addon Manager for Godot Projects')
     .version(cliVersion)
     .action(async () => {
       if (process.stdout.isTTY) {
@@ -67,21 +67,21 @@ export function createCli(): Command {
   program
     .command('gui')
     .alias('dashboard')
-    .description('Launch the interactive VGskillframe GUI web dashboard in your browser')
+    .description('Launch the interactive VGSkillFrame GUI web dashboard in your browser')
     .option('-p, --port <port>', 'Port to run the dashboard server on', '4567')
     .option('-d, --dir <dir>', 'Directory to inspect or manage', '.')
     .option('--no-open', 'Do not open the browser automatically')
     .action(async (options) => {
       const port = parseInt(options.port, 10) || 4567;
       const targetDir = path.resolve(options.dir || '.');
-      const spinner = ora('Starting VGskillframe GUI Dashboard...').start();
+      const spinner = ora('Starting VGSkillFrame GUI Dashboard...').start();
       try {
         const { url, port: actualPort } = await startGuiServer({
           port,
           dir: targetDir,
           openBrowser: options.open !== false
         });
-        spinner.succeed(pc.green('VGskillframe GUI Dashboard is live!'));
+        spinner.succeed(pc.green('VGSkillFrame GUI Dashboard is live!'));
         console.log(pc.bold(pc.cyan(`\n  🚀 Local:   ${pc.underline(url)}`)));
         console.log(pc.gray(`  📁 Target:  ${targetDir}`));
         console.log(pc.gray(`  🔌 Port:    ${actualPort}`));
@@ -105,14 +105,14 @@ export function createCli(): Command {
       } else {
         const port = parseInt(options.port, 10) || 4567;
         const targetDir = path.resolve(options.dir || '.');
-        const spinner = ora('Starting VGskillframe GUI Dashboard...').start();
+        const spinner = ora('Starting VGSkillFrame GUI Dashboard...').start();
         try {
           const { url, port: actualPort } = await startGuiServer({
             port,
             dir: targetDir,
             openBrowser: options.open !== false
           });
-          spinner.succeed(pc.green('VGskillframe GUI Dashboard is live!'));
+          spinner.succeed(pc.green('VGSkillFrame GUI Dashboard is live!'));
           console.log(pc.bold(pc.cyan(`\n  🚀 Local:   ${pc.underline(url)}`)));
           console.log(pc.gray(`  📁 Target:  ${targetDir}`));
           console.log(pc.gray(`  🔌 Port:    ${actualPort}`));
@@ -135,14 +135,14 @@ export function createCli(): Command {
   program
     .command('upgrade')
     .alias('self-update')
-    .description('Check for the latest VGskillframe CLI version and upgrade globally')
+    .description('Check for the latest VGSkillFrame CLI version and upgrade globally')
     .option('-c, --check', 'Only check if a newer version is available without installing')
     .action(async (options) => {
-      const spinner = ora('Checking VGskillframe CLI version against NPM & GitHub...').start();
+      const spinner = ora('Checking VGSkillFrame CLI version against NPM & GitHub...').start();
       const check = await checkCliVersion();
       spinner.stop();
 
-      console.log(pc.bold(pc.cyan('\nVGskillframe Version Check:')));
+      console.log(pc.bold(pc.cyan('\nVGSkillFrame Version Check:')));
       console.log(`  Installed version: ${pc.white('v' + check.currentVersion)}`);
       console.log(
         `  Latest version:    ${
@@ -160,7 +160,7 @@ export function createCli(): Command {
         return;
       }
 
-      const updateSpinner = ora(`Actualizando VGskillframe CLI (v${check.currentVersion} → v${check.latestVersion})...`).start();
+      const updateSpinner = ora(`Actualizando VGSkillFrame CLI (v${check.currentVersion} → v${check.latestVersion})...`).start();
       const res = await performCliSelfUpdate({ force: true });
       if (res.success) {
         updateSpinner.succeed(pc.green(res.message));
@@ -174,10 +174,10 @@ export function createCli(): Command {
   program
     .command('uninstall')
     .alias('remove')
-    .description('Uninstall VGskillframe CLI globally from your system')
+    .description('Uninstall VGSkillFrame CLI globally from your system')
     .option('-p, --project', 'Also remove .devdock/ configuration from the current project')
     .action(async (options) => {
-      const spinner = ora('Desinstalando VGskillframe CLI globalmente...').start();
+      const spinner = ora('Desinstalando VGSkillFrame CLI globalmente...').start();
       const res = await performCliUninstall({ cleanProject: Boolean(options.project) });
       if (res.success) {
         spinner.succeed(pc.green(res.message));
@@ -279,17 +279,17 @@ export function createCli(): Command {
   // Command: update
   program
     .command('update [target]')
-    .description('Check & update VGskillframe CLI, AI Skills, MCPs, and Addons to the latest versions')
+    .description('Check & update VGSkillFrame CLI, AI Skills, MCPs, and Addons to the latest versions')
     .option('-a, --all', 'Update all detected Godot projects in the directory tree')
-    .option('-c, --cli', 'Only check and update the global VGskillframe CLI binary')
+    .option('-c, --cli', 'Only check and update the global VGSkillFrame CLI binary')
     .action(async (target = '.', options) => {
       // 1. Always check if the CLI itself has a newer release
       const verCheck = await checkCliVersion();
       if (verCheck.updateAvailable || options.cli) {
         const cliSpin = ora(
           verCheck.updateAvailable
-            ? `New VGskillframe CLI found (v${verCheck.currentVersion} → v${verCheck.latestVersion}). Updating CLI...`
-            : `Verifying VGskillframe CLI v${verCheck.currentVersion}...`
+            ? `New VGSkillFrame CLI found (v${verCheck.currentVersion} → v${verCheck.latestVersion}). Updating CLI...`
+            : `Verifying VGSkillFrame CLI v${verCheck.currentVersion}...`
         ).start();
         const selfRes = await performCliSelfUpdate({ force: verCheck.updateAvailable });
         if (selfRes.success) {
@@ -299,7 +299,7 @@ export function createCli(): Command {
         }
         if (options.cli) return;
       } else {
-        console.log(pc.gray(`✓ VGskillframe CLI v${verCheck.currentVersion} is up to date.`));
+        console.log(pc.gray(`✓ VGSkillFrame CLI v${verCheck.currentVersion} is up to date.`));
       }
       if (options.all) {
         const spinner = ora('Scanning and updating all Godot projects...').start();
@@ -380,7 +380,7 @@ export function createCli(): Command {
     .description('Check whether the VGskillframe Godot Editor plugin is installed and enabled')
     .action(async (dir = '.') => {
       const status = await getGodotPluginStatus(dir);
-      console.log(pc.bold(pc.cyan('\nVGskillframe Godot Plugin Status:')));
+      console.log(pc.bold(pc.cyan('\nVGSkillFrame Godot Plugin Status:')));
       console.log(`  Installed in addons/vgskillframe: ${status.installed ? pc.green('Yes (v' + status.version + ')') : pc.yellow('No')}`);
       console.log(`  Enabled in project.godot:        ${status.enabled ? pc.green('Yes') : pc.yellow('No')}\n`);
     });
@@ -482,7 +482,7 @@ export function createCli(): Command {
       const catalogLabel = report.catalogGeneratedAt
         ? `catálogo ${report.catalogGeneratedAt}`
         : 'sin catálogo';
-      console.log(pc.bold(pc.cyan(`\nVGskillframe Check · ${catalogLabel}\n`)));
+      console.log(pc.bold(pc.cyan(`\nVGSkillFrame Check · ${catalogLabel}\n`)));
 
       if (report.offline) {
         if (report.fromCache && report.catalogGeneratedAt) {
@@ -563,7 +563,7 @@ export function createCli(): Command {
 
       console.log(
         pc.cyan(
-          `👁 VGskillframe Watch iniciado en ${targetDir} (intervalo base: ${intervalMinutes} min, jitter activo)...`
+          `👁 VGSkillFrame Watch iniciado en ${targetDir} (intervalo base: ${intervalMinutes} min, jitter activo)...`
         )
       );
 
@@ -774,7 +774,7 @@ export function createCli(): Command {
       const items = await runSystemDiagnostics(process.cwd());
       spinner.stop();
 
-      console.log(pc.bold(pc.cyan('\nVGskillframe Health Diagnostics:\n')));
+      console.log(pc.bold(pc.cyan('\nVGSkillFrame Health Diagnostics:\n')));
       for (const item of items) {
         const icon =
           item.status === 'ok'

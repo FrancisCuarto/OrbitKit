@@ -66,7 +66,7 @@ export async function runSystemDiagnostics(
     });
     const hasPlugin = proj.hasVGskillframePlugin || proj.hasOrbitKitPlugin;
     items.push({
-      name: 'VGskillframe Godot Plugin',
+      name: 'VGSkillFrame Godot Plugin',
       status: hasPlugin ? 'ok' : 'warning',
       message: hasPlugin
         ? 'Active in addons/vgskillframe (or addons/orbitkit) and enabled in project.godot'

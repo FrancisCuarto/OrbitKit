@@ -479,7 +479,7 @@ export async function generateAiDebugPrompt(
 
   // Title
   sections.push(
-    `# 🚨 VGskillframe Blackbox Diagnostic: Godot Runtime Crash Report\n`
+    `# 🚨 VGSkillFrame Blackbox Diagnostic: Godot Runtime Crash Report\n`
   );
 
   // High-level incident details

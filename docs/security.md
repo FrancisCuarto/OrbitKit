@@ -1,6 +1,6 @@
-# DevDock Security & Privacy Policy
+# VGSkillFrame Security & Privacy Policy
 
-DevDock is built strictly according to **Privacy by Design** and **Security by Design** principles.
+VGSkillFrame is built strictly according to **Privacy by Design** and **Security by Design** principles.
 
 ## 1. Data Minimization
 - The public catalog does not require user registration.

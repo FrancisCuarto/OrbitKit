@@ -2,7 +2,7 @@
 
 The Model Context Protocol (MCP) provides an open standard for AI coding agents to connect directly with external development tools and editor runtime internals.
 
-When you run `vgskillframe mcp add <server-id>`, VGskillframe configures `.mcp.json` in your Godot project root so compatible AI assistants (such as Google Antigravity, Claude Code, Cursor, Windsurf) connect seamlessly.
+When you run `vgskillframe mcp add <server-id>`, VGSkillFrame configures `.mcp.json` in your Godot project root so compatible AI assistants (such as Google Antigravity, Claude Code, Cursor, Windsurf) connect seamlessly.
 
 ---
 

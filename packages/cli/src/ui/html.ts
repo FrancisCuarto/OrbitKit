@@ -1,5 +1,5 @@
 /**
- * Renders the standalone VGskillframe GUI Dashboard Single Page App
+ * Renders the standalone VGSkillFrame GUI Dashboard Single Page App
  */
 export function renderGuiHtml(): string {
   return `<!DOCTYPE html>
@@ -682,7 +682,7 @@ export function renderGuiHtml(): string {
       </div>
       <div>
         <div style="display:flex; align-items:center; gap:0.5rem;">
-          <span class="brand-title">VGskillframe GUI</span>
+          <span class="brand-title">VGSkillFrame GUI</span>
           <span class="badge-version">v0.1.0</span>
         </div>
       </div>
@@ -744,12 +744,12 @@ export function renderGuiHtml(): string {
       <section id="tab-dashboard" class="view-section active">
         <div class="section-header">
           <div>
-            <h1 class="section-title">Panel de Control VGskillframe</h1>
+            <h1 class="section-title">Panel de Control VGSkillFrame</h1>
             <p class="section-desc">Monitorea y gestiona tus proyectos Godot 4, AI Skills y servidores MCP en tiempo real.</p>
           </div>
           <div>
             <button class="btn btn-primary" onclick="initProject()">
-              🚀 Inicializar VGskillframe en este proyecto
+              🚀 Inicializar VGSkillFrame en este proyecto
             </button>
           </div>
         </div>
@@ -856,7 +856,7 @@ export function renderGuiHtml(): string {
       <section id="tab-doctor" class="view-section">
         <div class="section-header">
           <div>
-            <h1 class="section-title">🩺 Diagnóstico del Entorno (VGskillframe Doctor)</h1>
+            <h1 class="section-title">🩺 Diagnóstico del Entorno (VGSkillFrame Doctor)</h1>
             <p class="section-desc">Verifica Node.js, el binario de Godot 4 en PATH, y el puerto LSP 6005 para telemetría con agentes de IA.</p>
           </div>
           <button class="btn btn-primary" onclick="triggerDoctor()">
@@ -910,7 +910,7 @@ export function renderGuiHtml(): string {
     </div>
     <div id="console-logs" class="console-logs">
       <div class="log-line">
-        <span class="log-time">[VGskillframe GUI]</span>
+        <span class="log-time">[VGSkillFrame GUI]</span>
         <span class="log-info">Dashboard conectado exitosamente. Listo para gestionar proyectos Godot.</span>
       </div>
     </div>
@@ -1101,7 +1101,7 @@ export function renderGuiHtml(): string {
         badge.textContent = 'Sin project.godot detectado';
         cardContent.innerHTML = \`
           <p>La carpeta actual (<code>\${escapeHtml(appState.activeProjectDir)}</code>) no contiene un archivo <code>project.godot</code>.</p>
-          <p style="margin-top:0.5rem;">Haz clic en <strong>"Inicializar VGskillframe"</strong> para configurar este directorio para Godot y asistentes de IA.</p>
+          <p style="margin-top:0.5rem;">Haz clic en <strong>"Inicializar VGSkillFrame"</strong> para configurar este directorio para Godot y asistentes de IA.</p>
         \`;
         return;
       }

@@ -1,4 +1,4 @@
-# Contributing to OrbitKit
+# Contributing to VGSkillFrame
 
 First off, thanks for taking the time to contribute! 🚀
 

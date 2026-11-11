@@ -101,7 +101,7 @@ describe('DevDock CLI Core Engine', () => {
 
   it('renders GUI HTML containing brand and interactive sections', () => {
     const html = renderGuiHtml();
-    expect(html).toContain('VGskillframe GUI');
+    expect(html).toContain('VGSkillFrame GUI');
     expect(html).toContain('AI Skills');
     expect(html).toContain('Servidores MCP');
     expect(html).toContain('Doctor');
@@ -123,7 +123,7 @@ describe('DevDock CLI Core Engine', () => {
       const resHtml = await fetch(gui.url);
       expect(resHtml.status).toBe(200);
       const textHtml = await resHtml.text();
-      expect(textHtml).toContain('VGskillframe GUI');
+      expect(textHtml).toContain('VGSkillFrame GUI');
 
       // Test GET /api/commands
       const resCmds = await fetch(`${gui.url}/api/commands`);

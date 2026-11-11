@@ -1,6 +1,6 @@
-# VGskillframe (Videogame Skill Frame) System Architecture
+# VGSkillFrame (Videogame Skill Frame) System Architecture
 
-VGskillframe is an end-to-end tooling and catalog ecosystem tailored for Godot 4 game developers and AI coding agents.
+VGSkillFrame is an end-to-end tooling and catalog ecosystem tailored for Godot 4 game developers and AI coding agents.
 
 ```
        ┌────────────────────────────────────────────────────────┐

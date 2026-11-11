@@ -38,8 +38,8 @@ export function TerminalWidget({ lang }: Props) {
       labelKey: 'tabGui',
       command: 'vgskillframe ui',
       output: [
-        '🚀 Starting VGskillframe GUI Dashboard...',
-        '✓ VGskillframe GUI Dashboard is live!',
+        '🚀 Starting VGSkillFrame GUI Dashboard...',
+        '✓ VGSkillFrame GUI Dashboard is live!',
         '  ➜ Local:   http://localhost:4567',
         '  ➜ Target:  /home/francis/game',
         '✓ Connected: Godot Plugin active, 20 AI skills ready'
@@ -50,7 +50,7 @@ export function TerminalWidget({ lang }: Props) {
       labelKey: 'tabRecord',
       command: 'vgskillframe record --last --prompt',
       output: [
-        '✈ VGskillframe Blackbox Flight Recorder — Incident inc_1794329000',
+        '✈ VGSkillFrame Blackbox Flight Recorder — Incident inc_1794329000',
         '  Status: CRASHED (Exit code 1) | Godot v4.3.stable',
         '  SCRIPT ERROR: Invalid get index \'health\' (on base: \'Nil\').',
         '    at: _on_hit (res://scenes/player/player.gd:42)',
@@ -63,9 +63,9 @@ export function TerminalWidget({ lang }: Props) {
       labelKey: 'tabUpgradeCli',
       command: 'vgskillframe upgrade',
       output: [
-        '🔍 Checking VGskillframe CLI version against NPM & GitHub...',
+        '🔍 Checking VGSkillFrame CLI version against NPM & GitHub...',
         '  Installed version: v0.6.4  →  Latest version: v0.7.0',
-        '✓ VGskillframe actualizado correctamente: v0.6.4 → v0.7.0'
+        '✓ VGSkillFrame actualizado correctamente: v0.6.4 → v0.7.0'
       ]
     },
     {
@@ -74,7 +74,7 @@ export function TerminalWidget({ lang }: Props) {
       command: 'vgskillframe uninstall',
       output: [
         '🗑️  Removing global @francisiv/vgskillframe binary and symlinks...',
-        '✓ VGskillframe CLI (@francisiv/vgskillframe) fue desinstalado globalmente del sistema.'
+        '✓ VGSkillFrame CLI (@francisiv/vgskillframe) fue desinstalado globalmente del sistema.'
       ]
     },
     {
@@ -121,85 +121,68 @@ export function TerminalWidget({ lang }: Props) {
   };
 
   return (
-    <div className="relative z-30 pointer-events-auto w-full max-w-3xl mx-auto rounded-2xl bg-godot-card border border-godot-border shadow-2xl overflow-hidden font-mono text-xs sm:text-sm text-left">
-      {/* Window Titlebar & Large-Hitbox Tab Bar */}
-      <div className="relative z-30 px-4 pt-3.5 pb-3 bg-godot-950 border-b border-godot-border space-y-3">
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 rounded-full bg-rose-500/80"></div>
-          <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
-          <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
-          <span className="ml-2 text-xs text-slate-400 font-sans font-medium flex items-center">
-            <Terminal className="w-3.5 h-3.5 mr-1.5 text-godot-400" />
-            terminal — vgskillframe v0.7.0
-          </span>
-        </div>
-
-        {/* Expanded Hitbox Tab Pills */}
-        <div className="relative z-30 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-2" role="tablist">
-          {TABS.map((tab) => {
-            const active = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={active}
-                onPointerDown={(e) => {
-                  e.stopPropagation();
-                  setActiveTab(tab.id);
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveTab(tab.id);
-                }}
-                className={`relative z-30 pointer-events-auto w-full min-h-[46px] px-3 py-2.5 rounded-xl text-xs font-sans font-semibold cursor-pointer select-none flex items-center justify-center text-center transition-colors duration-150 ${
-                  active
-                    ? 'bg-[#23689b] text-white border border-godot-400/50'
-                    : 'bg-godot-card text-slate-200 hover:text-white hover:bg-godot-border border border-godot-border'
-                }`}
-              >
-                {t[tab.labelKey]}
-              </button>
-            );
-          })}
-        </div>
+    <div className="w-full bg-godot-950 text-slate-200 border-2 border-ink shadow-[8px_8px_0_0_#15130f] font-mono text-xs sm:text-sm text-left">
+      {/* Title bar */}
+      <div className="flex items-center justify-between px-4 py-2 border-b border-godot-border text-[11px] uppercase tracking-[0.14em] text-slate-500">
+        <span className="flex items-center gap-2">
+          <Terminal className="w-3.5 h-3.5 text-godot-400" />
+          vgskillframe.tty
+        </span>
+        <span className="tabular-nums">v0.7.0</span>
       </div>
 
-      {/* Terminal Content Body */}
-      <div className="p-4 sm:p-6 bg-godot-950/60 space-y-4">
-        {/* Command line */}
-        <div className="flex items-center justify-between bg-godot-950 px-4 py-3 rounded-lg">
-          <div className="flex items-center space-x-2 overflow-x-auto text-slate-200">
-            <span className="text-godot-400 font-bold select-none">$</span>
-            <span className="font-semibold text-white">{currentTabData.command}</span>
-          </div>
+      {/* Tabs */}
+      <div className="flex overflow-x-auto border-b border-godot-border" role="tablist">
+        {TABS.map((tab) => {
+          const active = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              onClick={() => setActiveTab(tab.id)}
+              className={`shrink-0 px-3.5 py-2.5 text-[11px] uppercase tracking-wider whitespace-nowrap border-b-2 -mb-px transition-colors ${
+                active
+                  ? 'border-godot-500 text-godot-300'
+                  : 'border-transparent text-slate-500 hover:text-slate-200'
+              }`}
+            >
+              {t[tab.labelKey]}
+            </button>
+          );
+        })}
+      </div>
 
+      {/* Body */}
+      <div className="p-4 sm:p-5 min-h-[260px] space-y-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 overflow-x-auto whitespace-nowrap">
+            <span className="text-godot-400 select-none">$ </span>
+            <span className="text-slate-100">{currentTabData.command}</span>
+          </div>
           <button
             type="button"
             onClick={handleCopy}
-            className="flex items-center px-3.5 py-1.5 ml-3 rounded-md bg-[#23689b] hover:bg-[#2d7bb6] text-white border border-godot-400/30 transition text-xs font-sans font-semibold cursor-pointer select-none whitespace-nowrap"
+            className="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 border border-godot-border text-[11px] uppercase tracking-wider text-slate-400 hover:bg-godot-500 hover:text-godot-950 hover:border-godot-500 transition"
           >
-            <span className="inline-flex mr-1.5 shrink-0">
-              {copied ? (
-                <Check className="w-3.5 h-3.5 text-emerald-400" />
-              ) : (
-                <Copy className="w-3.5 h-3.5" />
-              )}
-            </span>
-            <span>{copied ? (lang === 'es' ? '¡Copiado!' : 'Copied!') : (lang === 'es' ? 'Copiar' : 'Copy')}</span>
+            {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? (lang === 'es' ? 'Copiado' : 'Copied') : lang === 'es' ? 'Copiar' : 'Copy'}
           </button>
         </div>
 
-        {/* Simulated Command Output */}
-        <div className="space-y-1.5 text-xs text-slate-400 pt-1">
+        <div className="space-y-1.5 text-xs text-slate-400">
           {currentTabData.output.map((line, idx) => (
-            <div key={idx} className="flex items-start space-x-2">
-              <span className="text-slate-600 select-none">&gt;</span>
-              <span className={line.includes('✓') || line.startsWith('+') ? 'text-emerald-400 font-medium' : ''}>
-                {line}
-              </span>
+            <div
+              key={idx}
+              className={line.includes('✓') || line.startsWith('+') ? 'text-[#b5d97a]' : line.includes('ERROR') || line.includes('CRASHED') ? 'text-godot-300' : ''}
+            >
+              {line}
             </div>
           ))}
+          <div className="cursor-block text-slate-500 pt-1">
+            <span className="text-godot-400">$</span>
+          </div>
         </div>
       </div>
     </div>

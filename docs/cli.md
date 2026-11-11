@@ -1,4 +1,4 @@
-# VGskillframe (Videogame Skill Frame) CLI Reference
+# VGSkillFrame (Videogame Skill Frame) CLI Reference
 
 The official command-line interface for Godot 4 & Blender developers and AI coding agents.
 
@@ -26,7 +26,7 @@ npx @francisiv/vgskillframe scan .
 ## Commands
 
 ### `vgskillframe ui` / `vgskillframe gui`
-Launches the interactive VGskillframe GUI web dashboard in your default browser.
+Launches the interactive VGSkillFrame GUI web dashboard in your default browser.
 - Visual dashboard for Godot 4 projects, AI Skills, MCP servers, and diagnostics.
 - 1-click install for curated AI skills (`godot4-syntax-guardian`, `gdscript-fsm-master`, etc.).
 - 1-click configuration for Godot MCP servers in `.mcp.json`.
@@ -63,7 +63,7 @@ vgskillframe scan ~/Games/
 ```
 
 ### `vgskillframe init`
-Initializes VGskillframe inside a new or existing Godot project.
+Initializes VGSkillFrame inside a new or existing Godot project.
 - Creates local `.devdock/` configuration directory.
 - Installs the core `godot4-syntax-guardian` AI skill into `.agents/skills/`.
 - Configures default MCP servers (`godot-lsp`, `godot-docs`) in `.mcp.json`.

@@ -1,6 +1,6 @@
 {
-  "name": "VGskillframe (Videogame Skill Frame) — Godot 4 AI Skills & MCP Ecosystem",
-  "short_name": "VGskillframe",
+  "name": "VGSkillFrame (Videogame Skill Frame) — Godot 4 AI Skills & MCP Ecosystem",
+  "short_name": "VGSkillFrame",
   "description": "Global CLI, curated AI Skills, and Model Context Protocol (MCP) servers for Godot 4, Blender 3D, and Context7 (ctx7).",
   "start_url": "/",
   "display": "standalone",

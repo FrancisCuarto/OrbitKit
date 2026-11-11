@@ -144,7 +144,7 @@ func _on_hit(damage: int):
 
       const prompt = await generateAiDebugPrompt(incident, { projectDir: tmpDir });
 
-      expect(prompt).toContain('VGskillframe Blackbox Diagnostic');
+      expect(prompt).toContain('VGSkillFrame Blackbox Diagnostic');
       expect(prompt).toContain("Invalid call. Nonexistent function 'apply' in base 'Nil'.");
       expect(prompt).toContain('res://scenes/hero.gd:4');
       expect(prompt).toContain('>>    4 | \tstats.apply()');

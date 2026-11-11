@@ -1,8 +1,8 @@
-# Contributing to OrbitKit 🚀
+# Contributing to VGSkillFrame 🚀
 
 First off, thanks for taking the time to contribute! ⭐
 
-OrbitKit is the AI Skills, MCP servers and package manager ecosystem for
+VGSkillFrame is the AI Skills, MCP servers and package manager ecosystem for
 **Godot 4** and **Blender 3D** game developers. All contributions — bug
 reports, new skills, MCP integrations, addons, docs and ideas — are welcome.
 

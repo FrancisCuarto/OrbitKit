@@ -1,6 +1,6 @@
 # Security Policy 🔒
 
-OrbitKit is a **security-first** installer: every package is verified with
+VGSkillFrame is a **security-first** installer: every package is verified with
 SHA-256/512 checksums, archives are protected against Zip-Slip and path
 traversal, and installation destinations are restricted to `res://addons/`,
 `.agents/skills/` and `.claude/skills/`.

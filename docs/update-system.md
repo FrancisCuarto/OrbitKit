@@ -1,7 +1,7 @@
-# VGskillframe — Sistema de chequeo y auto-actualización continua
+# VGSkillFrame — Sistema de chequeo y auto-actualización continua
 
 > **Tipo:** Implementation brief / handoff
-> **Objetivo:** que VGskillframe detecte skills nuevas, actualice las instaladas y avise cuando hay una versión nueva (de skills o del CLI), de forma continua y sin intervención manual.
+> **Objetivo:** que VGSkillFrame detecte skills nuevas, actualice las instaladas y avise cuando hay una versión nueva (de skills o del CLI), de forma continua y sin intervención manual.
 > **Branch sugerida:** `feature/auto-update-system` (desde `develop`, PR a `develop`).
 
 ---
@@ -142,7 +142,7 @@ Monorepo pnpm + TypeScript ESM (`module: NodeNext`), Node 20+.
 | `packages/cli/src/core/paths.ts` | Resolver rutas XDG (`configDir`, `stateDir`, `cacheDir`) cross-platform |
 | `packages/cli/src/core/config.ts` | Leer/escribir config con defaults y validación Zod |
 | `packages/cli/src/core/catalog.ts` | `CatalogSchema`, `fetchCatalog()` con ETag + timeout |
-| `packages/cli/src/core/state.ts` | `OrbitKitState`, `readState()`, `writeState()` atómico |
+| `packages/cli/src/core/state.ts` | `VGSkillFrameState`, `readState()`, `writeState()` atómico |
 | `packages/cli/src/core/updateChecker.ts` | `checkForUpdates()` → `UpdateReport` |
 | `packages/cli/src/core/notifier.ts` | Terminal, desktop notify, marker file, dedupe |
 | `packages/cli/src/core/background.ts` | `shouldBackgroundCheck()`, `scheduleBackgroundCheck()`, `printCachedBanner()` |
@@ -193,7 +193,7 @@ export async function fetchCatalog(
 
 ```ts
 // core/state.ts
-export interface OrbitKitState {
+export interface VGSkillFrameState {
   schemaVersion: 1;
   etag?: string;
   lastCheckAt?: number;
@@ -203,8 +203,8 @@ export interface OrbitKitState {
   notified: Record<string, string>; // "skill:<id>@<ver>" | "cli@<ver>" -> ISO
 }
 
-export async function readState(): Promise<OrbitKitState>;
-export async function writeState(state: OrbitKitState): Promise<void>; // tmp + rename, 0600
+export async function readState(): Promise<VGSkillFrameState>;
+export async function writeState(state: VGSkillFrameState): Promise<void>; // tmp + rename, 0600
 ```
 
 ```ts
@@ -341,13 +341,13 @@ import { stateDir } from './paths.js';
 
 const STATE_FILE = () => path.join(stateDir(), 'state.json');
 
-const DEFAULT_STATE: OrbitKitState = {
+const DEFAULT_STATE: VGSkillFrameState = {
   schemaVersion: 1,
   consecutiveFailures: 0,
   notified: {}
 };
 
-export async function readState(): Promise<OrbitKitState> {
+export async function readState(): Promise<VGSkillFrameState> {
   try {
     const raw = await fs.readFile(STATE_FILE(), 'utf8');
     const parsed = JSON.parse(raw);
@@ -357,7 +357,7 @@ export async function readState(): Promise<OrbitKitState> {
   }
 }
 
-export async function writeState(state: OrbitKitState): Promise<void> {
+export async function writeState(state: VGSkillFrameState): Promise<void> {
   const dir = stateDir();
   await fs.mkdir(dir, { recursive: true });
   const tmp = path.join(dir, `.state.${process.pid}.tmp`);
@@ -509,7 +509,7 @@ Orden seguro:
 |---|---|---|
 | Linux | `~/.config/systemd/user/orbitkit-check.{service,timer}` | `systemctl --user daemon-reload && systemctl --user enable --now orbitkit-check.timer` |
 | macOS | `~/Library/LaunchAgents/dev.orbitkit.check.plist` | `launchctl load -w …` |
-| Windows | `schtasks /create /tn OrbitKitCheck /sc hourly /tr "vgskillframe check --quiet --notify" /f` | idem |
+| Windows | `schtasks /create /tn VGSkillFrameCheck /sc hourly /tr "vgskillframe check --quiet --notify" /f` | idem |
 
 El comando del scheduler debe ser `vgskillframe check --quiet --notify` (no `update`). Nunca auto-instalar desde el scheduler salvo config explícita.
 
@@ -564,7 +564,7 @@ Variables de entorno:
 `vgskillframe check`:
 
 ```
-OrbitKit Check · catálogo 2026-11-10T12:00Z
+VGSkillFrame Check · catálogo 2026-11-10T12:00Z
 
   CLI          v0.5.0 → v0.6.0   (actualización disponible)
   Skills       2 nuevas, 1 desactualizada
@@ -578,7 +578,7 @@ OrbitKit Check · catálogo 2026-11-10T12:00Z
 Banner pasivo (máx. 1 línea + 1 de acción):
 
 ```
-⬆  3 novedades en OrbitKit (2 skills nuevas, CLI v0.6.0) · vgskillframe update --all
+⬆  3 novedades en VGSkillFrame (2 skills nuevas, CLI v0.6.0) · vgskillframe update --all
 ```
 
 `check --json` → `UpdateReport` serializado, sin banner ni spinner (para CI/plugin).
@@ -588,7 +588,7 @@ Estados:
 | Estado | Mensaje |
 |---|---|
 | offline + caché | sin banner (silencio), `check` muestra "sin conexión, usando catálogo del …" |
-| CLI < `minSupported` | `⚠ Tu OrbitKit v0.5.0 es anterior al mínimo soportado (0.5.1). Actualiza para continuar.` |
+| CLI < `minSupported` | `⚠ Tu VGSkillFrame v0.5.0 es anterior al mínimo soportado (0.5.1). Actualiza para continuar.` |
 | major disponible | `⚠ Hay una major nueva (v1.0.0). No se aplicará automáticamente.` |
 | sin novedades | `✓ Todo en órbita. Sin novedades.` |
 

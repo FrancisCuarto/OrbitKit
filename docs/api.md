@@ -1,4 +1,4 @@
-# DevDock REST API Reference
+# VGSkillFrame REST API Reference
 
 Base URL: `http://localhost:4000/api`
 
