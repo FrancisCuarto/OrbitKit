@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/assets/vgskillframe-logo.png" alt="VGSkillFrame Logo" width="140" style="border-radius: 20px; margin-bottom: 12px;" />
+
 # 🚀 VGSkillFrame — Videogame Skill Frame
 ### Godot 4 & Blender 3D AI Skills, MCP Servers & Package Manager CLI
 

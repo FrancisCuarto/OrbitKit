@@ -13,10 +13,10 @@ export const TRANSLATIONS = {
     },
     hero: {
       badge: 'Ecosistema Godot 4.x + Asistentes de IA',
-      headline1: 'Tu IA no sabe Godot 4.',
-      headline2: 'Enseñale.',
-      sub: 'VGSkillFrame es un CLI que instala skills de Godot 4, servidores MCP y un plugin de editor en cada proyecto de tu disco. Tu agente (Claude, Cursor, Antigravity) deja de escribir GDScript de Godot 3 y empieza a leer el editor en vivo.',
-      btnDocs: 'Leer el manual',
+      headline1: 'Mantén todos tus proyectos de Godot',
+      headline2: 'al día con lo último en Skills y MCPs.',
+      sub: 'Una herramienta CLI global. Escanea tu disco, conecta el Language Server de Godot en vivo a tus agentes de IA (Antigravity, Claude, Cursor) y actualiza todas tus herramientas con un solo comando.',
+      btnDocs: 'Ver Documentación',
       btnGithub: 'Ver en GitHub',
       tabInstall: 'Instalar Global',
       tabGui: 'Interfaz GUI',
@@ -30,16 +30,16 @@ export const TRANSLATIONS = {
     problem: {
       eyebrow: 'El Problema vs La Solución',
       title: 'El desarrollo de videojuegos con IA necesitaba un puente real.',
-      beforeTitle: 'Antes de VGSkillFrame',
+      beforeTitle: 'Antes de DevDock',
       before1: 'Descargar archivos zip de repositorios a mano y arriesgarte a romper tu proyecto.',
       before2: 'Los agentes de IA confunden sintaxis de Godot 3 en proyectos de Godot 4.',
       before3: 'Tu asistente de código programa a ciegas, sin conexión con el editor Godot.',
       before4: 'Imposible saber qué addons están rotos o tienen actualizaciones pendientes.',
-      afterTitle: 'Con VGSkillFrame',
+      afterTitle: 'Con DevDock CLI',
       after1: 'Instalación limpia, verificada con firma digital SHA-256 y protección anti-ZipSlip.',
       after2: 'Skills oficiales de Godot 4 en .agents/skills y .claude/skills para evitar alucinaciones.',
       after3: 'Puente MCP en vivo: tu IA lee errores de compilación y autocompletado desde Godot (puerto 6005).',
-      after4: 'Un solo comando ("vgskillframe update --all") actualiza todos tus proyectos en lote.'
+      after4: 'Un solo comando ("devdock update --all") actualiza todos tus proyectos en lote.'
     },
     features: {
       eyebrow: 'Funcionalidades',
@@ -47,7 +47,7 @@ export const TRANSLATIONS = {
       sub: 'Diseñado para desarrolladores que valoran su tiempo. Sin configuraciones complejas.',
       card1: {
         title: 'Escáner Automático de Proyectos',
-        desc: 'Encuentra automáticamente todos tus proyectos de Godot en disco con "vgskillframe scan". Detecta addons, skills y salud.'
+        desc: 'Encuentra automáticamente todos tus proyectos de Godot en disco con "devdock scan". Detecta addons, skills y salud.'
       },
       card2: {
         title: 'Puente MCP para Agentes de IA',
@@ -59,7 +59,7 @@ export const TRANSLATIONS = {
       },
       card4: {
         title: 'Actualizador Global en Lote',
-        desc: 'Ejecuta "vgskillframe update --all" y actualiza automáticamente los skills y plugins de todos tus videojuegos a la vez.'
+        desc: 'Ejecuta "devdock update --all" y actualiza automáticamente los skills y plugins de todos tus videojuegos a la vez.'
       },
       card5: {
         title: 'Seguridad y Verificación Criptográfica',
@@ -102,10 +102,10 @@ export const TRANSLATIONS = {
     },
     hero: {
       badge: 'Godot 4.x + AI Agent Ecosystem',
-      headline1: "Your AI doesn't know Godot 4.",
-      headline2: 'Teach it.',
-      sub: 'VGSkillFrame is a CLI that installs Godot 4 skills, MCP servers and an editor plugin into every project on your disk. Your agent (Claude, Cursor, Antigravity) stops writing Godot 3 GDScript and starts reading the live editor.',
-      btnDocs: 'Read the manual',
+      headline1: 'Keep all your Godot projects',
+      headline2: 'updated with the latest Skills & MCPs.',
+      sub: 'A global CLI tool. Scan your workspace, bridge live GDScript LSP telemetry to your AI coding agents (Antigravity, Claude, Cursor), and auto-update skills across every project with one command.',
+      btnDocs: 'View Documentation',
       btnGithub: 'View on GitHub',
       tabInstall: 'Install Global',
       tabGui: 'Web GUI',
@@ -119,16 +119,16 @@ export const TRANSLATIONS = {
     problem: {
       eyebrow: 'The Problem vs The Solution',
       title: 'Game development with AI needed a real architectural bridge.',
-      beforeTitle: 'Before VGSkillFrame',
+      beforeTitle: 'Before DevDock',
       before1: 'Downloading raw zip files from repositories manually and risking project integrity.',
       before2: 'AI agents hallucinating outdated Godot 3 syntax inside Godot 4 codebases.',
       before3: 'Coding assistants programming blindly with no access to editor diagnostics.',
       before4: 'Impossible to know which addons are broken or have pending bugfixes.',
-      afterTitle: 'With VGSkillFrame',
+      afterTitle: 'With DevDock CLI',
       after1: 'Clean extraction verified by SHA-256 checksums and strict Anti-ZipSlip protection.',
       after2: 'Curated Godot 4 Skills in .agents/skills and .claude/skills preventing syntax drift.',
       after3: 'Live MCP bridge: your AI inspects GDScript compiler errors directly from Godot (port 6005).',
-      after4: 'A single command ("vgskillframe update --all") syncs and updates every game project on your PC.'
+      after4: 'A single command ("devdock update --all") syncs and updates every game project on your PC.'
     },
     features: {
       eyebrow: 'Features',
@@ -136,7 +136,7 @@ export const TRANSLATIONS = {
       sub: 'Engineered for developers who value time and craftsmanship. Zero bloat.',
       card1: {
         title: 'Automated Project Scanner',
-        desc: 'Instantly locate all Godot projects across your drives with "vgskillframe scan". Reports addons, skills and health.'
+        desc: 'Instantly locate all Godot projects across your drives with "devdock scan". Reports addons, skills and health.'
       },
       card2: {
         title: 'MCP Bridge for AI Agents',
@@ -148,7 +148,7 @@ export const TRANSLATIONS = {
       },
       card4: {
         title: 'Batch Project Updater',
-        desc: 'Run "vgskillframe update --all" to synchronize and upgrade AI skills and addons across all your local games simultaneously.'
+        desc: 'Run "devdock update --all" to synchronize and upgrade AI skills and addons across all your local games simultaneously.'
       },
       card5: {
         title: 'Cryptographic SHA-256 Verification',

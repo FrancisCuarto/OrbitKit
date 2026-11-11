@@ -19,19 +19,18 @@ export function DocsSection({ lang }: Props) {
   };
 
   return (
-    <section id="docs" className="py-20 lg:py-28 px-4 sm:px-6 max-w-7xl mx-auto">
-      <div className="mb-10 space-y-6">
-        <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.14em] text-slate-500">
-          <span className="bg-godot-500 text-godot-950 px-1.5 py-0.5 tabular-nums">04</span>
-          <span>{t.eyebrow}</span>
-          <span className="h-px flex-1 bg-godot-border" />
-        </div>
-        <h2 className="font-display text-5xl sm:text-7xl text-slate-100 [text-wrap:balance]">{t.title}</h2>
-        <p className="text-slate-400 max-w-2xl leading-relaxed [text-wrap:pretty]">{t.sub}</p>
+    <section id="docs" className="py-20 px-4 max-w-7xl mx-auto">
+      <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
+        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-[-0.03em] [text-wrap:balance]">
+          {t.title}
+        </h2>
+        <p className="text-slate-300 text-sm sm:text-base leading-relaxed [text-wrap:pretty]">
+          {t.sub}
+        </p>
       </div>
 
-      {/* Tab switcher */}
-      <div className="flex overflow-x-auto border-b border-godot-border mb-10" role="tablist">
+      {/* Clean Segmented Tab Switcher */}
+      <div className="flex flex-wrap items-center justify-center gap-2 p-1.5 bg-godot-950 border border-godot-border rounded-xl max-w-2xl mx-auto mb-10" role="tablist">
         {[
           { id: 'cli', label: t.tabCli, icon: Terminal },
           { id: 'mcp', label: t.tabMcp, icon: Layers },
@@ -47,8 +46,10 @@ export function DocsSection({ lang }: Props) {
               role="tab"
               aria-selected={active}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`shrink-0 flex items-center px-4 py-3 font-mono text-xs uppercase tracking-wider border-b-2 -mb-px transition-colors ${
-                active ? 'border-godot-500 text-godot-300' : 'border-transparent text-slate-500 hover:text-slate-200'
+              className={`flex items-center justify-center px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold cursor-pointer select-none transition ${
+                active
+                  ? 'bg-[#23689b] text-white border border-godot-400/40 shadow-sm'
+                  : 'text-slate-400 hover:text-white hover:bg-godot-card'
               }`}
             >
               <Icon className="w-4 h-4 mr-2 shrink-0" />
@@ -73,7 +74,7 @@ export function DocsSection({ lang }: Props) {
             {/* Quick Install, Upgrade & Uninstall Strip */}
             <div id="update-cli" className="grid grid-cols-1 lg:grid-cols-3 gap-5">
               {/* 1. Fresh Install Box */}
-              <div className="p-5 rounded-none bg-godot-card border border-godot-border space-y-3 flex flex-col justify-between">
+              <div className="p-5 rounded-xl bg-godot-card border border-godot-border space-y-3 flex flex-col justify-between">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
@@ -86,7 +87,7 @@ export function DocsSection({ lang }: Props) {
                       v0.7.0
                     </span>
                   </div>
-                  <code className="block p-3 rounded-none bg-godot-950 font-mono text-xs sm:text-sm text-godot-300 border border-godot-border">
+                  <code className="block p-3 rounded-lg bg-godot-950 font-mono text-xs sm:text-sm text-godot-300 border border-godot-border">
                     npm install -g @francisiv/vgskillframe
                   </code>
                 </div>
@@ -95,7 +96,7 @@ export function DocsSection({ lang }: Props) {
                   <button
                     type="button"
                     onClick={() => handleCopy('npm install -g @francisiv/vgskillframe', 'quick_npm')}
-                    className="flex items-center px-3 py-1.5 rounded bg-godot-500 hover:bg-godot-400 text-godot-950 text-xs font-semibold transition"
+                    className="flex items-center px-3 py-1.5 rounded bg-[#23689b] hover:bg-[#2d7bb6] text-white text-xs font-semibold transition"
                   >
                     <span className="inline-flex mr-1 shrink-0">
                       {copiedId === 'quick_npm' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -106,7 +107,7 @@ export function DocsSection({ lang }: Props) {
               </div>
 
               {/* 2. Upgrade Box */}
-              <div className="p-5 rounded-none bg-godot-card border border-emerald-500/30 space-y-3 flex flex-col justify-between">
+              <div className="p-5 rounded-xl bg-godot-card border border-emerald-500/30 space-y-3 flex flex-col justify-between">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
@@ -116,7 +117,7 @@ export function DocsSection({ lang }: Props) {
                       </span>
                     </div>
                   </div>
-                  <code className="block p-3 rounded-none bg-godot-950 font-mono text-xs sm:text-sm text-emerald-300 border border-emerald-500/30">
+                  <code className="block p-3 rounded-lg bg-godot-950 font-mono text-xs sm:text-sm text-emerald-300 border border-emerald-500/30">
                     vgskillframe upgrade
                   </code>
                 </div>
@@ -136,7 +137,7 @@ export function DocsSection({ lang }: Props) {
               </div>
 
               {/* 3. Uninstall Box */}
-              <div className="p-5 rounded-none bg-godot-card border border-rose-500/30 space-y-3 flex flex-col justify-between">
+              <div className="p-5 rounded-xl bg-godot-card border border-rose-500/30 space-y-3 flex flex-col justify-between">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
@@ -146,7 +147,7 @@ export function DocsSection({ lang }: Props) {
                       </span>
                     </div>
                   </div>
-                  <code className="block p-3 rounded-none bg-godot-950 font-mono text-xs sm:text-sm text-rose-300 border border-rose-500/30">
+                  <code className="block p-3 rounded-lg bg-godot-950 font-mono text-xs sm:text-sm text-rose-300 border border-rose-500/30">
                     vgskillframe uninstall
                   </code>
                 </div>
@@ -167,7 +168,7 @@ export function DocsSection({ lang }: Props) {
             </div>
 
             {/* Structured Command Reference Table / Definition Rows */}
-            <div className="rounded-none bg-godot-card border border-godot-border overflow-hidden">
+            <div className="rounded-xl bg-godot-card border border-godot-border overflow-hidden">
               <div className="p-4 bg-godot-950 border-b border-godot-border flex items-center justify-between text-xs font-mono text-slate-400">
                 <span>COMMAND</span>
                 <span>FUNCTIONALITY & PURPOSE</span>
@@ -242,7 +243,7 @@ export function DocsSection({ lang }: Props) {
                     <button
                       type="button"
                       onClick={() => handleCopy(item.cmd, `cmd_${idx}`)}
-                      className="p-2 rounded-none bg-godot-950 border border-godot-border text-slate-300 hover:text-white transition shrink-0 self-start md:self-auto"
+                      className="p-2 rounded-lg bg-godot-950 border border-godot-border text-slate-300 hover:text-white transition shrink-0 self-start md:self-auto"
                     >
                       {copiedId === `cmd_${idx}` ? (
                         <Check className="w-3.5 h-3.5 text-emerald-400" />
@@ -267,7 +268,7 @@ export function DocsSection({ lang }: Props) {
               </p>
             </div>
 
-            <div className="rounded-none bg-godot-card border border-godot-border overflow-hidden divide-y divide-godot-border/60">
+            <div className="rounded-xl bg-godot-card border border-godot-border overflow-hidden divide-y divide-godot-border/60">
               {[
                 {
                   id: 'godot-engine-bridge',
@@ -322,7 +323,7 @@ export function DocsSection({ lang }: Props) {
                   <button
                     type="button"
                     onClick={() => handleCopy(server.cmd, server.id)}
-                    className="px-3 py-1.5 rounded-none bg-godot-500 hover:bg-godot-400 text-godot-950 text-xs font-semibold transition shrink-0 self-start md:self-auto"
+                    className="px-3 py-1.5 rounded-lg bg-[#23689b] hover:bg-[#2d7bb6] text-white text-xs font-semibold transition shrink-0 self-start md:self-auto"
                   >
                     {copiedId === server.id ? (
                       <span className="flex items-center text-emerald-300">
@@ -379,7 +380,7 @@ export function DocsSection({ lang }: Props) {
                 </button>
               </div>
 
-              <pre className="p-4 rounded-none bg-godot-950 font-mono text-xs text-slate-300 border border-godot-border overflow-x-auto">
+              <pre className="p-4 rounded-xl bg-godot-950 font-mono text-xs text-slate-300 border border-godot-border overflow-x-auto">
 {`{
   "mcpServers": {
     "godot-engine-bridge": {
@@ -424,7 +425,7 @@ export function DocsSection({ lang }: Props) {
               </p>
             </div>
 
-            <div className="rounded-none bg-godot-card border border-godot-border overflow-hidden divide-y divide-godot-border/60">
+            <div className="rounded-xl bg-godot-card border border-godot-border overflow-hidden divide-y divide-godot-border/60">
               {[
                 // 1. Universal Skills (Engine-Agnostic)
                 {
@@ -613,7 +614,7 @@ export function DocsSection({ lang }: Props) {
                   <div className="space-y-1.5 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <h4 className="text-base font-bold text-white flex items-center">
-                        <Bot className="w-4 h-4 mr-2 text-godot-300 shrink-0" />
+                        <Bot className="w-4 h-4 mr-2 text-purple-400 shrink-0" />
                         {s.name}
                       </h4>
                       <span className={`text-xs font-mono font-semibold px-2 py-0.5 rounded border ${s.badgeColor}`}>
@@ -626,7 +627,7 @@ export function DocsSection({ lang }: Props) {
                   <button
                     type="button"
                     onClick={() => handleCopy(`vgskillframe skill install ${s.id}`, s.id)}
-                    className="px-3 py-1.5 rounded-none bg-godot-500 hover:bg-godot-400 text-godot-950 transition text-xs font-mono whitespace-nowrap shrink-0 border border-godot-400/30"
+                    className="px-3 py-1.5 rounded-lg bg-[#23689b] hover:bg-[#2d7bb6] text-white transition text-xs font-mono whitespace-nowrap shrink-0 border border-godot-400/30"
                   >
                     <span>{copiedId === s.id ? (lang === 'es' ? '¡Copiado!' : 'Copied Command!') : `vgskillframe skill install ${s.id}`}</span>
                   </button>
@@ -646,7 +647,7 @@ export function DocsSection({ lang }: Props) {
               </p>
             </div>
 
-            <div className="rounded-none bg-godot-card border border-godot-border p-6 sm:p-8 space-y-6">
+            <div className="rounded-xl bg-godot-card border border-godot-border p-6 sm:p-8 space-y-6">
               <ol className="list-decimal list-inside space-y-5 text-slate-300 text-sm">
                 <li className="leading-relaxed">
                   <span className="font-semibold text-white">Plugin placement:</span>

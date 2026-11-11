@@ -1,24 +1,29 @@
-import { useState, type ReactNode } from 'react';
-import { ArrowRight, ArrowUpRight, Copy, Check } from 'lucide-react';
+import { useState } from 'react';
+import {
+  ShieldCheck,
+  Terminal,
+  Bot,
+  ExternalLink,
+  ArrowRight,
+  RefreshCw,
+  Stethoscope,
+  Copy,
+  Check,
+  Trash2,
+  Boxes,
+  Zap,
+  Radio,
+  CheckCircle2,
+  XCircle
+} from 'lucide-react';
 import { Language, TRANSLATIONS } from './content/translations';
 import { TerminalWidget } from './components/TerminalWidget';
 import { DocsSection } from './components/DocsSection';
+import { Orbit3DScene } from './components/Orbit3DScene';
+import { AnimatedBackground } from './components/AnimatedBackground';
+import { EcosystemCarousel } from './components/EcosystemCarousel';
 import { SeoHead } from './components/SeoHead';
 import { safeCopyToClipboard } from './utils/clipboard';
-
-const REPO_URL = 'https://github.com/FrancisCuarto/OrbitKit';
-const INSTALL_CMD = 'npm i -g @francisiv/vgskillframe';
-
-/** Small mono label used as section index ("01 / EL PROBLEMA"). */
-function SectionLabel({ index, children }: { index: string; children: ReactNode }) {
-  return (
-    <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.14em] text-ink-mute">
-      <span className="bg-ink text-paper px-1.5 py-0.5 tabular-nums">{index}</span>
-      <span>{children}</span>
-      <span className="h-px flex-1 bg-ink/20" />
-    </div>
-  );
-}
 
 export function App() {
   const [lang, setLang] = useState<Language>(() => {
@@ -28,398 +33,682 @@ export function App() {
     }
     return 'es';
   });
-  const [copied, setCopied] = useState<string | null>(null);
+  const [copiedUpgrade, setCopiedUpgrade] = useState(false);
+  const [copiedUninstall, setCopiedUninstall] = useState(false);
+  const [copiedBlender, setCopiedBlender] = useState(false);
+  const [copiedMcp, setCopiedMcp] = useState(false);
   const t = TRANSLATIONS[lang];
-  const es = lang === 'es';
 
-  const copy = (cmd: string) => {
-    void safeCopyToClipboard(cmd);
-    setCopied(cmd);
-    setTimeout(() => setCopied((c) => (c === cmd ? null : c)), 1800);
+  const handleCopyUpgrade = () => {
+    void safeCopyToClipboard('vgskillframe upgrade');
+    setCopiedUpgrade(true);
+    setTimeout(() => setCopiedUpgrade(false), 2000);
   };
 
-  const CopyButton = ({ cmd, dark = false }: { cmd: string; dark?: boolean }) => (
-    <button
-      type="button"
-      onClick={() => copy(cmd)}
-      aria-label={es ? `Copiar: ${cmd}` : `Copy: ${cmd}`}
-      className={`shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1.5 font-mono text-[11px] uppercase tracking-wider transition ${
-        dark
-          ? 'border border-paper/25 text-paper/80 hover:bg-signal hover:text-ink hover:border-signal'
-          : 'border border-ink text-ink hover:bg-ink hover:text-paper'
-      }`}
-    >
-      {copied === cmd ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-      {copied === cmd ? (es ? 'Copiado' : 'Copied') : es ? 'Copiar' : 'Copy'}
-    </button>
-  );
+  const handleCopyUninstall = () => {
+    void safeCopyToClipboard('vgskillframe uninstall');
+    setCopiedUninstall(true);
+    setTimeout(() => setCopiedUninstall(false), 2000);
+  };
 
-  const modules = [
-    {
-      id: 'M-01',
-      title: t.features.card1.title,
-      desc: t.features.card1.desc,
-      cmd: 'vgskillframe scan .'
-    },
-    {
-      id: 'M-02',
-      title: t.features.card3.title,
-      desc: t.features.card3.desc,
-      cmd: 'vgskillframe skill install godot4-syntax-guardian'
-    },
-    {
-      id: 'M-03',
-      title: t.features.card2.title,
-      desc: t.features.card2.desc,
-      cmd: 'vgskillframe mcp add ctx7'
-    },
-    {
-      id: 'M-04',
-      title: es ? 'Caja negra de crashes' : 'Crash blackbox',
-      desc: es
-        ? 'Graba errores de GDScript, los últimos inputs y el árbol de escena al momento del crash, y arma un prompt de diagnóstico listo para pegar en tu agente.'
-        : 'Records GDScript errors, the last inputs and the scene tree at crash time, then builds a diagnostic prompt ready to paste into your agent.',
-      cmd: 'vgskillframe record --last --prompt'
-    },
-    {
-      id: 'M-05',
-      title: es ? 'Pipeline Blender → Godot' : 'Blender → Godot pipeline',
-      desc: es
-        ? 'Sufijos de colisión (-col, -convcol, -navmesh), remapeo de Skeleton3D y materiales PBR sin re-exportar a mano.'
-        : 'Collision suffixes (-col, -convcol, -navmesh), Skeleton3D remapping and PBR materials without manual re-export loops.',
-      cmd: 'vgskillframe skill install godot-blender-pipeline'
-    },
-    {
-      id: 'M-06',
-      title: t.features.card4.title,
-      desc: t.features.card4.desc,
-      cmd: 'vgskillframe update --all'
-    },
-    {
-      id: 'M-07',
-      title: t.features.card6.title,
-      desc: t.features.card6.desc,
-      cmd: 'vgskillframe doctor'
-    },
-    {
-      id: 'M-08',
-      title: t.features.card5.title,
-      desc: t.features.card5.desc,
-      cmd: null
-    }
-  ];
+  const handleCopyBlender = () => {
+    void safeCopyToClipboard('vgskillframe skill install godot-blender-pipeline');
+    setCopiedBlender(true);
+    setTimeout(() => setCopiedBlender(false), 2000);
+  };
 
-  const problemRows = [
-    { aspect: es ? 'Sintaxis' : 'Syntax', before: t.problem.before2, after: t.problem.after2 },
-    { aspect: es ? 'Editor' : 'Editor', before: t.problem.before3, after: t.problem.after3 },
-    { aspect: es ? 'Addons' : 'Addons', before: t.problem.before1, after: t.problem.after1 },
-    { aspect: es ? 'Mantenimiento' : 'Upkeep', before: t.problem.before4, after: t.problem.after4 }
-  ];
-
-  const stages = [
-    { stage: '1-1', title: t.how.step1Title, desc: t.how.step1Desc, cmd: INSTALL_CMD },
-    { stage: '1-2', title: t.how.step2Title, desc: t.how.step2Desc, cmd: 'vgskillframe init' },
-    { stage: '1-3', title: t.how.step3Title, desc: t.how.step3Desc, cmd: 'vgskillframe mcp add godot-lsp' }
-  ];
-
-  const navItems = [
-    { href: '#problema', label: es ? 'Problema' : 'Problem' },
-    { href: '#modulos', label: es ? 'Módulos' : 'Modules' },
-    { href: '#inicio', label: es ? 'Inicio' : 'Start' },
-    { href: '#docs', label: es ? 'Manual' : 'Manual' }
-  ];
+  const handleCopyMcp = () => {
+    void safeCopyToClipboard('vgskillframe mcp add ctx7');
+    setCopiedMcp(true);
+    setTimeout(() => setCopiedMcp(false), 2000);
+  };
 
   return (
-    <div className="min-h-screen flex flex-col bg-paper text-ink font-sans">
+    <div className="relative min-h-screen flex flex-col bg-godot-950 text-slate-100 font-sans selection:bg-godot-500 selection:text-white isolate">
+      {/* Dynamic SEO & OpenGraph Synchronizer */}
       <SeoHead lang={lang} />
 
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-paper/95 backdrop-blur-sm border-b-2 border-ink">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
-          <a href="#" className="flex items-center gap-2.5 group" aria-label="VGSkillFrame">
-            <span className="font-display text-[22px] leading-none bg-ink text-paper px-1.5 pt-1 pb-0.5 group-hover:bg-signal group-hover:text-ink transition">
-              VG
-            </span>
-            <span className="font-bold tracking-tight text-[17px]">skillframe</span>
-            <span className="hidden sm:inline font-mono text-[11px] text-ink-mute tabular-nums">v0.7.0</span>
+      {/* Full-Page Canvas Background */}
+      <AnimatedBackground />
+
+      {/* 1. Header / Navbar */}
+      <header className="border-b border-godot-border bg-godot-950/90 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          {/* Logo */}
+          <a href="#" className="flex items-center space-x-3 group">
+            <img
+              src="/logo.png"
+              alt="VGSkillFrame Logo"
+              className="w-9 h-9 rounded-lg object-contain shadow-md transition group-hover:scale-105"
+            />
+            <div className="flex items-center space-x-2.5">
+              <span className="font-extrabold text-lg tracking-tight text-white group-hover:text-godot-300 transition">
+                VGSkillFrame
+              </span>
+              <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-godot-card text-godot-300 border border-godot-border tabular-nums">
+                v0.7.0
+              </span>
+            </div>
           </a>
 
-          <nav className="hidden md:flex items-center gap-7 font-mono text-xs uppercase tracking-wider">
-            {navItems.map((item, i) => (
-              <a key={item.href} href={item.href} className="hover:text-signal-dark transition">
-                <span className="text-ink-mute mr-1 tabular-nums">0{i + 1}</span>
-                {item.label}
-              </a>
-            ))}
-            <a href={REPO_URL} target="_blank" rel="noreferrer" className="inline-flex items-center hover:text-signal-dark transition">
-              GitHub <ArrowUpRight className="w-3.5 h-3.5 ml-0.5" />
+          {/* Nav links */}
+          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-300">
+            <a href="#ecosystem" className="hover:text-white transition">
+              {lang === 'es' ? 'Ecosistema 3D' : '3D Ecosystem'}
+            </a>
+            <a href="#problem" className="hover:text-white transition">
+              {lang === 'es' ? 'Arquitectura' : 'Architecture'}
+            </a>
+            <a href="#features" className="hover:text-white transition">
+              {t.nav.features}
+            </a>
+            <a href="#how-it-works" className="hover:text-white transition">
+              {t.nav.howItWorks}
+            </a>
+            <a href="#docs" className="hover:text-white transition">
+              {t.nav.docs}
+            </a>
+            <a
+              href="https://github.com/FrancisCuarto/OrbitKit"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-white flex items-center transition"
+            >
+              {t.nav.github}
+              <ExternalLink className="w-3.5 h-3.5 ml-1 text-slate-400" />
             </a>
           </nav>
 
-          <div className="flex items-center gap-3 font-mono text-xs">
-            <div className="flex items-center" role="group" aria-label="Language">
-              {(['es', 'en'] as const).map((l, i) => (
-                <span key={l} className="flex items-center">
-                  {i > 0 && <span className="text-ink/30 mx-1">/</span>}
-                  <button
-                    type="button"
-                    onClick={() => setLang(l)}
-                    aria-pressed={lang === l}
-                    className={`uppercase ${lang === l ? 'text-ink underline decoration-2 decoration-signal underline-offset-4' : 'text-ink-mute hover:text-ink'}`}
-                  >
-                    {l}
-                  </button>
-                </span>
-              ))}
+          {/* Action buttons + Language Selector */}
+          <div className="flex items-center space-x-3">
+            {/* Language toggle ES / EN */}
+            <div className="flex items-center bg-godot-card border border-godot-border rounded-lg p-0.5 text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setLang('es')}
+                className={`px-2.5 py-1 rounded transition ${
+                  lang === 'es' ? 'bg-[#23689b] text-white' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                ES
+              </button>
+              <button
+                type="button"
+                onClick={() => setLang('en')}
+                className={`px-2.5 py-1 rounded transition ${
+                  lang === 'en' ? 'bg-[#23689b] text-white' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                EN
+              </button>
             </div>
-            <a href="#inicio" className="hidden sm:inline-flex bg-ink text-paper px-3 py-2 uppercase tracking-wider hover:bg-signal hover:text-ink transition">
+
+            <a
+              href="#docs"
+              className="flex items-center text-xs font-semibold px-3.5 py-2 rounded-lg bg-[#23689b] hover:bg-[#2d7bb6] text-white transition border border-godot-400/30"
+            >
+              <Terminal className="w-3.5 h-3.5 mr-1.5" />
               {t.nav.install}
             </a>
           </div>
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="graph-paper border-b-2 border-ink">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-16 lg:pt-20 lg:pb-20 grid lg:grid-cols-12 gap-12 items-start">
-          <div className="lg:col-span-6 space-y-8">
-            <p className="font-mono text-xs uppercase tracking-[0.14em] text-ink-mute">
-              Videogame Skill Frame — {es ? 'manual de uso' : 'user manual'} · Godot 4.3+ · Blender · MCP
-            </p>
+      {/* 2. Hero Section with Interactive 3D Orbital Canvas */}
+      <section className="relative z-10 pt-16 pb-16 px-4 text-center overflow-hidden">
+        {/* Interactive 3D Geodesic Core & Orbiting Satellites */}
+        <Orbit3DScene />
 
-            <h1 className="font-display text-[64px] sm:text-[96px] lg:text-[112px] [text-wrap:balance]">
-              {t.hero.headline1} <span className="text-signal">{t.hero.headline2}</span>
-            </h1>
-
-            <p className="text-lg leading-relaxed text-ink-soft max-w-xl [text-wrap:pretty]">{t.hero.sub}</p>
-
-            <div className="space-y-4">
-              <div className="flex items-stretch max-w-xl border-2 border-ink bg-ink text-paper">
-                <code className="flex-1 px-4 py-3.5 font-mono text-sm overflow-x-auto whitespace-nowrap">
-                  <span className="text-signal-light select-none">$ </span>
-                  {INSTALL_CMD}
-                </code>
-                <button
-                  type="button"
-                  onClick={() => copy(INSTALL_CMD)}
-                  className="px-4 bg-signal text-ink font-mono text-xs uppercase tracking-wider font-semibold hover:bg-paper transition inline-flex items-center gap-1.5"
-                >
-                  {copied === INSTALL_CMD ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  {copied === INSTALL_CMD ? (es ? 'Listo' : 'Done') : es ? 'Copiar' : 'Copy'}
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-wider">
-                <a href="#docs" className="inline-flex items-center underline decoration-2 decoration-signal underline-offset-4 hover:text-signal-dark">
-                  {t.hero.btnDocs} <ArrowRight className="w-3.5 h-3.5 ml-1" />
-                </a>
-                <a href={REPO_URL} target="_blank" rel="noreferrer" className="inline-flex items-center hover:text-signal-dark">
-                  {t.hero.btnGithub} <ArrowUpRight className="w-3.5 h-3.5 ml-0.5" />
-                </a>
-              </div>
-            </div>
+        <div className="max-w-4xl mx-auto space-y-6 relative z-10">
+          {/* Engineering Release Spec Ribbon */}
+          <div className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 px-3.5 py-1.5 rounded-lg bg-godot-card border border-godot-border text-xs font-mono text-slate-300">
+            <span className="flex items-center text-emerald-400 font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 mr-2" />
+              VGSkillFrame v0.7.0
+            </span>
+            <span className="text-slate-600 select-none">•</span>
+            <span className="text-slate-200">Godot 4.3+</span>
+            <span className="text-slate-600 select-none">•</span>
+            <span className="text-slate-200">Blender 3D</span>
+            <span className="text-slate-600 select-none">•</span>
+            <span className="text-slate-200">Model Context Protocol</span>
+            <span className="text-slate-600 select-none">•</span>
+            <span className="text-slate-200">Blackbox Flight Recorder</span>
           </div>
 
-          <div className="lg:col-span-6 lg:pt-10">
+          {/* Solid High-Contrast Headline (No Gradient Text) */}
+          <h1 className="headline-shadow text-4xl sm:text-6xl font-black tracking-[-0.03em] text-white leading-[1.08] max-w-4xl mx-auto [text-wrap:balance]">
+            {t.hero.headline1}{' '}
+            <span className="text-godot-300">
+              {t.hero.headline2}
+            </span>
+          </h1>
+
+          <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed [text-wrap:pretty]">
+            {t.hero.sub}
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <a
+              href="#docs"
+              className="px-6 py-3 rounded-lg bg-[#23689b] hover:bg-[#2d7bb6] text-white font-semibold text-sm transition border border-godot-400/30 flex items-center"
+            >
+              {t.hero.btnDocs}
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </a>
+            <a
+              href="https://github.com/FrancisCuarto/OrbitKit"
+              target="_blank"
+              rel="noreferrer"
+              className="px-6 py-3 rounded-lg bg-godot-card hover:bg-godot-cardHover text-slate-200 border border-godot-border font-semibold text-sm transition flex items-center"
+            >
+              {t.hero.btnGithub}
+              <ExternalLink className="w-4 h-4 ml-2 text-slate-400" />
+            </a>
+          </div>
+
+          {/* Interactive Terminal Widget */}
+          <div className="relative z-30 pt-6">
             <TerminalWidget lang={lang} />
           </div>
         </div>
-
-        {/* Spec strip */}
-        <div className="border-t-2 border-ink bg-paper">
-          <dl className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 divide-x divide-ink/20">
-            {[
-              [es ? 'Motor' : 'Engine', 'Godot 4.3+'],
-              ['Pipeline', 'Blender → glTF 2.0'],
-              [es ? 'Protocolo' : 'Protocol', 'MCP · LSP :6005'],
-              [es ? 'Agentes' : 'Agents', 'Claude · Cursor · Antigravity'],
-              [es ? 'Licencia' : 'License', 'MIT · open source']
-            ].map(([k, v]) => (
-              <div key={k} className="px-4 sm:px-6 py-4">
-                <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-mute">{k}</dt>
-                <dd className="font-semibold mt-1">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
       </section>
 
-      {/* 01 — Problem */}
-      <section id="problema" className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-20 lg:py-28 space-y-10">
-        <SectionLabel index="01">{t.problem.eyebrow}</SectionLabel>
-        <h2 className="font-display text-5xl sm:text-7xl max-w-4xl [text-wrap:balance]">{t.problem.title}</h2>
+      {/* 3. Connected 3D Ecosystem Grid & Tool Inspector */}
+      <div id="ecosystem" className="relative z-10">
+        <EcosystemCarousel lang={lang} />
+      </div>
 
-        <div className="border-2 border-ink">
-          <div className="hidden md:grid grid-cols-12 border-b-2 border-ink font-mono text-xs uppercase tracking-wider">
-            <div className="col-span-2 px-5 py-3 text-ink-mute">{es ? 'Aspecto' : 'Aspect'}</div>
-            <div className="col-span-5 px-5 py-3 border-l border-ink/20 text-ink-mute">{t.problem.beforeTitle}</div>
-            <div className="col-span-5 px-5 py-3 border-l-2 border-ink bg-ink text-paper">{t.problem.afterTitle}</div>
-          </div>
-          {problemRows.map((row, i) => (
-            <div key={row.aspect} className={`grid md:grid-cols-12 ${i > 0 ? 'border-t border-ink/20' : ''}`}>
-              <div className="md:col-span-2 px-5 pt-5 md:py-5 font-display text-2xl">{row.aspect}</div>
-              <div className="md:col-span-5 px-5 py-3 md:py-5 md:border-l border-ink/20 text-ink-mute line-through decoration-ink/30">
-                {row.before}
-              </div>
-              <div className="md:col-span-5 px-5 pb-5 md:py-5 md:border-l-2 border-ink bg-paper-dim font-medium">
-                <span className="text-signal-dark font-mono mr-2">→</span>
-                {row.after}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Editor plugin band (dark) */}
-      <section className="bg-ink text-paper border-y-2 border-ink">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 grid lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5 space-y-6">
-            <p className="font-mono text-xs uppercase tracking-[0.14em] text-paper/50">
-              res://addons/vgskillframe
-            </p>
-            <h2 className="font-display text-5xl sm:text-6xl [text-wrap:balance]">
-              {es ? 'Un dock dentro de Godot.' : 'A dock inside Godot.'}{' '}
-              <span className="text-signal">{es ? 'No otra pestaña.' : 'Not another tab.'}</span>
-            </h2>
-            <p className="text-paper/70 leading-relaxed [text-wrap:pretty]">
-              {es
-                ? 'El CLI instala y habilita el plugin en project.godot. Desde el editor ves skills, servidores MCP, el árbol de escena y la caja negra de crashes, y tu agente se conecta al Language Server de GDScript en el puerto 6005.'
-                : 'The CLI installs and enables the plugin in project.godot. From the editor you see skills, MCP servers, the scene tree and the crash blackbox, while your agent connects to the GDScript Language Server on port 6005.'}
-            </p>
-            <ul className="font-mono text-sm space-y-2 text-paper/80">
-              <li><span className="text-signal mr-2">■</span>plugin.cfg {es ? 'habilitado en' : 'enabled in'} project.godot</li>
-              <li><span className="text-signal mr-2">■</span>GDScript LSP · 127.0.0.1:6005</li>
-              <li><span className="text-signal mr-2">■</span>.agents/skills · .claude/skills · .mcp.json</li>
-            </ul>
-          </div>
-          <div className="lg:col-span-7">
-            <figure className="border-2 border-paper/20">
-              <video
-                className="w-full block bg-black aspect-video"
-                src="/orbitkit-preview.mp4"
-                poster="/orbitkit-preview-poster.png"
-                controls
-                muted
-                playsInline
-                preload="none"
-              />
-              <figcaption className="flex justify-between px-3 py-2 font-mono text-[11px] uppercase tracking-wider text-paper/50 border-t-2 border-paper/20">
-                <span>{es ? 'Demo real del plugin' : 'Real plugin demo'}</span>
-                <span>Godot 4</span>
-              </figcaption>
-            </figure>
-          </div>
-        </div>
-      </section>
-
-      {/* 02 — Modules */}
-      <section id="modulos" className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-20 lg:py-28 space-y-10">
-        <SectionLabel index="02">{t.features.eyebrow}</SectionLabel>
-        <div className="grid lg:grid-cols-12 gap-6 items-end">
-          <h2 className="lg:col-span-8 font-display text-5xl sm:text-7xl [text-wrap:balance]">{t.features.headline}</h2>
-          <p className="lg:col-span-4 text-ink-soft leading-relaxed">{t.features.sub}</p>
+      {/* 4. The Architectural Comparison Workbench (Clean Divider Layout, Zero Nested Cards) */}
+      <section id="problem" className="relative z-10 py-20 px-4 max-w-7xl mx-auto border-t border-godot-border/60">
+        <div className="max-w-3xl mx-auto mb-12 text-center space-y-3">
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-[-0.03em] [text-wrap:balance]">
+            {t.problem.title}
+          </h2>
+          <p className="text-slate-300 text-sm sm:text-base leading-relaxed [text-wrap:pretty]">
+            {lang === 'es'
+              ? 'Por qué los modelos de lenguaje generales fallan en Godot 4 y cómo VGSkillFrame establece una conexión viva entre el motor y tu agente de código.'
+              : 'Why generic language models hallucinate in Godot 4 and how VGSkillFrame establishes a live runtime bridge between engine diagnostics and AI coding agents.'}
+          </p>
         </div>
 
-        <ol className="grid md:grid-cols-2 border-t-2 border-ink">
-          {modules.map((m, i) => (
-            <li
-              key={m.id}
-              className={`py-7 flex flex-col gap-4 border-b border-ink/20 ${i % 2 === 0 ? 'md:pr-10' : 'md:pl-10 md:border-l'}`}
-            >
-              <div className="flex items-baseline gap-4">
-                <span className="font-mono text-xs text-signal-dark tabular-nums shrink-0">{m.id}</span>
-                <h3 className="text-xl font-bold tracking-tight">{m.title}</h3>
-              </div>
-              <p className="text-ink-soft leading-relaxed pl-[52px] [text-wrap:pretty]">{m.desc}</p>
-              {m.cmd && (
-                <div className="pl-[52px] flex items-center gap-2 min-w-0">
-                  <code className="flex-1 min-w-0 truncate font-mono text-[13px] bg-paper-dim border border-ink/15 px-3 py-1.5">
-                    {m.cmd}
-                  </code>
-                  <CopyButton cmd={m.cmd} />
+        {/* Dual-Pane Architectural Workbench */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+          {/* Pane 1: Modo Convencional / Entorno Desconectado */}
+          <div className="rounded-xl bg-godot-card border border-rose-950/80 p-6 sm:p-7 flex flex-col justify-between space-y-6">
+            <div>
+              <div className="flex items-center justify-between pb-4 border-b border-rose-950/80">
+                <div className="flex items-center space-x-3">
+                  <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+                  <span className="font-extrabold text-white text-base">
+                    {lang === 'es' ? 'Modo Aislado (Sin VGSkillFrame)' : 'Isolated Mode (Without VGSkillFrame)'}
+                  </span>
                 </div>
-              )}
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <div className="hatch h-3 border-y-2 border-ink" aria-hidden="true" />
-
-      {/* 03 — Start */}
-      <section id="inicio" className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-20 lg:py-28 space-y-10">
-        <SectionLabel index="03">{t.how.eyebrow}</SectionLabel>
-        <h2 className="font-display text-5xl sm:text-7xl max-w-4xl [text-wrap:balance]">{t.how.headline}</h2>
-
-        <div className="grid md:grid-cols-3 border-2 border-ink">
-          {stages.map((s, i) => (
-            <div key={s.stage} className={`p-6 flex flex-col gap-5 ${i > 0 ? 'border-t-2 md:border-t-0 md:border-l-2 border-ink' : ''}`}>
-              <div className="flex items-baseline justify-between">
-                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-mute">Stage</span>
-                <span className="font-display text-6xl text-signal tabular-nums">{s.stage}</span>
+                <span className="text-xs font-mono uppercase text-rose-400 font-semibold px-2 py-0.5 rounded bg-rose-950/60 border border-rose-900/60">
+                  {lang === 'es' ? 'Desconectado' : 'Offline'}
+                </span>
               </div>
-              <h3 className="text-xl font-bold tracking-tight">{s.title.replace(/^\d\.\s*/, '')}</h3>
-              <p className="text-ink-soft leading-relaxed flex-1">{s.desc}</p>
-              <div className="flex items-center gap-2 min-w-0">
-                <code className="flex-1 min-w-0 truncate font-mono text-[13px] bg-ink text-paper px-3 py-2">
-                  <span className="text-signal-light select-none">$ </span>
-                  {s.cmd}
-                </code>
-                <CopyButton cmd={s.cmd} />
+
+              {/* Clean Structured List with Dividers (No Nested Cards) */}
+              <div className="mt-4 divide-y divide-rose-950/70">
+                {[
+                  {
+                    aspect: lang === 'es' ? 'Sintaxis & Runtime' : 'Syntax & Runtime',
+                    detail: t.problem.before2
+                  },
+                  {
+                    aspect: lang === 'es' ? 'Inspección del Motor' : 'Engine Inspection',
+                    detail: t.problem.before3
+                  },
+                  {
+                    aspect: lang === 'es' ? 'Gestión de Addons' : 'Addon Management',
+                    detail: t.problem.before1
+                  },
+                  {
+                    aspect: lang === 'es' ? 'Diagnóstico de Salud' : 'Health Diagnostics',
+                    detail: t.problem.before4
+                  }
+                ].map((row, idx) => (
+                  <div key={idx} className="py-3.5 space-y-1">
+                    <div className="flex items-center space-x-2 text-rose-400 text-xs font-mono font-semibold">
+                      <XCircle className="w-3.5 h-3.5 shrink-0" />
+                      <span>{row.aspect}</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed pl-5 [text-wrap:pretty]">
+                      {row.detail}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+
+            <div className="pt-4 border-t border-godot-border/60 text-xs font-mono text-slate-400 flex items-center justify-between">
+              <span>GDScript 3.x drift</span>
+              <span className="text-rose-400 font-semibold">Errors at compile time</span>
+            </div>
+          </div>
+
+          {/* Pane 2: Arquitectura VGSkillFrame en Vivo */}
+          <div className="rounded-xl bg-godot-card border border-godot-500/40 p-6 sm:p-7 flex flex-col justify-between space-y-6">
+            <div>
+              <div className="flex items-center justify-between pb-4 border-b border-godot-border">
+                <div className="flex items-center space-x-3">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                  <span className="font-extrabold text-white text-base">
+                    {lang === 'es' ? 'Arquitectura VGSkillFrame en Vivo' : 'Live VGSkillFrame Architecture'}
+                  </span>
+                </div>
+                <span className="text-xs font-mono uppercase text-emerald-400 font-semibold px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-900/60">
+                  {lang === 'es' ? 'Bidireccional' : 'Bidirectional'}
+                </span>
+              </div>
+
+              {/* Clean Structured List with Dividers (No Nested Cards) */}
+              <div className="mt-4 divide-y divide-godot-border/60">
+                {[
+                  {
+                    aspect: lang === 'es' ? 'Sintaxis & Runtime' : 'Syntax & Runtime',
+                    detail: t.problem.after2
+                  },
+                  {
+                    aspect: lang === 'es' ? 'Inspección del Motor' : 'Engine Inspection',
+                    detail: t.problem.after3
+                  },
+                  {
+                    aspect: lang === 'es' ? 'Gestión de Addons' : 'Addon Management',
+                    detail: t.problem.after1
+                  },
+                  {
+                    aspect: lang === 'es' ? 'Diagnóstico de Salud' : 'Health Diagnostics',
+                    detail: t.problem.after4
+                  }
+                ].map((row, idx) => (
+                  <div key={idx} className="py-3.5 space-y-1">
+                    <div className="flex items-center space-x-2 text-emerald-400 text-xs font-mono font-semibold">
+                      <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                      <span>{row.aspect}</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-200 leading-relaxed pl-5 [text-wrap:pretty]">
+                      {row.detail}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-godot-border/60 text-xs font-mono text-slate-300 flex items-center justify-between">
+              <span>LSP Port 6005 + Context7</span>
+              <span className="text-emerald-400 font-semibold">0 syntax drift</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Asymmetric Engineering Workbench (Purpose-Built Layout) */}
+      <section id="features" className="relative z-10 py-20 px-4 max-w-7xl mx-auto border-t border-godot-border/60">
+        <div className="max-w-3xl mx-auto mb-14 text-center space-y-3">
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-[-0.03em] [text-wrap:balance]">
+            {t.features.headline}
+          </h2>
+          <p className="text-slate-300 text-sm sm:text-base leading-relaxed [text-wrap:pretty]">
+            {t.features.sub}
+          </p>
         </div>
 
-        {/* Maintenance rows */}
-        <div className="grid md:grid-cols-2 gap-x-10">
+        {/* Asymmetric Studio Layout */}
+        <div className="space-y-6">
+          {/* Top Hero Workbench Block: Godot 4 Editor Integration & Live LSP Bridge */}
+          <div className="rounded-xl bg-godot-card border border-godot-border p-6 sm:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div className="lg:col-span-6 space-y-4">
+                <div className="inline-flex items-center space-x-2 px-2.5 py-1 rounded bg-godot-950 border border-godot-border text-xs font-mono text-godot-300">
+                  <Radio className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Telemetry Socket • Port 6005</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight [text-wrap:balance]">
+                  {lang === 'es'
+                    ? 'Plugin Nativo de Editor + Puente MCP Bidireccional'
+                    : 'Native Editor Plugin + Bidirectional MCP Bridge'}
+                </h3>
+                <p className="text-sm text-slate-300 leading-relaxed [text-wrap:pretty]">
+                  {lang === 'es'
+                    ? 'VGSkillFrame instala automáticamente el plugin de editor en res://addons/vgskillframe y conecta Antigravity, Claude Code, Cursor y Codex directamente al Language Server de Godot 4.3+. Tu agente de código analiza árboles de escenas y captura errores de compilación antes de que ejecutes el juego.'
+                    : 'VGSkillFrame auto-installs the Godot 4 Editor plugin under res://addons/vgskillframe and connects Antigravity, Claude Code, Cursor, and Codex directly to the live GDScript LSP. Your AI agent inspects scene trees and catches runtime errors before you run the project.'}
+                </p>
+                <div className="pt-2 flex flex-wrap gap-2 text-xs font-mono">
+                  <span className="px-2.5 py-1 rounded bg-godot-950 text-slate-300 border border-godot-border">
+                    addons/vgskillframe/plugin.cfg
+                  </span>
+                  <span className="px-2.5 py-1 rounded bg-godot-950 text-slate-300 border border-godot-border">
+                    127.0.0.1:6005 (LSP)
+                  </span>
+                  <span className="px-2.5 py-1 rounded bg-godot-950 text-emerald-400 border border-emerald-500/30">
+                    AST Validation Ready
+                  </span>
+                </div>
+              </div>
+
+              {/* Integrated Telemetry Display Column (Border-Separated, No Nested Card) */}
+              <div className="lg:col-span-6 pt-6 lg:pt-0 lg:border-l border-godot-border/80 lg:pl-8 font-mono text-xs space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-godot-border/80 text-xs text-slate-400">
+                  <div className="flex items-center space-x-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                    <span className="text-white font-semibold">Godot Engine 4.3.stable</span>
+                  </div>
+                  <span className="tabular-nums">PID: 49201</span>
+                </div>
+                <div className="space-y-2 text-slate-300">
+                  <p className="text-emerald-400 flex items-center">
+                    <Check className="w-3.5 h-3.5 mr-2 shrink-0" />
+                    addons/vgskillframe/plugin.cfg enabled in project.godot
+                  </p>
+                  <p className="text-sky-300 flex items-center">
+                    <Radio className="w-3.5 h-3.5 mr-2 shrink-0" />
+                    GDScript LSP socket streaming on port 6005
+                  </p>
+                  <p className="text-purple-300 flex items-center">
+                    <Bot className="w-3.5 h-3.5 mr-2 shrink-0" />
+                    Agent Context: 20 curated skills loaded in .agents/skills
+                  </p>
+                  <p className="text-slate-400 pt-2 border-t border-godot-border/60">
+                    $ vgskillframe doctor: System ready, 0 blockers detected
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Middle Two Asymmetric Feature Pillars */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Pillar A: Blender 3D Pipeline */}
+            <div className="rounded-xl bg-godot-card border border-godot-border p-6 flex flex-col justify-between space-y-5">
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2 text-amber-400 text-xs font-mono font-semibold">
+                  <Boxes className="w-4 h-4" />
+                  <span>{lang === 'es' ? 'Pipeline 3D & glTF 2.0' : '3D Pipeline & glTF 2.0'}</span>
+                </div>
+                <h3 className="text-xl font-bold text-white">
+                  {lang === 'es'
+                    ? 'Sincronizador Blender 3D ➔ Godot 4'
+                    : 'Blender 3D ➔ Godot 4 Synchronizer'}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed [text-wrap:pretty]">
+                  {lang === 'es'
+                    ? 'Automatiza sufijos de colisión (-col para StaticBody3D, -convcol para mallas convexas, -navmesh), remapeo de esqueletos Skeleton3D y materiales PBR sin pasos manuales.'
+                    : 'Automates collision suffixes (-col for StaticBody3D, -convcol for convex hulls, -navmesh), Skeleton3D bone remapping, and PBR materials without manual re-export loops.'}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between p-3 rounded-lg bg-godot-950 border border-godot-border font-mono text-xs">
+                <code className="text-amber-300 truncate mr-2">
+                  vgskillframe skill install godot-blender-pipeline
+                </code>
+                <button
+                  type="button"
+                  onClick={handleCopyBlender}
+                  className="px-2.5 py-1 rounded bg-[#23689b] hover:bg-[#2d7bb6] text-white border border-godot-400/30 text-xs font-semibold transition shrink-0"
+                >
+                  {copiedBlender ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
+                </button>
+              </div>
+            </div>
+
+            {/* Pillar B: Context7 MCP & Curated Skills */}
+            <div className="rounded-xl bg-godot-card border border-godot-border p-6 flex flex-col justify-between space-y-5">
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2 text-sky-400 text-xs font-mono font-semibold">
+                  <Zap className="w-4 h-4" />
+                  <span>{lang === 'es' ? 'Grounding Oficial en Vivo' : 'Live Official Grounding'}</span>
+                </div>
+                <h3 className="text-xl font-bold text-white">
+                  {lang === 'es'
+                    ? 'Context7 (ctx7) + Skills Anti-Alucinación'
+                    : 'Context7 (ctx7) + Anti-Hallucination Skills'}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed [text-wrap:pretty]">
+                  {lang === 'es'
+                    ? 'Inyecta la documentación oficial indexada de Godot 4.3+ directamente al prompt de tu IA vía Context7 MCP. Incluye directrices de tipado estricto (godot4-syntax-guardian).'
+                    : 'Injects official indexed Godot 4.3+ documentation directly into your AI prompt via Context7 MCP. Bundles strict static typing rules (godot4-syntax-guardian).'}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between p-3 rounded-lg bg-godot-950 border border-godot-border font-mono text-xs">
+                <code className="text-sky-300 truncate mr-2">
+                  vgskillframe mcp add ctx7
+                </code>
+                <button
+                  type="button"
+                  onClick={handleCopyMcp}
+                  className="px-2.5 py-1 rounded bg-[#23689b] hover:bg-[#2d7bb6] text-white border border-godot-400/30 text-xs font-semibold transition shrink-0"
+                >
+                  {copiedMcp ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Technical Dock: Diagnostics, Batch Update & Security */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-5 rounded-xl bg-godot-card border border-godot-border space-y-2.5">
+              <div className="flex items-center space-x-2 text-rose-400 text-xs font-mono font-semibold">
+                <Stethoscope className="w-4 h-4" />
+                <span>{lang === 'es' ? 'Diagnóstico Clínico' : 'Clinical Diagnostics'}</span>
+              </div>
+              <h4 className="font-bold text-white text-base">vgskillframe doctor</h4>
+              <p className="text-xs text-slate-300 leading-relaxed [text-wrap:pretty]">
+                {t.features.card6.desc}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl bg-godot-card border border-godot-border space-y-2.5">
+              <div className="flex items-center space-x-2 text-emerald-400 text-xs font-mono font-semibold">
+                <RefreshCw className="w-4 h-4" />
+                <span>{lang === 'es' ? 'Sincronizador en Lote' : 'Batch Synchronizer'}</span>
+              </div>
+              <h4 className="font-bold text-white text-base">vgskillframe update --all</h4>
+              <p className="text-xs text-slate-300 leading-relaxed [text-wrap:pretty]">
+                {t.features.card4.desc}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl bg-godot-card border border-godot-border space-y-2.5">
+              <div className="flex items-center space-x-2 text-amber-400 text-xs font-mono font-semibold">
+                <ShieldCheck className="w-4 h-4" />
+                <span>{lang === 'es' ? '100% Privacidad Local' : '100% Local Privacy'}</span>
+              </div>
+              <h4 className="font-bold text-white text-base">SHA-256 & Anti-ZipSlip</h4>
+              <p className="text-xs text-slate-300 leading-relaxed [text-wrap:pretty]">
+                {t.features.card5.desc}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Sequential Pipeline Flow (Clean Single Elevation) */}
+      <section id="how-it-works" className="relative z-10 py-20 px-4 max-w-7xl mx-auto border-t border-godot-border/60">
+        <div className="max-w-3xl mx-auto mb-14 text-center space-y-3">
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-[-0.03em] [text-wrap:balance]">
+            {t.how.headline}
+          </h2>
+          <p className="text-slate-300 text-sm sm:text-base leading-relaxed [text-wrap:pretty]">
+            {lang === 'es'
+              ? 'Flujo de trabajo unificado desde la terminal hasta tu editor Godot 4.'
+              : 'A unified developer workflow from your terminal to the Godot 4 editor.'}
+          </p>
+        </div>
+
+        {/* 3-Step Sequential Pipeline Flow */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             {
-              label: es ? 'Actualizar el CLI' : 'Upgrade the CLI',
-              note: es ? 'Compara tu versión con npm y GitHub. También: tecla "u" en la TUI.' : 'Checks your version against npm and GitHub. Also: press "u" in the TUI.',
-              cmd: 'vgskillframe upgrade'
+              phase: lang === 'es' ? 'Fase 1: Instalación Global' : 'Phase 1: Global Install',
+              title: t.how.step1Title,
+              desc: t.how.step1Desc,
+              command: 'npm i -g @francisiv/vgskillframe',
+              status: lang === 'es' ? 'Binario registrado en PATH' : 'Binary linked in PATH'
             },
             {
-              label: es ? 'Desinstalar' : 'Uninstall',
-              note: es ? 'Quita el binario global y los symlinks. Tus proyectos no se tocan.' : 'Removes the global binary and symlinks. Your projects are left alone.',
-              cmd: 'vgskillframe uninstall'
+              phase: lang === 'es' ? 'Fase 2: Escaneo & Plugin' : 'Phase 2: Scan & Plugin',
+              title: t.how.step2Title,
+              desc: t.how.step2Desc,
+              command: 'vgskillframe scan .',
+              status: lang === 'es' ? 'res://addons/vgskillframe configurado' : 'res://addons/vgskillframe configured'
+            },
+            {
+              phase: lang === 'es' ? 'Fase 3: Agentes en Vivo' : 'Phase 3: Live Agents',
+              title: t.how.step3Title,
+              desc: t.how.step3Desc,
+              command: 'vgskillframe mcp add ctx7',
+              status: lang === 'es' ? 'Godot LSP (puerto 6005) activo' : 'Godot LSP (port 6005) active'
             }
-          ].map((row) => (
-            <div key={row.cmd} className="py-5 border-b border-ink/20 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
-              <div>
-                <p className="font-bold">{row.label}</p>
-                <p className="text-sm text-ink-mute">{row.note}</p>
+          ].map((step, idx) => (
+            <div
+              key={idx}
+              className="p-6 rounded-xl bg-godot-card border border-godot-border flex flex-col justify-between space-y-5"
+            >
+              <div className="space-y-3">
+                <span className="text-xs font-mono uppercase text-godot-400 font-semibold px-2 py-0.5 rounded bg-godot-950 border border-godot-border">
+                  {step.phase}
+                </span>
+                <h3 className="text-lg font-bold text-white">{step.title}</h3>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed [text-wrap:pretty]">{step.desc}</p>
               </div>
-              <div className="flex items-center gap-2">
-                <code className="font-mono text-[13px] whitespace-nowrap">{row.cmd}</code>
-                <CopyButton cmd={row.cmd} />
+
+              <div className="space-y-2 pt-4 border-t border-godot-border/60">
+                <code className="block text-xs font-mono text-godot-300 bg-godot-950 px-3 py-1.5 rounded border border-godot-border truncate">
+                  $ {step.command}
+                </code>
+                <div className="text-xs font-mono text-slate-400 flex items-center">
+                  <Check className="w-3 h-3 text-emerald-400 mr-1.5 shrink-0" />
+                  <span>{step.status}</span>
+                </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Dedicated Operations Workbench: Upgrade & Clean Uninstall */}
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Upgrade Station */}
+          <div className="p-6 rounded-xl bg-godot-card border border-emerald-500/30 flex flex-col justify-between gap-5">
+            <div className="space-y-2">
+              <div className="inline-flex items-center space-x-2 text-emerald-400 text-xs font-mono font-semibold">
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>{lang === 'es' ? 'Auto-Actualizador (v0.7.0)' : 'Self-Updater (v0.7.0)'}</span>
+              </div>
+              <h3 className="text-lg font-extrabold text-white">
+                {lang === 'es' ? '¿Ya tenías instalado VGSkillFrame? Actualizar CLI' : 'Already installed? Upgrade CLI'}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed [text-wrap:pretty]">
+                {lang === 'es'
+                  ? 'Comprueba tu versión instalada contra NPM y GitHub y actualiza el binario en un solo paso (o presiona "u" dentro de vgskillframe):'
+                  : 'Checks your installed version against NPM and GitHub and updates the binary in one step (or press "u" inside vgskillframe):'}
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-godot-950 px-3.5 py-2.5 rounded-lg font-mono text-xs sm:text-sm">
+              <div className="flex items-center space-x-2 px-2">
+                <span className="text-emerald-400 font-bold select-none">$</span>
+                <code className="text-emerald-300 font-semibold whitespace-nowrap">
+                  vgskillframe upgrade
+                </code>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyUpgrade}
+                className="flex items-center justify-center px-4 py-2 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-bold text-xs transition whitespace-nowrap"
+              >
+                <span className="inline-flex mr-1.5 shrink-0">
+                  {copiedUpgrade ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                </span>
+                <span>
+                  {copiedUpgrade
+                    ? lang === 'es'
+                      ? '¡Copiado!'
+                      : 'Copied!'
+                    : lang === 'es'
+                    ? 'Copiar comando'
+                    : 'Copy command'}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Clean Uninstall Station */}
+          <div className="p-6 rounded-xl bg-godot-card border border-rose-500/30 flex flex-col justify-between gap-5">
+            <div className="space-y-2">
+              <div className="inline-flex items-center space-x-2 text-rose-400 text-xs font-mono font-semibold">
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>{lang === 'es' ? 'Desinstalación Limpia' : 'Clean Uninstallation'}</span>
+              </div>
+              <h3 className="text-lg font-extrabold text-white">
+                {lang === 'es' ? '¿Quieres desinstalar VGSkillFrame CLI?' : 'Want to uninstall VGSkillFrame CLI?'}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed [text-wrap:pretty]">
+                {lang === 'es'
+                  ? 'Elimina limpiamente el binario global y enlaces simbólicos de tu sistema (o elige "Uninstall CLI" dentro de la interfaz):'
+                  : 'Cleanly removes the global binary and symlinks from your system (or select "Uninstall CLI" inside the TUI):'}
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-godot-950 px-3.5 py-2.5 rounded-lg font-mono text-xs sm:text-sm">
+              <div className="flex items-center space-x-2 px-2">
+                <span className="text-rose-400 font-bold select-none">$</span>
+                <code className="text-rose-300 font-semibold whitespace-nowrap">
+                  vgskillframe uninstall
+                </code>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyUninstall}
+                className="flex items-center justify-center px-4 py-2 rounded bg-rose-500 hover:bg-rose-400 text-slate-950 font-sans font-bold text-xs transition whitespace-nowrap"
+              >
+                <span className="inline-flex mr-1.5 shrink-0">
+                  {copiedUninstall ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                </span>
+                <span>
+                  {copiedUninstall
+                    ? lang === 'es'
+                      ? '¡Copiado!'
+                      : 'Copied!'
+                    : lang === 'es'
+                    ? 'Copiar comando'
+                    : 'Copy command'}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
       </section>
 
-      {/* 04 — Manual (dark appendix) */}
-      <div className="bg-godot-950 text-slate-100 border-t-2 border-ink">
+      {/* 7. Complete Documentation Section */}
+      <div className="relative z-10">
         <DocsSection lang={lang} />
       </div>
 
-      {/* Footer */}
-      <footer className="bg-paper border-t-2 border-ink">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-8 space-y-8">
-          <p className="font-display text-[18vw] lg:text-[200px] leading-[0.8] select-none" aria-hidden="true">
-            VGskill<span className="text-signal">frame</span>
-          </p>
-          <div className="flex flex-col sm:flex-row justify-between gap-4 font-mono text-xs uppercase tracking-wider text-ink-mute border-t border-ink/20 pt-5">
-            <span>Videogame Skill Frame · {es ? 'hecho para devs de Godot y Blender' : 'built for Godot & Blender devs'}</span>
-            <div className="flex gap-6">
-              <a href={REPO_URL} target="_blank" rel="noreferrer" className="hover:text-ink inline-flex items-center">
-                GitHub <ArrowUpRight className="w-3.5 h-3.5 ml-0.5" />
-              </a>
-              <a href="https://www.npmjs.com/package/@francisiv/vgskillframe" target="_blank" rel="noreferrer" className="hover:text-ink inline-flex items-center">
-                npm <ArrowUpRight className="w-3.5 h-3.5 ml-0.5" />
-              </a>
-              <span>{es ? 'Sin telemetría' : 'No telemetry'}</span>
-            </div>
+      {/* 8. Engineering Footer */}
+      <footer className="relative z-10 border-t border-godot-border py-10 bg-godot-950 text-xs text-slate-400 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center space-x-2.5">
+            <img src="/logo.png" alt="VGSkillFrame Logo" className="w-5 h-5 rounded object-contain" />
+            <span className="font-bold text-white">VGSkillFrame (Videogame Skill Frame)</span>
+            <span>— Open Ecosystem for Godot Engine, Blender & AI Coding Assistants</span>
+          </div>
+          <div className="flex items-center space-x-6 text-slate-400">
+            <a
+              href="https://github.com/FrancisCuarto/OrbitKit"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-white transition flex items-center"
+            >
+              GitHub Repository
+              <ExternalLink className="w-3 h-3 ml-1" />
+            </a>
+            <span className="flex items-center text-emerald-400">
+              <ShieldCheck className="w-3.5 h-3.5 mr-1" />
+              100% Privacy by Design (No Telemetry)
+            </span>
           </div>
         </div>
       </footer>
