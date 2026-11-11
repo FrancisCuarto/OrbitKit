@@ -22,6 +22,7 @@ import { DocsSection } from './components/DocsSection';
 import { Orbit3DScene } from './components/Orbit3DScene';
 import { AnimatedBackground } from './components/AnimatedBackground';
 import { EcosystemCarousel } from './components/EcosystemCarousel';
+import { RoadmapV1Section } from './components/RoadmapV1Section';
 import { SeoHead } from './components/SeoHead';
 import { safeCopyToClipboard } from './utils/clipboard';
 
@@ -104,6 +105,10 @@ export function App() {
             </a>
             <a href="#how-it-works" className="hover:text-white transition">
               {t.nav.howItWorks}
+            </a>
+            <a href="#roadmap" className="hover:text-amber-300 transition flex items-center space-x-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              <span>{lang === 'es' ? 'Roadmap v1.0' : 'v1.0 Roadmap'}</span>
             </a>
             <a href="#docs" className="hover:text-white transition">
               {t.nav.docs}
@@ -682,7 +687,12 @@ export function App() {
         </div>
       </section>
 
-      {/* 7. Complete Documentation Section */}
+      {/* 7. Version 1.0.0 Universal Game Engines Roadmap Section */}
+      <div className="relative z-10">
+        <RoadmapV1Section lang={lang} />
+      </div>
+
+      {/* 8. Complete Documentation Section */}
       <div className="relative z-10">
         <DocsSection lang={lang} />
       </div>
